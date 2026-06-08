@@ -1,0 +1,6 @@
+{
+  "name": "KX7-STUDY",
+  "description": "Neural Command Center for Academic Dominance",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

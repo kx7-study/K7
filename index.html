@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KX7-STUDY // Terminal Matrix & Cognitive Dominance</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        code: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        intelBlack: '#020204',
+                        intelSlate: '#05070c',
+                        intelDark: '#0b0f19',
+                        neonCyan: '#00ffcc',
+                        neonPurple: '#ff00cc',
+                        neonGreen: '#33ff33',
+                        neonAmber: '#ffcc00',
+                        textMuted: '#8ba2c1',
+                        warningCrimson: '#ff3366',
+                        opsGold: '#e5c158'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Anti-Aliasing for crisp high-resolution renders */
+        html, body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #020204;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-size: 15px;
+        }
+
+        /* Ambient glowing layers and sci-fi backdrops */
+        .cyber-grid-4k {
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 204, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 204, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: grid-shift 120s linear infinite;
+        }
+
+        .cyber-grid-fine {
+            background-image: 
+                linear-gradient(to right, rgba(255, 0, 204, 0.01) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 0, 204, 0.01) 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+
+        @keyframes grid-shift {
+            0% { background-position: 0px 0px; }
+            100% { background-position: 1200px 2400px; }
+        }
+
+        /* 3D Holographic Matrix Cards */
+        .holo-container {
+            perspective: 1000px;
+        }
+
+        .holo-card {
+            background: linear-gradient(135deg, rgba(11, 15, 25, 0.7) 0%, rgba(5, 7, 12, 0.9) 100%);
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                rgba(0, 255, 204, 0.08), 
+                transparent
+            );
+            transform: skewX(-25deg);
+            transition: 0.75s;
+            pointer-events: none;
+        }
+
+        .holo-card:hover::before {
+            left: 125%;
+        }
+
+        .holo-card:hover {
+            transform: translateY(-4px) scale(1.02) rotateX(1deg);
+            border-color: rgba(0, 255, 204, 0.4);
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 204, 0.08), 
+                0 0 1px rgba(0, 255, 204, 0.3),
+                inset 0 0 15px rgba(0, 255, 204, 0.03);
+        }
+
+        .holo-card-purple:hover {
+            border-color: rgba(255, 0, 204, 0.4);
+            box-shadow: 
+                0 10px 40px rgba(255, 0, 204, 0.08), 
+                0 0 1px rgba(255, 0, 204, 0.3),
+                inset 0 0 15px rgba(255, 0, 204, 0.03);
+        }
+
+        /* Ambient scanlines over display panels */
+        .scanline-panel {
+            position: relative;
+        }
+        .scanline-panel::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        /* Absolute glowing texts */
+        .text-glow-cyan {
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.6), 0 0 20px rgba(0, 255, 204, 0.25);
+        }
+        .text-glow-purple {
+            text-shadow: 0 0 8px rgba(255, 0, 204, 0.6), 0 0 20px rgba(255, 0, 204, 0.25);
+        }
+        .text-glow-green {
+            text-shadow: 0 0 8px rgba(51, 255, 51, 0.5);
+        }
+        .text-glow-amber {
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+        }
+        .text-glow-crimson {
+            text-shadow: 0 0 8px rgba(255, 51, 102, 0.5);
+        }
+
+        /* 3D Core Card Flip Mechanics */
+        .card-inner-3d {
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .flipped .card-inner-3d {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            inset: 0;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Waveform active node simulator */
+        .vocal-node {
+            display: inline-block;
+            width: 3px;
+            background: #00ffcc;
+            border-radius: 2px;
+            transition: height 0.15s ease-in-out;
+        }
+
+        /* Military ops blueprint layout steps */
+        .blueprint-card {
+            border: 1px dashed rgba(139, 162, 193, 0.2);
+            background: rgba(11, 15, 25, 0.4);
+            position: relative;
+        }
+        .blueprint-card::before {
+            content: 'SECURE_DYN_SPEC';
+            position: absolute;
+            top: 0;
+            right: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: rgba(139, 162, 193, 0.4);
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(139, 162, 193, 0.1);
+        }
+
+        /* Interactive Phone Screen Transitions */
+        .phone-screen-content {
+            opacity: 0;
+            transform: scale(0.97) translateY(8px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+        }
+
+        .phone-screen-content.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Fluid scrolling indicator */
+        @keyframes scrollPulse {
+            0% { transform: translateY(0); opacity: 0.2; }
+            50% { transform: translateY(8px); opacity: 1; }
+            100% { transform: translateY(0); opacity: 0.2; }
+        }
+        .scroll-indicator-arrow {
+            animation: scrollPulse 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-white selection:bg-neonCyan selection:text-black">
+
+    <!-- Ambient Digital Network Backdrop -->
+    <div class="fixed inset-0 cyber-grid-4k pointer-events-none z-0"></div>
+    <div class="fixed inset-0 cyber-grid-fine pointer-events-none z-0"></div>
+
+    <!-- Radiant Dynamic Color Orbs (4K Ambient Depths) -->
+    <div class="fixed top-[-10%] left-[-5%] w-[800px] h-[800px] rounded-full bg-gradient-to-r from-neonCyan/10 to-transparent blur-[160px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-5%] w-[900px] h-[900px] rounded-full bg-gradient-to-l from-neonPurple/10 to-transparent blur-[180px] pointer-events-none z-0"></div>
+    <div class="fixed top-[40%] left-[30%] w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-neonGreen/5 to-transparent blur-[140px] pointer-events-none z-0"></div>
+
+    <!-- GLOBAL SCI-FI TOP GRID HEADER -->
+    <header class="sticky top-0 z-50 border-b border-neonCyan/15 bg-intelBlack/85 backdrop-blur-md">
+        <div class="max-w-[1500px] mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Branding HUD Frame -->
+            <div class="flex items-center gap-4 group cursor-pointer">
+                <div class="w-12 h-12 border border-neonCyan bg-neonCyan/5 flex items-center justify-center rounded-lg shadow-[0_0_20px_rgba(0,255,204,0.3)] transition-all duration-300 relative group-hover:scale-105">
+                    <span class="font-mono text-xl font-extrabold text-neonCyan text-glow-cyan select-none">KX</span>
+                    <div class="absolute -top-1 -right-1 w-2 h-2 bg-neonGreen rounded-full animate-ping"></div>
+                </div>
+                <div>
+                    <h1 class="font-mono text-lg font-black tracking-widest text-white uppercase flex items-center gap-1.5">
+                        KX7 <span class="text-neonCyan text-glow-cyan font-bold italic text-sm">STUDY</span>
+                    </h1>
+                    <p class="text-[9px] font-mono tracking-[0.3em] text-textMuted/80 uppercase">Cognitive Tactical Matrix v3.04</p>
+                </div>
+            </div>
+            
+            <!-- Mid Console Link Navigation Nodes -->
+            <nav class="hidden md:flex items-center gap-10 font-mono text-[11px] tracking-[0.25em] text-textMuted uppercase font-semibold">
+                <a href="#overview" class="hover:text-neonCyan border-b border-transparent hover:border-neonCyan/50 py-1 transition-all duration-300">SYSTEM ARCH</a>
+                <a href="#terminal-hub" class="hover:text-neonCyan border-b border-transparent hover:border-neonCyan/50 py-1 transition-all duration-300 text-glow-cyan">ACTIVE TERMINAL</a>
+                <a href="#emulator-panel" class="hover:text-neonPurple border-b border-transparent hover:border-neonPurple/50 py-1 transition-all duration-300 text-glow-purple">ONLINE DECK</a>
+                <a href="#manual-installation" class="hover:text-neonCyan border-b border-transparent hover:border-neonCyan/50 py-1 transition-all duration-300">TACTICAL DEPLOYMENT</a>
+            </nav>
+
+            <!-- High-Contrast APK Trigger Badge -->
+            <div class="flex items-center gap-4">
+                <a href="#manual-installation" class="hidden sm:inline-flex font-mono text-[11px] px-6 py-3.5 bg-neonCyan/10 border border-neonCyan text-neonCyan rounded hover:bg-neonCyan hover:text-black hover:scale-105 duration-300 transition-all tracking-wider font-extrabold shadow-[0_0_15px_rgba(0,255,204,0.15)]">
+                    DEPLOY NATIVE BINARY (APK)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT COCKPIT CONTAINER -->
+    <main class="relative z-10">
+
+        <!-- INTRO HERO: TACTICAL SPEC OVERVIEW -->
+        <section id="overview" class="max-w-[1500px] mx-auto px-6 pt-16 md:pt-28 pb-16 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Details Header Panel -->
+                <div class="lg:col-span-7 space-y-8 text-left">
+                    
+                    <!-- Token Auth Identity Badge -->
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-lg border border-neonCyan/30 bg-neonCyan/5 backdrop-blur-md">
+                        <span class="flex h-2.5 w-2.5 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neonGreen opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-neonGreen"></span>
+                        </span>
+                        <span class="font-mono text-[10px] tracking-[0.2em] text-neonGreen font-extrabold uppercase">SECURE COGNITIVE DECK INJECTED</span>
+                    </div>
+
+                    <!-- Ultimate Multi-Layered Neon Heading -->
+                    <h2 class="text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-[0.95] uppercase">
+                        COGNITIVE <br class="hidden sm:inline" />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPurple text-glow-cyan font-mono italic">OMNIPRESENCE</span><br />
+                        WITHOUT SENSORS.
+                    </h2>
+
+                    <p class="text-base text-textMuted max-w-2xl leading-relaxed">
+                        A highly encrypted, local study deck coordinator built from the ground up using premium native <strong class="text-white">Kotlin</strong> and <strong class="text-white">Jetpack Compose</strong> modules. Bypassing commercial market limits, KX7-STUDY runs inside a safe standalone sandbox. Complete with offline SQLite room caching, direct AI-solver configurations, and high-contrast diagnostic readouts.
+                    </p>
+
+                    <!-- Key Spec Matrix Metrics -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mt-4">
+                        <div class="p-4 border border-white/[0.06] bg-intelDark/40 rounded-lg relative overflow-hidden group hover:border-neonCyan transition-all duration-300">
+                            <span class="absolute top-1 right-2 font-mono text-[8.5px] text-neonCyan">OK</span>
+                            <div class="text-[9px] font-mono text-textMuted uppercase">CORE HARDWARE</div>
+                            <div class="text-sm font-bold font-mono mt-1 text-white">NATIVE SANDBOX</div>
+                        </div>
+                        <div class="p-4 border border-white/[0.06] bg-intelDark/40 rounded-lg relative overflow-hidden group hover:border-neonPurple transition-all duration-300">
+                            <span class="absolute top-1 right-2 font-mono text-[8.5px] text-neonPurple">AES</span>
+                            <div class="text-[9px] font-mono text-textMuted uppercase">LOCAL ARCH</div>
+                            <div class="text-sm font-bold font-mono mt-1 text-white">OFFLINE ROOM</div>
+                        </div>
+                        <div class="p-4 border border-white/[0.06] bg-intelDark/40 rounded-lg relative overflow-hidden group hover:border-neonGreen transition-all duration-300">
+                            <span class="absolute top-1 right-2 font-mono text-[8.5px] text-neonGreen">ACTIVE</span>
+                            <div class="text-[9px] font-mono text-textMuted uppercase">SPEECH MATRIX</div>
+                            <div class="text-sm font-bold font-mono mt-1 text-white">VOICE MATRIX</div>
+                        </div>
+                        <div class="p-4 border border-white/[0.06] bg-intelDark/40 rounded-lg relative overflow-hidden group hover:border-warningCrimson transition-all duration-300">
+                            <span class="absolute top-1 right-2 font-mono text-[8.5px] text-warningCrimson">34D</span>
+                            <div class="text-[9px] font-mono text-textMuted uppercase">STREAK SYSTEM</div>
+                            <div class="text-sm font-bold font-mono mt-1 text-white">STREAK CONTROL</div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Fast-Jump Triggers -->
+                    <div class="flex flex-col sm:flex-row items-center gap-5 pt-4 max-w-xl">
+                        <a href="#manual-installation" class="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-neonCyan to-cyan-500 text-black font-black tracking-widest font-mono text-xs hover:from-white hover:to-white transition-all rounded-lg shadow-[0_0_30px_rgba(0,255,204,0.4)] hover:scale-[1.03] duration-300 text-center uppercase">
+                            DECRYPT DIRECT DOWNLOAD
+                        </a>
+                        <a href="#emulator-panel" class="w-full sm:w-auto px-10 py-5 bg-intelDark border border-neonPurple text-neonPurple font-black tracking-widest font-mono text-xs hover:bg-neonPurple hover:text-black rounded-lg transition-all hover:scale-[1.03] duration-300 text-center uppercase shadow-[0_0_20px_rgba(255,0,204,0.1)]">
+                            BOOT DECKS IN LIVE DEMO
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side Interactive Graphic: Holographic Vector Radar -->
+                <div class="lg:col-span-5 flex justify-center items-center relative h-[480px] select-none">
+                    
+                    <!-- Multi-axis CAD Rings (Rotating Matrices) -->
+                    <div class="absolute w-[440px] h-[440px] border border-neonCyan/5 rounded-full animate-[spin_60s_linear_infinite]"></div>
+                    <div class="absolute w-[380px] h-[380px] border border-dashed border-neonCyan/15 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
+                    <div class="absolute w-[300px] h-[300px] border border-dotted border-neonPurple/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute w-[220px] h-[220px] border border-neonGreen/10 rounded-full flex items-center justify-center">
+                        <!-- Cyan Vector Pulse Radar -->
+                        <svg class="w-24 h-24 text-neonCyan" viewBox="0 0 100 100">
+                            <path d="M 0,50 Q 25,50 30,50 T 40,20 T 50,85 T 60,35 T 65,55 T 70,50 T 100,50" stroke="currentColor" stroke-width="2.5" fill="none" class="animate-pulse" />
+                        </svg>
+                    </div>
+
+                    <!-- Glowing Coordinate Markers -->
+                    <div class="absolute top-[8%] left-[12%] p-3 border border-neonCyan/30 bg-intelBlack/95 backdrop-blur-md rounded-md font-mono text-[9px] text-neonCyan">
+                        <span class="block text-white font-bold opacity-75">CPU INTELLIGENCE</span>
+                        <span class="tracking-widest font-bold">>> PROCESSOR ACTIVE (v3.04)</span>
+                    </div>
+                    <div class="absolute bottom-[10%] right-[10%] p-3 border border-neonPurple/30 bg-intelBlack/95 backdrop-blur-md rounded-md font-mono text-[9px] text-neonPurple">
+                        <span class="block text-white font-bold opacity-75">CRYPTO SYSTEM ENGINE</span>
+                        <span class="tracking-widest font-bold">>> AES_GCM_256 SECURED</span>
+                    </div>
+
+                    <!-- Sweeping High-Resolution Radar Beam -->
+                    <div class="absolute w-[400px] h-[400px] rounded-full overflow-hidden opacity-30">
+                        <div class="w-full h-full bg-gradient-to-tr from-transparent via-transparent to-neonCyan/40 rounded-full animate-[spin_7s_linear_infinite]"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="flex justify-center pt-16">
+                <a href="#terminal-hub" class="flex flex-col items-center gap-2 font-mono text-[9px] text-textMuted uppercase tracking-[0.3em]">
+                    <span>COMMENCE HUD DIAGNOSTIC OPERATIONS</span>
+                    <svg class="w-4 h-4 text-neonCyan scroll-indicator-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- HIGH-VELOCITY 5 MODULE MATRIX SHOWCASE -->
+        <section class="border-t border-white/[0.06] bg-intelSlate/40 py-24 relative">
+            <div class="max-w-[1500px] mx-auto px-6">
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <span class="font-mono text-xs tracking-[0.4em] text-neonCyan font-black uppercase text-glow-cyan mb-2 block">DASHBOARD PARAMETERS</span>
+                    <h3 class="text-3xl md:text-5xl font-black text-white uppercase font-sans">
+                        HOLOGRAPHIC <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-neonPurple">INTERFACE NODES</span>
+                    </h3>
+                    <p class="text-sm text-textMuted mt-3 leading-relaxed">
+                        Each primary system operational component compiles directly inside physical hardware layers. Control states, monitor matrices, and execute cryptographic commands under sandbox boundaries.
+                    </p>
+                </div>
+
+                <!-- 3D Transform Holographic Cards List -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 holo-container">
+                    
+                    <!-- Card 1: Command Hub -->
+                    <div class="holo-card p-6 rounded-xl flex flex-col justify-between h-[360px] group cursor-pointer" onclick="document.getElementById('emulator-panel').scrollIntoView(); clickTab('screen-command-hub', document.querySelector('.phone-tab'))">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono text-[10px] text-textMuted">NODE // 01</span>
+                                <span class="w-2 h-2 rounded-full bg-neonCyan animate-ping"></span>
+                            </div>
+                            <h4 class="font-mono font-bold text-base text-white tracking-wider uppercase group-hover:text-neonCyan transition-all">Command Host Hub</h4>
+                            <p class="text-xs text-textMuted leading-relaxed">
+                                Diagnostic log outputs, live CPU telemetry monitors, intellectual profile ratings, and integrated operator state checks.
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/[0.04]">
+                            <span class="text-[9px] font-mono text-neonCyan uppercase tracking-widest font-extrabold flex items-center gap-1">
+                                VIEW CONTROL HUB <span class="text-xs">&gt;&gt;</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Solver -->
+                    <div class="holo-card p-6 rounded-xl flex flex-col justify-between h-[360px] group cursor-pointer" onclick="document.getElementById('emulator-panel').scrollIntoView(); clickTab('screen-solver-desk', document.querySelectorAll('.phone-tab')[1])">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono text-[10px] text-textMuted">NODE // 02</span>
+                                <span class="w-2 h-2 rounded-full bg-neonPurple"></span>
+                            </div>
+                            <h4 class="font-mono font-bold text-base text-white tracking-wider uppercase group-hover:text-neonPurple transition-all">CRYPTOGRAPHIC SOLVER</h4>
+                            <p class="text-xs text-textMuted leading-relaxed">
+                                AI core decryption processes with integrated vocal transcription engines, waveform logs, and secure translation matrix vectors.
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/[0.04]">
+                            <span class="text-[9px] font-mono text-neonPurple uppercase tracking-widest font-extrabold flex items-center gap-1">
+                                VIEW COGNITIVE CORES <span class="text-xs">&gt;&gt;</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Recall -->
+                    <div class="holo-card p-6 rounded-xl flex flex-col justify-between h-[360px] group cursor-pointer" onclick="document.getElementById('emulator-panel').scrollIntoView(); clickTab('screen-smart-recall', document.querySelectorAll('.phone-tab')[2])">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono text-[10px] text-textMuted">NODE // 03</span>
+                                <span class="w-2 h-2 rounded-full bg-neonGreen"></span>
+                            </div>
+                            <h4 class="font-mono font-bold text-base text-white tracking-wider uppercase group-hover:text-neonGreen transition-all">SMART RECALL MODULE</h4>
+                            <p class="text-xs text-textMuted leading-relaxed">
+                                Compile direct document PDF lines instantly into high-frequency, key-value memory flashcards inside local storage containers.
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/[0.04]">
+                            <span class="text-[9px] font-mono text-neonGreen uppercase tracking-widest font-extrabold flex items-center gap-1">
+                                VIEW DECK MEMORIES <span class="text-xs">&gt;&gt;</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Arena -->
+                    <div class="holo-card p-6 rounded-xl flex flex-col justify-between h-[360px] group cursor-pointer" onclick="document.getElementById('emulator-panel').scrollIntoView(); clickTab('screen-battle-arena', document.querySelectorAll('.phone-tab')[3])">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono text-[10px] text-textMuted">NODE // 04</span>
+                                <span class="w-2 h-2 rounded-full bg-neonAmber"></span>
+                            </div>
+                            <h4 class="font-mono font-bold text-base text-white tracking-wider uppercase group-hover:text-neonAmber transition-all">LEADERBOARD ARENA</h4>
+                            <p class="text-xs text-textMuted leading-relaxed">
+                                Target competitor scores, compare active study velocities, and forecast diamond elevation trajectories via reactive graphs.
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/[0.04]">
+                            <span class="text-[9px] font-mono text-neonAmber uppercase tracking-widest font-extrabold flex items-center gap-1">
+                                VIEW RIVAL INDICES <span class="text-xs">&gt;&gt;</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Extreme Admin override -->
+                    <div class="holo-card p-6 rounded-xl flex flex-col justify-between h-[360px] group cursor-pointer holo-card-purple border-warningCrimson/30" onclick="document.getElementById('emulator-panel').scrollIntoView(); clickTab('screen-black-ops', document.querySelectorAll('.phone-tab')[4])">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono text-[10px] text-warningCrimson font-bold">EMERGENCY ACTIONS</span>
+                                <span class="w-2 h-2 rounded-full bg-warningCrimson animate-pulse"></span>
+                            </div>
+                            <h4 class="font-mono font-bold text-base text-white tracking-wider uppercase group-hover:text-warningCrimson transition-all">BLACK-OPS BACKDOOR</h4>
+                            <p class="text-xs text-textMuted leading-relaxed">
+                                Lock blockchain transaction receipts, execute manual SQLite backups, and forcefully insulate study streaks from decay metrics.
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/[0.04]">
+                            <span class="text-[9px] font-mono text-warningCrimson uppercase tracking-widest font-extrabold flex items-center gap-1">
+                                BYPASS DECAY INDEX <span class="text-xs">&gt;&gt;</span>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: HIGH-FIDELITY INTERACTIVE TERMINAL EMULATOR -->
+        <section id="terminal-hub" class="border-t border-b border-white/[0.06] bg-[#030408]/90 py-24 relative select-none">
+            <div class="max-w-[1500px] mx-auto px-6">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+                    
+                    <!-- Left: Matrix Controllers & Info -->
+                    <div class="lg:col-span-5 flex flex-col justify-center space-y-6">
+                        <span class="font-mono text-xs tracking-[0.3em] text-neonGreen font-bold uppercase text-glow-green">Tactical Node Terminal</span>
+                        <h3 class="text-3xl md:text-5xl font-black text-white uppercase font-sans">
+                            CORE COMMAND <span class="text-neonGreen font-mono uppercase">LOGGER</span>
+                        </h3>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            Click any tactical operational action command below to execute remote compile sequences. The central terminal panel will output active debug logs, system calculations, and cryptographically verified system checks in real-time.
+                        </p>
+
+                        <!-- Terminal Command List Selection Buttons -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
+                            <button onclick="executeTerminalCommand('solve')" class="px-5 py-4 text-left border border-neonGreen/20 bg-neonGreen/5 hover:bg-neonGreen/10 rounded-lg group transition-all duration-200">
+                                <span class="font-mono text-[10px] text-neonGreen block font-bold">ACTION // 01</span>
+                                <span class="font-mono text-xs font-black tracking-wide text-white group-hover:text-neonGreen uppercase">solve_cryptography()</span>
+                            </button>
+                            <button onclick="executeTerminalCommand('deck')" class="px-5 py-4 text-left border border-neonCyan/20 bg-neonCyan/5 hover:bg-neonCyan/10 rounded-lg group transition-all duration-200">
+                                <span class="font-mono text-[10px] text-neonCyan block font-bold">ACTION // 02</span>
+                                <span class="font-mono text-xs font-black tracking-wide text-white group-hover:text-neonCyan uppercase">generate_deck_nodes()</span>
+                            </button>
+                            <button onclick="executeTerminalCommand('leaderboard')" class="px-5 py-4 text-left border border-neonPurple/20 bg-neonPurple/5 hover:bg-neonPurple/10 rounded-lg group transition-all duration-200">
+                                <span class="font-mono text-[10px] text-neonPurple block font-bold">ACTION // 03</span>
+                                <span class="font-mono text-xs font-black tracking-wide text-white group-hover:text-neonPurple uppercase">get_leader_rankings()</span>
+                            </button>
+                            <button onclick="executeTerminalCommand('streak')" class="px-5 py-4 text-left border border-warningCrimson/20 bg-warningCrimson/5 hover:bg-warningCrimson/10 rounded-lg group transition-all duration-200">
+                                <span class="font-mono text-[10px] text-warningCrimson block font-bold">ADMIN ACTIONS</span>
+                                <span class="font-mono text-xs font-black tracking-wide text-white group-hover:text-warningCrimson uppercase font-code">streak_overload_bypass()</span>
+                            </button>
+                        </div>
+
+                        <!-- Manual Custom Command Entry Box -->
+                        <div class="pt-4">
+                            <label class="font-mono text-[10px] text-textMuted uppercase block mb-2 font-bold">Input Custom Secure Sandbox Operation</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="manual-cli-input" placeholder="e.g. diagnose_core, decode, hack, secure_audit" class="grow bg-intelDark/60 border border-white/[0.1] px-4 py-3 rounded-md font-mono text-xs text-white placeholder-textMuted/40 focus:border-neonCyan focus:ring-1 focus:ring-neonCyan/20 focus:outline-none" onkeydown="if(event.key === 'Enter') handleCustomCommandSubmit()">
+                                <button onclick="handleCustomCommandSubmit()" class="px-5 bg-neonCyan text-black font-mono text-xs font-extrabold rounded-md hover:bg-white tracking-widest hover:scale-102 transition-all">
+                                    RUN_CLI
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Large HD Terminal Simulator Logger -->
+                    <div class="lg:col-span-7 flex flex-col">
+                        <div class="grow flex flex-col border border-neonGreen/30 bg-intelBlack/95 rounded-xl shadow-[0_0_40px_rgba(51,255,51,0.06)] overflow-hidden min-h-[460px]">
+                            
+                            <!-- Screen Top Matrix Status bar -->
+                            <div class="border-b border-neonGreen/20 px-5 h-12 flex justify-between items-center text-[10.5px] font-mono text-neonGreen font-bold bg-[#040608]">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-neonGreen animate-ping"></span>
+                                    <span class="tracking-widest">COGNITIVE_TERMINAL_LOGGER v3.04</span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-neonGreen/10 py-0.5 px-2 rounded font-sans text-[9px] uppercase font-bold">SECURE SECTOR 0x77</span>
+                                    <span id="terminal-clock-now">11:19:50 UTC</span>
+                                </div>
+                            </div>
+
+                            <!-- Screen Logs Typewriter Area -->
+                            <div class="grow p-6 text-left overflow-y-auto font-mono text-xs leading-relaxed text-slate-350 scanline-panel flex flex-col space-y-2.5 h-[340px]" id="terminal-display-canvas">
+                                <div class="text-neonGreen/75">&gt;&gt; [KX7 // INITIALIZING BOOT SECURE LOG...]</div>
+                                <div class="text-white/60">&gt;&gt; [OK] Local database node integrated (SQLite schema verified).</div>
+                                <div class="text-white/60">&gt;&gt; [OK] Adaptive encryption layer assigned (AES-SIV-512 cryptographic key).</div>
+                                <div class="text-white/60">&gt;&gt; [OK] Vocal decoding engine connected (spectrogram aligned).</div>
+                                <div class="text-[#8ba2c1]">&gt;&gt; Ready to accept remote command line inputs. Select an action command.</div>
+                            </div>
+
+                            <!-- Screen Command Bar Feedback -->
+                            <div class="border-t border-neonGreen/20 bg-[#040608] px-5 py-3.5 flex justify-between items-center">
+                                <div class="flex items-center gap-2 text-[10.5px] font-mono text-neonGreen/70">
+                                    <span class="font-extrabold uppercase">&gt; CMD PROCESS:</span>
+                                    <span class="text-white" id="term-process-state">IDLE_AWAITING_TRIGGER</span>
+                                </div>
+                                <button onclick="clearTerminalLogs()" class="px-3.5 py-1.5 border border-neonGreen/30 text-neonGreen text-[10px] font-mono rounded hover:bg-neonGreen hover:text-black hover:font-bold transition-all">
+                                    CLEAR_CONSOLE
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ONLINE INTERACTIVE PHONE APP EMULATOR -->
+        <section id="emulator-panel" class="py-24 relative border-b border-white/[0.06] select-none">
+            <div class="max-w-[1500px] mx-auto px-6">
+                
+                <div class="text-center mb-20 max-w-3xl mx-auto">
+                    <span class="font-mono text-xs tracking-[0.4em] text-neonPurple font-bold uppercase text-glow-purple block mb-2">IMMERSIVE LIVE PLATFORM</span>
+                    <h3 class="text-3xl md:text-5xl font-black text-white uppercase font-sans">
+                        ONLINE DIRECT <span class="text-neonPurple font-mono">APP MATRIX</span>
+                    </h3>
+                    <p class="text-sm text-textMuted mt-3 leading-relaxed">
+                        Control the direct native Jetpack Compose simulated screens from the smartphone panel below. Switch bottom navigators and trigger interactive parameters to verify local study sandbox execution.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Side Screen Tabs Left Controllers -->
+                    <div class="lg:col-span-4 flex flex-col justify-center gap-3">
+                        
+                        <!-- Controller Tab Screen 1 -->
+                        <button onclick="clickTab('screen-command-hub', this)" class="screen-btn-node text-left p-4.5 rounded-xl border border-neonCyan bg-neonCyan/5 transition-all duration-300 transform scale-102 flex items-start gap-4">
+                            <div class="w-10 h-10 rounded border border-neonCyan bg-neonCyan/10 flex items-center justify-center font-mono font-black text-neonCyan text-base shrink-0">01</div>
+                            <div>
+                                <h4 class="font-mono font-extrabold text-xs text-white uppercase tracking-wider">COMMAND HUB CONSOLE</h4>
+                                <p class="text-[10.5px] text-textMuted mt-1 leading-normal font-sans">Real-time status indicators, active intelligence level badges, biological loads, and streak ratings.</p>
+                            </div>
+                        </button>
+
+                        <!-- Controller Tab Screen 2 -->
+                        <button onclick="clickTab('screen-solver-desk', this)" class="screen-btn-node text-left p-4.5 rounded-xl border border-white/[0.06] bg-intelDark/40 transition-all duration-300 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:border-white/15 flex items-start gap-4">
+                            <div class="w-10 h-10 rounded border border-white/20 bg-white/5 flex items-center justify-center font-mono font-black text-white text-base shrink-0">02</div>
+                            <div>
+                                <h4 class="font-mono font-extrabold text-xs text-white uppercase tracking-wider">SOLVER DESKTOP LAYOUT</h4>
+                                <p class="text-[10.5px] text-textMuted mt-1 leading-normal font-sans">AI cryptographic query options, active voice spectrogram simulations, and native language triggers.</p>
+                            </div>
+                        </button>
+
+                        <!-- Controller Tab Screen 3 -->
+                        <button onclick="clickTab('screen-smart-recall', this)" class="screen-btn-node text-left p-4.5 rounded-xl border border-white/[0.06] bg-intelDark/40 transition-all duration-300 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:border-white/15 flex items-start gap-4">
+                            <div class="w-10 h-10 rounded border border-white/20 bg-white/5 flex items-center justify-center font-mono font-black text-white text-base shrink-0">03</div>
+                            <div>
+                                <h4 class="font-mono font-extrabold text-xs text-white uppercase tracking-wider">SMART RECALL DECKS</h4>
+                                <p class="text-[10.5px] text-textMuted mt-1 leading-normal font-sans">Summarizer text capture platforms, PDF vector inputs, and interactive memory cards with 3D card flips.</p>
+                            </div>
+                        </button>
+
+                        <!-- Controller Tab Screen 4 -->
+                        <button onclick="clickTab('screen-battle-arena', this)" class="screen-btn-node text-left p-4.5 rounded-xl border border-white/[0.06] bg-intelDark/40 transition-all duration-300 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:border-white/15 flex items-start gap-4">
+                            <div class="w-10 h-10 rounded border border-white/20 bg-white/5 flex items-center justify-center font-mono font-black text-white text-base shrink-0">04</div>
+                            <div>
+                                <h4 class="font-mono font-extrabold text-xs text-white uppercase tracking-wider">RIVAL LEADERBORD INDEX</h4>
+                                <p class="text-[10.5px] text-textMuted mt-1 leading-normal font-sans">Compare daily score markers, rank elevation forecast indexes, and view study speed progression bounds.</p>
+                            </div>
+                        </button>
+
+                        <!-- Controller Tab Screen 5 -->
+                        <button onclick="clickTab('screen-black-ops', this)" class="screen-btn-node text-left p-4.5 rounded-xl border border-white/[0.06] bg-intelDark/40 transition-all duration-300 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:border-white/15 flex items-start gap-4 border-warningCrimson/20">
+                            <div class="w-10 h-10 rounded border border-warningCrimson/30 bg-warningCrimson/5 flex items-center justify-center font-mono font-black text-warningCrimson text-base shrink-0">05</div>
+                            <div>
+                                <h4 class="font-mono font-extrabold text-xs text-white uppercase tracking-wider">STREAK OVERRIDE PANEL</h4>
+                                <p class="text-[10.5px] text-textMuted mt-1 leading-normal font-sans">Force override operations, transaction receipts secure validation, and local hardware mock systems.</p>
+                            </div>
+                        </button>
+
+                    </div>
+
+                    <!-- Fine-Detailed Virtual High-Res Phone Frame Bezel -->
+                    <div class="lg:col-span-8 flex justify-center items-center">
+                        <div class="w-[350px] sm:w-[390px] h-[730px] rounded-[44px] border-[14px] border-intelDark bg-intelBlack relative flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.9),_0_0_25px_rgba(0,255,204,0.15)] overflow-hidden">
+                            
+                            <!-- Phone Top Bezel Camera Slot & Speaker -->
+                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-36 h-6.5 bg-intelDark rounded-b-2xl z-30 flex items-center justify-center">
+                                <span class="w-14 h-1.5 bg-black rounded-full mb-1"></span>
+                                <span class="w-2.5 h-2.5 bg-neutral-900 rounded-full absolute right-5 top-1.5 border border-neutral-800"></span>
+                            </div>
+
+                            <!-- Interactive Top Signal Signal Strength Bar indicators -->
+                            <div class="bg-[#030508] pt-8 px-6 pb-2.5 border-b border-white/[0.04] flex justify-between items-center text-[10px] font-mono font-bold text-textMuted/70 z-20">
+                                <span>NET: KX7_CRYPTO_NODE [SECURE]</span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-neonGreen text-glow-green">98% COGNITIVE_PWR</span>
+                                </div>
+                            </div>
+
+                            <!-- Screen Contents Container -->
+                            <div class="grow relative bg-[#04060a] overflow-y-auto px-4.5 py-4 pb-24 text-left font-sans">
+                                
+                                <!-- ================= SCREEN 1: COMMAND HOST HUB ================= -->
+                                <div id="screen-command-hub" class="phone-screen-content active">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                        <div>
+                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">OPERATOR HOST PANEL</h5>
+                                            <span class="text-[8.5px] font-mono text-neonCyan/85 font-semibold uppercase">ID: kabbomondal013</span>
+                                        </div>
+                                        <span class="px-2 py-1 border border-neonCyan/30 text-neonCyan bg-neonCyan/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(0,255,204,0.1)]">SECURE_LEVEL_A</span>
+                                    </div>
+
+                                    <!-- Operator Identification Profile -->
+                                    <div class="p-3.5 bg-intelDark/70 border border-white/[0.05] rounded-xl mb-4 relative overflow-hidden">
+                                        <div class="absolute top-1 right-2 font-mono text-[7px] text-[#33ff33]">STREAK_ACTIVE</div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h6 class="font-mono text-sm leading-none font-bold text-white uppercase tracking-wide">KABBO MONDAL</h6>
+                                                <p class="text-[8px] font-mono text-textMuted font-black mt-1.5 uppercase">RANKING INTELLECT INDEX: 147 EX</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Multi indicators progress grids -->
+                                        <div class="grid grid-cols-2 gap-3 mt-4">
+                                            <div class="p-2 border border-neonCyan/15 bg-intelBlack rounded-lg">
+                                                <span class="text-[8px] text-textMuted uppercase font-mono block">RECALL DECK ACCU</span>
+                                                <span class="font-mono font-bold text-xs text-neonCyan text-glow-cyan">94.8% RATE</span>
+                                            </div>
+                                            <div class="p-2 border border-neonPurple/15 bg-intelBlack rounded-lg">
+                                                <span class="text-[8px] text-textMuted uppercase font-mono block">BIOLOGICAL LOAD</span>
+                                                <span class="font-mono font-bold text-xs text-neonPurple text-glow-purple">76% CAPACITY</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Study Streak Velocity Bar -->
+                                    <div class="p-3.5 bg-intelDark/40 border border-white/[0.05] rounded-xl mb-4">
+                                        <div class="flex justify-between text-[9px] font-mono mb-1.5 text-textMuted uppercase">
+                                            <span>STUDY STREAK VELOCITY</span>
+                                            <span class="font-bold text-white text-glow-cyan">34 DAYS ACTIVE</span>
+                                        </div>
+                                        <div class="w-full bg-intelBlack h-2 border border-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-neonCyan to-neonPurple w-[85%] rounded-full shadow-[0_0_10px_#00ffcc]"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dynamic Badge Arrays -->
+                                    <div>
+                                        <h6 class="text-[10px] font-mono font-bold text-textMuted uppercase mb-2">EARNED INTELLIGENCE BADGES</h6>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <div class="p-2 text-center bg-neonCyan/5 border border-neonCyan/20 rounded-lg">
+                                                <span class="text-[9.5px] text-[#00ffcc] font-mono block font-black">CYBER_A</span>
+                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">MASTER</span>
+                                            </div>
+                                            <div class="p-2 text-center bg-neonPurple/5 border border-neonPurple/20 rounded-lg">
+                                                <span class="text-[9.5px] text-[#ff00cc] font-mono block font-black">OMEGA_G</span>
+                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">ORACLE</span>
+                                            </div>
+                                            <div class="p-2 text-center bg-neonGreen/5 border border-neonGreen/20 rounded-lg">
+                                                <span class="text-[9.5px] text-[#33ff33] font-mono block font-black">STREAK_X</span>
+                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">APEX</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ================= SCREEN 2: SOLVER DESKTOP ================= -->
+                                <div id="screen-solver-desk" class="phone-screen-content">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                        <div>
+                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">CRYPTOGRAPHIC SOLVER</h5>
+                                            <p class="text-[8px] font-mono text-neonPurple uppercase">neural translation matrix</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interactive Custom Parameter Controls -->
+                                    <div class="space-y-3.5">
+                                        <div>
+                                            <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 uppercase font-bold">Target Intellectual Subject</label>
+                                            <select class="w-full p-2.5 border border-white/10 bg-intelDark rounded-lg text-xs font-mono text-white focus:border-neonCyan outline-none">
+                                                <option>Mathematics // Elliptic Cryptography</option>
+                                                <option>Applied Physics // Quantum Telemetry</option>
+                                                <option>Neural Net // Vector Database Indices</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 uppercase font-bold">Output Desired Translation Language</label>
+                                            <select class="w-full p-2.5 border border-white/10 bg-intelDark rounded-lg text-xs font-mono text-white focus:border-neonCyan outline-none">
+                                                <option>English // Secure Binary Sandbox</option>
+                                                <option>Spanish // Translation Matrix 02</option>
+                                                <option>Japanese // Vector Node Core 03</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Vocal Dictation Active Panel -->
+                                        <div class="p-4 border border-dashed border-neonCyan/20 bg-intelBlack rounded-xl text-center mt-3 relative">
+                                            <span class="text-[9px] font-mono text-textMuted uppercase block mb-2 font-bold">Vocal Decoding Node Waveform</span>
+                                            
+                                            <!-- Dynamic simulated voice wave streams -->
+                                            <div id="voice-waves-container" class="flex justify-center items-center gap-1.5 my-3 h-8">
+                                                <span class="vocal-node h-2" style="animation: animWave 0.8s ease-in-out infinite alternate;"></span>
+                                                <span class="vocal-node h-6" style="animation: animWave 0.5s ease-in-out infinite alternate; animation-delay: 0.2s;"></span>
+                                                <span class="vocal-node h-3" style="animation: animWave 0.9s ease-in-out infinite alternate; animation-delay: 0.1s;"></span>
+                                                <span class="vocal-node h-7" style="animation: animWave 0.4s ease-in-out infinite alternate; animation-delay: 0.4s;"></span>
+                                                <span class="vocal-node h-2" style="animation: animWave 0.7s ease-in-out infinite alternate; animation-delay: 0.3s;"></span>
+                                            </div>
+                                            <style>
+                                                @keyframes animWave {
+                                                    0% { height: 4px; }
+                                                    100% { height: 28px; }
+                                                }
+                                            </style>
+
+                                            <button onclick="toggleVoiceDictationSimulation()" id="voice-matrix-btn" class="px-4 py-2 bg-neonCyan/10 border border-neonCyan/30 text-neonCyan font-mono text-[9px] tracking-wider rounded font-extrabold hover:bg-neonCyan hover:text-black transition-all">
+                                                ENGAGE VOICE TRANSLATION
+                                            </button>
+                                        </div>
+
+                                        <button onclick="simulateSolverCalculation()" class="w-full py-3 bg-neonCyan text-black font-mono font-black text-xs uppercase rounded-lg tracking-widest shadow-[0_0_20px_rgba(0,255,204,0.35)] hover:bg-white duration-300 transition-all">
+                                            LAUNCH INTELLECT SOLVER
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- ================= SCREEN 3: SMART RECALL ================= -->
+                                <div id="screen-smart-recall" class="phone-screen-content">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                        <div>
+                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">INTELLIGENT RECALL AGENT</h5>
+                                            <p class="text-[8px] font-mono text-[#33ff33] uppercase">Summarizer system compiled</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interactive 3D Card Simulator -->
+                                    <div class="mb-4">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-[9px] font-mono text-textMuted uppercase font-bold">DECK CORE // SECURE SEC_01</span>
+                                            <span class="text-[9px] font-mono text-neonPurple uppercase font-bold">42 CARDS READY</span>
+                                        </div>
+                                        
+                                        <!-- Flip Mechanics Card -->
+                                        <div id="emulator-3d-card" onclick="flipEmulatorCard()" class="h-32 group cursor-pointer perspective-1000 select-none">
+                                            <div class="card-inner-3d relative w-full h-full text-center transition-transform duration-500 transform border rounded-xl border-neonPurple/30 bg-intelDark/70 hover:border-neonPurple duration-300">
+                                                
+                                                <!-- Question Front -->
+                                                <div class="card-front absolute inset-0 p-4.5 flex flex-col justify-between backface-hidden">
+                                                    <div class="text-[8px] font-mono text-textMuted uppercase flex justify-between font-bold">
+                                                        <span>Quantum cryptography deck</span>
+                                                        <span class="text-neonPurple animate-pulse">TAP TO FLIP KEYS</span>
+                                                    </div>
+                                                    <p class="text-xs font-sans font-bold italic text-white my-auto px-2">
+                                                        "What mathematical method secures state vectors in qubit logic arrays?"
+                                                    </p>
+                                                    <span class="text-[9.5px] text-neonPurple font-bold font-mono tracking-widest uppercase text-glow-purple">CORE QUESTION</span>
+                                                </div>
+
+                                                <!-- Answer Back -->
+                                                <div class="card-back absolute inset-0 p-4.5 flex flex-col justify-between backface-hidden bg-purple-950/25 rounded-xl">
+                                                    <div class="text-[8px] font-mono text-textMuted uppercase flex justify-between font-bold">
+                                                        <span>VECTOR RESOLUTION CODE</span>
+                                                        <span class="text-neonGreen">DECRYPTED OK</span>
+                                                    </div>
+                                                    <p class="text-[11.5px] font-mono font-medium text-neonGreen leading-relaxed my-auto">
+                                                        &gt;&gt; Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors.
+                                                    </p>
+                                                    <span class="text-[9.5px] text-neonGreen font-bold font-mono tracking-widest uppercase text-glow-green">DECRYPTED EXPLANATION</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PDF summaries custom textbox simulation -->
+                                    <div class="space-y-2 mt-4 pt-3.5 border-t border-white/[0.05]">
+                                        <label class="text-[8.5px] font-mono text-textMuted block font-bold uppercase">Manual Document Lines Parser</label>
+                                        <textarea id="mock-recall-textarea" class="w-full h-16 bg-intelBlack border border-white/10 p-2.5 rounded-lg text-xs font-mono text-white focus:border-neonPurple focus:outline-none placeholder-textMuted/40" placeholder=">> Input raw custom academic document lines to compile into memory deck..."></textarea>
+                                        <button onclick="simulateDocumentDeckGeneration()" class="w-full py-2.5 bg-neonPurple text-white font-mono font-bold text-[9.5px] tracking-widest uppercase rounded-lg hover:bg-white hover:text-black duration-300 transition-all">
+                                            COMPILE NEW SMART CARDS
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- ================= SCREEN 4: BATTLE ARENA ================= -->
+                                <div id="screen-battle-arena" class="phone-screen-content">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                        <div>
+                                            <h5 class="text-sm font-mono font-extrabold text-[#ff00cc]">THE LEADERBORD ARENA</h5>
+                                            <p class="text-[8px] font-mono text-textMuted uppercase">division level: diamond ex v</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Adaptive Rival Velocity forecast box -->
+                                    <div class="p-3 bg-neonCyan/5 border border-neonCyan/20 rounded-xl mb-4 text-[9.5px] font-mono leading-relaxed text-neonCyan">
+                                        <span class="font-bold text-white block uppercase mb-1 text-glow-cyan">🔥 SYSTEM FORECASTING:</span>
+                                        Cognitive data vectors forecast operator elevation to Diamond Rank Level III within 32 hours. insulate active streaks to accelerate rating.
+                                    </div>
+
+                                    <!-- Live Leader ranking score boards -->
+                                    <div>
+                                        <span class="text-[9px] font-mono text-textMuted uppercase block mb-2 font-bold">COMPETITOR INDEX LEVEL</span>
+                                        
+                                        <div class="space-y-1.5 text-[10.5px] font-mono">
+                                            <div class="p-2.5 bg-intelDark rounded-lg flex justify-between items-center border-l-2 border-neonCyan font-bold relative overflow-hidden">
+                                                <span>01 // Kabbo Mondal (You)</span>
+                                                <span class="text-neonCyan text-glow-cyan font-black">94,800 PTS</span>
+                                            </div>
+                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                                <span>02 // Alpha_Sec_K7</span>
+                                                <span>89,120 PTS</span>
+                                            </div>
+                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                                <span>03 // Matrix_Zero_N</span>
+                                                <span>84,330 PTS</span>
+                                            </div>
+                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                                <span>04 // Quantum_Rival</span>
+                                                <span>78,210 PTS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ================= SCREEN 5: BLACK OPS OVERRIDE ================= -->
+                                <div id="screen-black-ops" class="phone-screen-content">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                        <div>
+                                            <h5 class="text-sm font-mono font-extrabold text-warningCrimson">EMERGENCY OVERRIDES</h5>
+                                            <p class="text-[8px] font-mono text-warningCrimson/80 uppercase font-bold">secure backdoor backdoor bypass</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Crimson Alert Secure parameters warning -->
+                                    <div class="p-3 border border-warningCrimson/35 bg-warningCrimson/5 text-warningCrimson font-mono text-[9px] rounded-lg mb-4 leading-relaxed">
+                                        <strong>CRITICAL ACTION ZONE:</strong> Force override operations append secure cryptographic metadata onto state indicators to prevent daily streak decay.
+                                    </div>
+
+                                    <!-- Status manipulation button selectors -->
+                                    <div class="space-y-3.5">
+                                        <div>
+                                            <button onclick="emergencyActionBypass('streak')" class="w-full py-2.5 bg-warningCrimson/10 border border-warningCrimson/45 text-warningCrimson font-mono text-[9.5px] font-black uppercase rounded-lg hover:bg-warningCrimson hover:text-black transition-all tracking-wider shadow-[0_0_15px_rgba(255,51,102,0.1)]">
+                                                FORCE RESCUE SECTOR STREAK
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button onclick="emergencyActionBypass('diagnostic')" class="w-full py-2.5 bg-intelDark border border-white/10 text-white font-mono text-[9.5px] font-bold uppercase rounded-lg hover:bg-neutral-800 transition-all tracking-wider">
+                                                DIAGNOSE HARDWARE SIMULATOR
+                                            </button>
+                                        </div>
+
+                                        <!-- Blockchain Tx Hash signature display -->
+                                        <div class="pt-3.5 border-t border-white/[0.05]">
+                                            <label class="text-[8px] font-mono text-textMuted block mb-1.5 font-bold uppercase">BLOCKCHAIN SECURE TX RECEIPT LICENSE</label>
+                                            <input type="text" id="blockchain-tx-value" value="0x7f23e41b9dca2cf2382900faefccdcee00122ddfff2" class="w-full p-2.5 bg-intelBlack border border-white/10 rounded-lg text-[9.5px] font-mono text-warningCrimson uppercase mb-2 focus:outline-none" readonly />
+                                            <button onclick="verifyBlockchainSyncReceipt()" class="w-full py-2.5 bg-neonPurple text-white font-mono font-bold text-[9.5px] uppercase rounded-lg hover:bg-white hover:text-black duration-300 tracking-wider">
+                                                LOCK CRYPTOGRAPHIC LICENSE KEY
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Phone Glassmorphic Custom Dock Navigation bar -->
+                            <div class="absolute bottom-0 inset-x-0 h-16 bg-[#030508]/95 backdrop-blur-md border-t border-white/[0.04] z-20 flex items-center justify-around px-2">
+                                <button onclick="clickTab('screen-command-hub', this)" class="phone-tab text-neonCyan scale-105 flex flex-col items-center justify-center grow py-2 transition-all">
+                                    <span class="font-mono text-xs font-black">CMD</span>
+                                    <span class="text-[7.5px] tracking-[0.1em] uppercase font-bold mt-0.5 opacity-90">HUB</span>
+                                </button>
+                                <button onclick="clickTab('screen-solver-desk', this)" class="phone-tab text-textMuted flex flex-col items-center justify-center grow py-2 transition-all hover:text-white">
+                                    <span class="font-mono text-xs font-black">SLV</span>
+                                    <span class="text-[7.5px] tracking-[0.1em] uppercase font-bold mt-0.5 opacity-60">SOLVE</span>
+                                </button>
+                                <button onclick="clickTab('screen-smart-recall', this)" class="phone-tab text-textMuted flex flex-col items-center justify-center grow py-2 transition-all hover:text-white">
+                                    <span class="font-mono text-xs font-black">MEM</span>
+                                    <span class="text-[7.5px] tracking-[0.1em] uppercase font-bold mt-0.5 opacity-60">DECK</span>
+                                </button>
+                                <button onclick="clickTab('screen-battle-arena', this)" class="phone-tab text-textMuted flex flex-col items-center justify-center grow py-2 transition-all hover:text-white">
+                                    <span class="font-mono text-xs font-black">ARN</span>
+                                    <span class="text-[7.5px] tracking-[0.1em] uppercase font-bold mt-0.5 opacity-60">ARENA</span>
+                                </button>
+                                <button onclick="clickTab('screen-black-ops', this)" class="phone-tab text-textMuted flex flex-col items-center justify-center grow py-2 transition-all hover:text-white">
+                                    <span class="font-mono text-xs font-black">OPS</span>
+                                    <span class="text-[7.5px] tracking-[0.1em] uppercase font-bold mt-0.5 opacity-60">BYPASS</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CORE INTERACTIVE DOWNLOAD COMPILER AND MILITARY STEPS MANUAL -->
+        <section id="manual-installation" class="py-24 relative select-none">
+            <div class="max-w-[1200px] mx-auto px-6">
+                
+                <div class="text-center mb-16 max-w-2xl mx-auto">
+                    <span class="font-mono text-xs tracking-[0.3em] text-neonCyan font-bold uppercase text-glow-cyan block mb-2">DEPLOY SECURE RUNTIME</span>
+                    <h3 class="text-3xl md:text-5xl font-black text-white uppercase font-sans">
+                        TACTICAL <span class="text-neonCyan font-mono">APK DEPLOYMENT</span>
+                    </h3>
+                    <p class="text-sm text-textMuted mt-3">
+                        Deploy the unsigned direct compiled Android binaries directly onto secondary hardware interfaces, keeping full cognitive sovereignty without Play-Store locks.
+                    </p>
+                </div>
+
+                <!-- HUGE CTA COMPILER TRIGGER ENGINE (FANCY PROGRESS BUILD SIMULATOR) -->
+                <div class="p-8 sm:p-12 mb-16 rounded-2xl border border-neonCyan/30 bg-gradient-to-br from-intelDark/70 to-intelBlack/95 backdrop-blur-md relative overflow-hidden flex flex-col items-center text-center shadow-[0_0_50px_rgba(0,255,204,0.12)]">
+                    
+                    <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-neonCyan/5 blur-3xl"></div>
+                    <div class="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-neonPurple/5 blur-3xl"></div>
+
+                    <!-- Glowing Matrix Vector Header -->
+                    <div class="w-16 h-16 border border-neonCyan/40 bg-neonCyan/5 flex items-center justify-center rounded-xl mb-6 shadow-[0_0_15px_rgba(0,255,204,0.2)]">
+                        <svg class="w-8 h-8 text-neonCyan animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+
+                    <h4 class="text-xl sm:text-2xl font-mono font-black text-white uppercase tracking-wider mb-3">
+                        EXECUTE NATIVE BUILD PIPELINE
+                    </h4>
+                    <p class="text-xs sm:text-sm text-textMuted max-w-xl leading-relaxed mb-8">
+                        Activate binary decryption logs, run target asset compiles, and generate signed standalone KX7-STUDY app APK packages onto your hardware directly.
+                    </p>
+
+                    <!-- THE PREMIUM INTERACTIVE DOWNLOAD ANIMATION BUTTON -->
+                    <div class="w-full max-w-md space-y-4">
+                        <button id="cta-compiler-download-btn" onclick="commenceDownloadPipelineSimulation()" class="w-full py-5 bg-neonCyan text-black font-mono font-black tracking-widest text-xs uppercase rounded-xl hover:bg-white hover:text-black duration-300 transition-all font-bold shadow-[0_0_35px_rgba(0,255,204,0.4)] hover:scale-[1.02]">
+                            RUN COMPILE_DEPLOY_APK()
+                        </button>
+
+                        <!-- Build Progress Simulator logger -->
+                        <div id="build-progress-wrapper" class="hidden space-y-3.5 pt-4 text-left">
+                            
+                            <!-- Progress Bar Tracker -->
+                            <div class="flex justify-between items-center text-[10px] font-mono text-neonCyan font-extrabold pb-1">
+                                <span id="pipeline-status-text">DECRYPTING COGNITIVE COMPILER ASSETS...</span>
+                                <span id="pipeline-percent-text">0%</span>
+                            </div>
+                            <div class="w-full bg-intelBlack h-3 border border-white/10 rounded-full overflow-hidden p-0.5">
+                                <div id="pipeline-bar" class="h-full bg-gradient-to-r from-neonCyan to-neonPurple rounded-full duration-150 transition-all" style="width: 0%;"></div>
+                            </div>
+
+                            <!-- Live Typewriter Build Info Output -->
+                            <div class="p-4 bg-intelBlack border border-neonCyan/20 rounded-lg h-24 overflow-y-auto font-mono text-[9.5px] text-[#33ff33] leading-relaxed scanline-panel" id="pipeline-console-logger">
+                                &gt; [SYSTEM] Initializing direct release pipeline compile...
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- MILITARY OPS SIDE-LOADING MANUAL BLUEPRINTS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Step Blueprint Card 1 -->
+                    <div class="blueprint-card p-6.5 rounded-xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-xs font-black text-neonCyan text-glow-cyan uppercase tracking-wider">PHASE_01</span>
+                            <span class="px-2 py-0.5 border border-white/10 text-white/50 text-[8px] font-mono rounded">BINARY</span>
+                        </div>
+                        <h5 class="font-mono font-extrabold text-white text-sm tracking-wide uppercase">ACCUMULATE PKG</h5>
+                        <p class="text-[11.5px] text-textMuted leading-relaxed">
+                            Click the direct release compile pipeline above. Obtain and stream the offline digital direct APK envelope onto local flash storage directories.
+                        </p>
+                    </div>
+
+                    <!-- Step Blueprint Card 2 -->
+                    <div class="blueprint-card p-6.5 rounded-xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-xs font-black text-neonPurple text-glow-purple uppercase tracking-wider">PHASE_02</span>
+                            <span class="px-2 py-0.5 border border-white/10 text-white/50 text-[8px] font-mono rounded">SECURITY</span>
+                        </div>
+                        <h5 class="font-mono font-extrabold text-white text-sm tracking-wide uppercase">ALLOW THIRD PARTY</h5>
+                        <p class="text-[11.5px] text-textMuted leading-relaxed">
+                            Access system device configurations. Toggle specific permission registers "Allow installation from unknown binary sources" in settings.
+                        </p>
+                    </div>
+
+                    <!-- Step Blueprint Card 3 -->
+                    <div class="blueprint-card p-6.5 rounded-xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-xs font-black text-neonGreen text-glow-green uppercase tracking-wider">PHASE_03</span>
+                            <span class="px-2 py-0.5 border border-white/10 text-white/50 text-[8px] font-mono rounded">AUTH</span>
+                        </div>
+                        <h5 class="font-mono font-extrabold text-white text-sm tracking-wide uppercase">NATIVE CREDENTIALS</h5>
+                        <p class="text-[11.5px] text-textMuted leading-relaxed">
+                            Launch direct release package envelope on hardware. Align secure operator credentials inside locally generated profile matrix directories.
+                        </p>
+                    </div>
+
+                    <!-- Step Blueprint Card 4 -->
+                    <div class="blueprint-card p-6.5 rounded-xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-xs font-black text-neonAmber text-glow-amber uppercase tracking-wider">PHASE_04</span>
+                            <span class="px-2 py-0.5 border border-white/10 text-white/50 text-[8px] font-mono rounded">OVERRIDE</span>
+                        </div>
+                        <h5 class="font-mono font-extrabold text-white text-sm tracking-wide uppercase">BYPASS MATRIX</h5>
+                        <p class="text-[11.5px] text-textMuted leading-relaxed">
+                            Engage custom mathematical translation models. Override potential study streak decaps. Access cognitive acceleration suites offline.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER TERMINAL MODULE -->
+    <footer class="border-t border-white/[0.06] bg-intelBlack py-12 relative overflow-hidden z-20">
+        <div class="max-w-[1500px] mx-auto px-6 text-center text-glow font-mono text-xs space-y-3 p-2 text-textMuted">
+            <p class="text-[11px] uppercase tracking-widest font-extrabold text-white">
+                KX7-STUDY SYSTEM v3.04 // SECURED OFFLINE DIRECT SANDBOX INFRASTRUCTURE
+            </p>
+            <p class="text-[9.5px] text-textMuted/60 leading-normal">
+                This app runs inside isolated Direct Sandbox envelopes securely cached using direct Kotlin Core libraries. 
+                All cryptographic hash operations are monitored under AES metrics locally. No raster images are deployed.
+            </p>
+            <p class="text-[8.5px] text-neonCyan text-glow-cyan pt-2 tracking-[0.2em] font-extrabold">
+                OPERATOR_AUTHENTICATED: true // SYSTEM_INTEGRITY: 100%
+            </p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPTS LOGIC MODULE -->
+    <script>
+        // High-fidelity active system clock
+        function tickSystemClock() {
+            const clockEl = document.getElementById('terminal-clock-now');
+            if (clockEl) {
+                const now = new Date();
+                const h = String(now.getUTCHours()).padStart(2, '0');
+                const m = String(now.getUTCMinutes()).padStart(2, '0');
+                const s = String(now.getUTCSeconds()).padStart(2, '0');
+                clockEl.textContent = `${h}:${m}:${s} UTC`;
+            }
+        }
+        setInterval(tickSystemClock, 1000);
+
+        // Active screen router within virtual phone emulator
+        function clickTab(screenId, btnElement) {
+            // Unset previous active tabs styling
+            const tabs = document.querySelectorAll('.phone-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('text-neonCyan', 'scale-105');
+                tab.classList.add('text-textMuted');
+                const label = tab.querySelector('span:last-child');
+                if (label) label.classList.replace('opacity-90', 'opacity-60');
+            });
+
+            // Active new clicked tab
+            btnElement.classList.remove('text-textMuted');
+            btnElement.classList.add('text-neonCyan', 'scale-105');
+            const label = btnElement.querySelector('span:last-child');
+            if (label) label.classList.replace('opacity-60', 'opacity-90');
+
+            // Toggle screens contents
+            const screens = document.querySelectorAll('.phone-screen-content');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            const targetedScreen = document.getElementById(screenId);
+            if (targetedScreen) {
+                targetedScreen.classList.add('active');
+            }
+
+            // Also update the outside list selectors style matching
+            const listButtons = document.querySelectorAll('.screen-btn-node');
+            listButtons.forEach((btn, idx) => {
+                btn.classList.add('opacity-60', 'grayscale', 'bg-intelDark/40');
+                btn.classList.remove('border-neonCyan', 'bg-neonCyan/5', 'scale-102', 'opacity-100', 'grayscale-0');
+            });
+
+            // Sync outside buttons selection based on indexing
+            let syncedIndex = 0;
+            if (screenId === 'screen-solver-desk') syncedIndex = 1;
+            else if (screenId === 'screen-smart-recall') syncedIndex = 2;
+            else if (screenId === 'screen-battle-arena') syncedIndex = 3;
+            else if (screenId === 'screen-black-ops') syncedIndex = 4;
+
+            const selectedListBtn = listButtons[syncedIndex];
+            if (selectedListBtn) {
+                selectedListBtn.classList.remove('opacity-60', 'grayscale', 'bg-intelDark/40');
+                selectedListBtn.classList.add('border-neonCyan', 'bg-neonCyan/5', 'scale-102', 'opacity-100', 'grayscale-0');
+            }
+        }
+
+        // Simulate 3D Recall card flip transitions
+        function flipEmulatorCard() {
+            const card = document.getElementById('emulator-3d-card');
+            if (card) {
+                card.classList.toggle('flipped');
+            }
+        }
+
+        // Vocal dictation waveform pulse generator
+        let vocalInterval = null;
+        function toggleVoiceDictationSimulation() {
+            const btn = document.getElementById('voice-matrix-btn');
+            const nodes = document.querySelectorAll('.vocal-node');
+            
+            if (vocalInterval) {
+                // Clear and stop waveform vibration
+                clearInterval(vocalInterval);
+                vocalInterval = null;
+                btn.textContent = "ENGAGE VOICE TRANSLATION";
+                btn.classList.replace('bg-neonGreen/15', 'bg-neonCyan/10');
+                btn.classList.replace('text-neonGreen', 'text-neonCyan');
+                btn.classList.replace('border-neonGreen/40', 'border-neonCyan/30');
+                nodes.forEach(node => {
+                    node.style.height = "6px";
+                    node.style.animationPlayState = 'paused';
+                });
+            } else {
+                // Launch waveform vibration
+                btn.textContent = "DECODING TRANSCRIPT...";
+                btn.classList.replace('bg-neonCyan/10', 'bg-neonGreen/15');
+                btn.classList.replace('text-neonCyan', 'text-neonGreen');
+                btn.classList.replace('border-neonCyan/30', 'border-neonGreen/40');
+                nodes.forEach(node => {
+                    node.style.animationPlayState = 'running';
+                });
+                
+                vocalInterval = setInterval(() => {
+                    nodes.forEach(node => {
+                        const r = Math.floor(Math.random() * 26) + 4;
+                        node.style.height = `${r}px`;
+                    });
+                }, 180);
+            }
+        }
+
+        // Simulate Solver Calculation Output
+        function simulateSolverCalculation() {
+            const termConsole = document.getElementById('terminal-display-canvas');
+            const procState = document.getElementById('term-process-state');
+            
+            procState.textContent = 'RUNNING_COGNITIVE_SOLVER';
+            procState.classList.add('text-neonCyan');
+
+            termConsole.innerHTML = `
+                <div class="text-neonCyan">&gt;&gt; [LAUNCH] Booting core cryptographic solver calculations...</div>
+                <div class="text-white/60">&gt;&gt; parsing current operator subject payload: Mathematics // Cryptography</div>
+                <div class="text-white/60">&gt;&gt; generating delta states for secure mathematical vectors...</div>
+                <div class="text-neonGreen">&gt;&gt; [COMPILING] resolving elliptic parity equations in 12ms...</div>
+                <span class="text-glow-green text-[#33ff33]">&gt;&gt; [DIAG] Parity resolved. Answer dispatched to internal local database cache nodes successfully.</span>
+            `;
+
+            // Prompt success alerts within simulator
+            setTimeout(() => {
+                alert("Intellect solver calculation completed successfully! Output lines written into sandbox database schemas.");
+                procState.textContent = 'SOLVER_COMPLETE_IDLE';
+                procState.classList.remove('text-neonCyan');
+            }, 500);
+        }
+
+        // Simulate Document decks compilation sequences
+        function simulateDocumentDeckGeneration() {
+            const rawInValue = document.getElementById('mock-recall-textarea').value;
+            const termConsole = document.getElementById('terminal-display-canvas');
+            const procState = document.getElementById('term-process-state');
+
+            procState.textContent = 'COMPILING_DOCUMENT_DECK';
+
+            termConsole.innerHTML = `
+                <div class="text-neonPurple">&gt;&gt; [RECALL] Initiating Raw Document Compilation Sequence...</div>
+                <div class="text-white/50">&gt;&gt; parsing custom user text inputs: "${rawInValue || 'Default Null Sequence lines'}"</div>
+                <div class="text-white/60">&gt;&gt; launching NLP tokenizers for key-value extraction...</div>
+                <div class="text-white/60">&gt;&gt; writing new card matrices into SQLite database schema...</div>
+                <div class="text-glow-purple text-[#ff00cc]">&gt;&gt; [SUCCESS] Compiled 42 study nodes based on document lines parameters.</div>
+            `;
+
+            setTimeout(() => {
+                alert("Smart Recall summarizing engine completed card compilations! Checkout updated decks inside phone screen selectors.");
+                procState.textContent = 'COMPILER_COMPLETE_IDLE';
+            }, 600);
+        }
+
+        // Execute central terminal log actions
+        function executeTerminalCommand(actionType) {
+            const termConsole = document.getElementById('terminal-display-canvas');
+            const procState = document.getElementById('term-process-state');
+
+            if (actionType === 'solve') {
+                procState.textContent = 'SOLVER_MATRIX_DECRYPTION';
+                termConsole.innerHTML = `
+                    <div class="text-neonGreen">&gt;&gt; [INIT] launching cryptographic core calculations...</div>
+                    <div class="text-white/60">&gt;&gt; verifying offline SQLite parity schemas...</div>
+                    <div class="text-[#8ba2c1]">&gt;&gt; matrix coefficients parsed: Q_Alpha = [14.88f, 22.94f]</div>
+                    <div class="text-[#33ff33] text-glow-green">&gt;&gt; elliptic parity curves aligned in 14.8ms. Sandbox index updated.</div>
+                `;
+            } else if (actionType === 'deck') {
+                procState.textContent = 'SUMMARIZER_PARSER';
+                termConsole.innerHTML = `
+                    <div class="text-neonCyan">&gt;&gt; [PARSE] capturing raw academic inputs...</div>
+                    <div class="text-white/60">&gt;&gt; running adaptive tokenizers over PDF lines parameters...</div>
+                    <div class="text-[#8ba2c1]">&gt;&gt; generated 42 secure flashcard nodes inside recall storage zones.</div>
+                    <div class="text-glow-cyan text-[#00ffcc]">&gt;&gt; offline vector deck schema compiled successfully.</div>
+                `;
+            } else if (actionType === 'leaderboard') {
+                procState.textContent = 'PING_RIVAL_NODES';
+                termConsole.innerHTML = `
+                    <div class="text-neonPurple">&gt;&gt; [PING] checking latency variables across database schemas...</div>
+                    <div class="text-white/60">&gt;&gt; pinging competitor nodes: 12.8ms latency rate registered.</div>
+                    <div class="text-[#ffd700]">&gt;&gt; current division level: DIAMOND LEVEL EX V</div>
+                    <div class="text-glow-purple text-[#ff00cc]">&gt;&gt; [FORECAST] study speed rate predicts elevation to DIAMOND III within 32 hours!</div>
+                `;
+            } else if (actionType === 'streak') {
+                procState.textContent = 'BYPASSING_DECAY_ALGORITHM';
+                termConsole.innerHTML = `
+                    <div class="text-warningCrimson">&gt;&gt; [BYPASS] EMERGENCY STREAK RESTORATION PROTOCOL COMMENCING...</div>
+                    <div class="text-white/60">&gt;&gt; looking up local hardware database timestamp marks...</div>
+                    <div class="text-warningCrimson">&gt;&gt; appending transaction receipt hash to offline SQLite index...</div>
+                    <div class="text-glow-crimson text-warningCrimson">&gt;&gt; [BYPASS_SUCCESS] Streak encapsulated. insulates day markers from decaying index!</div>
+                `;
+            }
+        }
+
+        // Handle Custom manual text CLI entry actions
+        function handleCustomCommandSubmit() {
+            const inputField = document.getElementById('manual-cli-input');
+            const termConsole = document.getElementById('terminal-display-canvas');
+            const commandValue = inputField.value.trim().toLowerCase();
+            const procState = document.getElementById('term-process-state');
+
+            if (!commandValue) return;
+            procState.textContent = 'RUNNING_' + commandValue.toUpperCase();
+
+            let responseLines = "";
+            if (commandValue === 'diagnose_core') {
+                responseLines = `
+                    <div class="text-white">&gt;&gt; [CLI] manual lookup diagnostic trigger received...</div>
+                    <div class="text-[#33ff33]">&gt;&gt; [OK] SQLite schema caching database aligned.</div>
+                    <div class="text-[#33ff33]">&gt;&gt; [OK] audio spectrum waveform variables aligned.</div>
+                    <div class="text-[#00ffcc]">&gt;&gt; Core hardware operations verified without fault indexes.</div>
+                `;
+            } else if (commandValue === 'secure_audit') {
+                responseLines = `
+                    <div class="text-[#00ffcc]">&gt;&gt; [CLI] executing military-grade cognitive encryption audits...</div>
+                    <div class="text-white/70">&gt;&gt; checking memory buffer boundary blocks...</div>
+                    <div class="text-white/70">&gt;&gt; signing encrypted license elements locally...</div>
+                    <div class="text-[#33ff33] text-glow-green">&gt;&gt; Audit successful. Secure parameters aligned at true bounds.</div>
+                `;
+            } else if (commandValue === 'hack') {
+                responseLines = `
+                    <div class="text-warningCrimson">&gt;&gt; [CLI] ACCESS DENIED. COGNITIVE LEVEL CREDENTIALS DETECTED.</div>
+                    <div class="text-white/60">&gt;&gt; Operator authorization level: Level_A standard metadata matched.</div>
+                    <div class="text-[#33ff33]">&gt;&gt; Overriding restrictions. Triggering system diagnostic audits...</div>
+                `;
+            } else {
+                responseLines = `
+                    <div class="text-white">&gt;&gt; text inputs: "${commandValue}" parsed.</div>
+                    <div class="text-white/60">&gt;&gt; executing target compile processes locally...</div>
+                    <div class="text-neonGreen">&gt;&gt; command outputs dispatched to system log matrix successfully.</div>
+                `;
+            }
+
+            termConsole.innerHTML = responseLines;
+            inputField.value = "";
+        }
+
+        // Clear logger inputs
+        function clearTerminalLogs() {
+            const termConsole = document.getElementById('terminal-display-canvas');
+            termConsole.innerHTML = `<div class="text-textMuted/50">&gt;&gt; Console buffer cleared. awaiting local inputs...</div>`;
+        }
+
+        // Streak rescue bypass simulations from Black Ops control panels
+        function emergencyActionBypass(type) {
+            const termConsole = document.getElementById('terminal-display-canvas');
+            const procState = document.getElementById('term-process-state');
+
+            if (type === 'streak') {
+                procState.textContent = 'FORCE_STREAK_BYPASS';
+                termConsole.innerHTML = `
+                    <div class="text-warningCrimson">&gt;&gt; [BYPASS] EMERGENCY STREAK BACKDOOR CALLED...</div>
+                     <div class="text-white/60">&gt;&gt; injecting transaction receipts validation blocks...</div>
+                     <div class="text-glow-crimson text-warningCrimson">&gt;&gt; Streak locked at v3.04 index. operator status insulated from decay clocks.</div>
+                `;
+                alert("Streak emergency bypass synced onto local mock indices!");
+            } else {
+                procState.textContent = 'DIAGNOSING_MOCK_HARDWARE';
+                termConsole.innerHTML = `
+                    <div class="text-neonCyan">&gt;&gt; [DIAG] commencing dynamic sandbox diagnostics checks...</div>
+                    <div class="text-white/70">&gt;&gt; SQLite node databases: operational</div>
+                    <div class="text-[#33ff33]">&gt;&gt; voice waves spectator spectral coordinates: aligned</div>
+                `;
+                alert("Hardware diagnostic audits complete. System aligned without anomalies.");
+            }
+        }
+
+        // Verify custom encrypted license from Black Ops override controls
+        function verifyBlockchainSyncReceipt() {
+            const txHash = document.getElementById('blockchain-tx-value').value;
+            alert(`Locked cryptographic receipt sync signature: ${txHash}. Cognitive sovereignty status confirmed.`);
+        }
+
+        // Direct Download Pipeline Simulator Progress bar script
+        let isDownloading = false;
+        function commenceDownloadPipelineSimulation() {
+            if (isDownloading) return;
+            isDownloading = true;
+
+            const progressWrapper = document.getElementById('build-progress-wrapper');
+            const bar = document.getElementById('pipeline-bar');
+            const percentText = document.getElementById('pipeline-percent-text');
+            const statusText = document.getElementById('pipeline-status-text');
+            const logger = document.getElementById('pipeline-console-logger');
+            const btn = document.getElementById('cta-compiler-download-btn');
+
+            btn.disabled = true;
+            btn.textContent = "COMPILING ASSETS...";
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            progressWrapper.classList.remove('hidden');
+            let progress = 0;
+            bar.style.width = '0%';
+            percentText.textContent = "0%";
+            statusText.textContent = "INITIALIZING CORE PIPELINE COMPILER...";
+            logger.innerHTML = `&gt; [BUILD] Booting compilation engine over internal Kotlin repository nodes...`;
+
+            const pipelineSteps = [
+                { limit: 20, text: "DECRYPTING Standalone Android Manifest files...", log: "&gt; [LOG] parsed secure package permissions variables..." },
+                { limit: 45, text: "COMPILING Kotlin UI layout elements via Jetpack Compose...", log: "&gt; [COMPILE] integrated holographic cards matrices..." },
+                { limit: 70, text: "ASSEMBLING local SQLite Database backend containers...", log: "&gt; [DB] verified transactional schema integrity bounds..." },
+                { limit: 90, text: "SIGNING direct deployment application cryptographic credentials...", log: "&gt; [SIGN] matched AES release token parameters..." },
+                { limit: 100, text: "GENERATING KX7-STUDY.APK binary file output payload...", log: "&gt; [SUCCESS] compiled binary generated successfully." }
+            ];
+
+            let stepIdx = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 4;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    bar.style.width = '100%';
+                    percentText.textContent = "100%";
+                    statusText.textContent = "COMPILE_SUCCESS COMPLETE!";
+                    logger.innerHTML += `<br><span class="text-glow-green text-[#33ff33]">&gt; deployment successful. downloading signed binary file: KX7-STUDY-SIGNED.apk</span>`;
+
+                    // Generate a fake download trigger to save an empty APK file mimicking direct stream delivery
+                    setTimeout(() => {
+                        const blob = new Blob(["MOCK_APK_STREAM_BINARY"], { type: "application/vnd.android.package-archive" });
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "KX7-STUDY-SIGNED.apk";
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        alert("Sovereign standalone binary deployed successfully onto local host storage! Checkout files to complete phases of phase-installation.");
+                        isDownloading = false;
+                        btn.disabled = false;
+                        btn.textContent = "RUN COMPILE_DEPLOY_APK()";
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }, 500);
+                } else {
+                    bar.style.width = `${progress}%`;
+                    percentText.textContent = `${progress}%`;
+
+                    const step = pipelineSteps[stepIdx];
+                    if (step && progress >= step.limit) {
+                        statusText.textContent = step.text;
+                        logger.innerHTML += `<br>${step.log}`;
+                        logger.scrollTop = logger.scrollHeight;
+                        stepIdx++;
+                    }
+                }
+            }, 180);
+        }
+    </script>
+
+</body>
+</html>
