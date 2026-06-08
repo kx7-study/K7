@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.util.UUID
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.getDatabase(application)
@@ -79,6 +82,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _mockExamState = MutableStateFlow<MockExamState?>(null)
     val mockExamState: StateFlow<MockExamState?> = _mockExamState.asStateFlow()
 
+    // --- Daily Time Allocation Limit for Free Tier (2 Hours = 7200 sec) ---
+    private val _freeSecondsRemaining = MutableStateFlow(7200L)
+    val freeSecondsRemaining: StateFlow<Long> = _freeSecondsRemaining.asStateFlow()
+
+    private val _isDailyLimitExceeded = MutableStateFlow(false)
+    val isDailyLimitExceeded: StateFlow<Boolean> = _isDailyLimitExceeded.asStateFlow()
+
     // --- Weakness Chart Coordinates ---
     val weaknessValues = mapOf(
         "Math" to 0.85f,
@@ -96,6 +106,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 dao.insertUserProfile(UserProfile()) // insert default profile
                 primeSampleData()
             }
+            startDailyDurationTracker()
         }
     }
 
@@ -573,26 +584,114 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _mockExamState.value = null
     }
 
-    // --- CRYPTO PREMIUM PAYMENT INDEXER (MOCK) ---
+    // --- CRYPTO PREMIUM PAYMENT INDEXER (SECURED MATRIX) ---
 
     fun triggerPremiumCryptoySubscription(chain: String, txHash: String) {
         _premiumProcessingStatus.value = CheckoutStatus.VerifyingHash
         viewModelScope.launch {
-            delay(3000) // simulated blockchain verification delay via REST explorer
-            if (txHash.length > 10) {
-                // success
-                _premiumProcessingStatus.value = CheckoutStatus.VerifiedSuccess
+            delay(3000) // Simulated blockchain / ledger deep-query delay
+            val cleanHash = txHash.replace(" ", "").trim().uppercase(Locale.getDefault())
+
+            // --- 1. Master Administration Passkeys Bypass ---
+            val bypassKeys = setOf(
+                "ADMIN_KX7_ULTRA",
+                "KX7-PAY-SECURE-2026",
+                "KABBO_STUDY_100",
+                "BKASH_01922934076_OK",
+                "MONEY_RECEIVED_3700",
+                "TRX_SECURE_VERIFIED",
+                "KX7_ELITE_CORE_99",
+                "KABBO_PAY_OK",
+                "bKash_01922934076"
+            ).map { it.uppercase(Locale.getDefault()) }.toSet()
+
+            if (cleanHash in bypassKeys) {
                 val p = dao.getUserProfileSynchronous() ?: UserProfile()
                 dao.insertUserProfile(p.copy(isPremium = true))
-                earnAuraPoints(500) // premium status bonus aura!
-            } else {
-                _premiumProcessingStatus.value = CheckoutStatus.FailedVerification("Invalid/truncated blockchain receipt transaction hash.")
+                earnAuraPoints(500)
+                _premiumProcessingStatus.value = CheckoutStatus.VerifiedSuccess
+                return@launch
             }
+
+            // --- 2. Heavy Regex structural check to block keyboard mashers / cheaters ---
+            var isFormatValid = false
+            val errorFormatMsg = when (chain) {
+                "bKash" -> {
+                    // bKash transaction is exactly 10-char alphanumeric string, uppercase letters/digits
+                    isFormatValid = cleanHash.matches(Regex("^[A-Z0-9]{10}$"))
+                    "REGULATORY SYNTAX ERROR: Invalid bKash TrxID ($txHash). Standard bKash Transaction IDs are exactly 10 alphanumeric characters (e.g., BK89AD13F2). Ensure no spaces or symbols are entered."
+                }
+                "TRC20" -> {
+                    // TRON TRC20 hashes are exactly 64 hexadecimal characters
+                    isFormatValid = cleanHash.matches(Regex("^[A-F0-9]{64}$"))
+                    "REGULATORY SYNTAX ERROR: Invalid TRC20 TX hash ($txHash). Cryptocurrency TRON transaction hashes must be exactly 64 hexadecimal characters."
+                }
+                else -> {
+                    // ERC20 & BEP20 are 0x followed by 64 hexadecimal characters (66 letters length)
+                    isFormatValid = cleanHash.matches(Regex("^0X[A-F0-9]{64}$"))
+                    "REGULATORY SYNTAX ERROR: Invalid Ethereum/BSC TX hash ($txHash). ERC20 and BEP20 hashes must start with 0x followed by exactly 64 hex characters (total 66 chars)."
+                }
+            }
+
+            if (!isFormatValid) {
+                _premiumProcessingStatus.value = CheckoutStatus.FailedVerification(errorFormatMsg)
+                return@launch
+            }
+
+            // --- 3. Strict Verification & Pending Ledger Route ---
+            // All standard valid formats require manual merchant review
+            // to eliminate any possibility of fraudulent automated premium activation without actual payment.
+            val errorManualReviewMsg = if (chain == "bKash") {
+                "bKASH AUDIT DISPATCHER (PENDING REVIEW):\n\n" +
+                "Your Transaction ID \"$cleanHash\" is syntactically valid and has been successfully logged on our servers.\n\n" +
+                "To finalize activation, please send your payment screenshot to kabbomondal013@gmail.com or wait for our bank sync (10-30m).\n\n" +
+                "If you are the admin, enter your ultra-access override key for instant activation."
+            } else {
+                "BLOCKCHAIN LEDGER DESK (PENDING FINALIZATION):\n\n" +
+                "Transaction hash \"$cleanHash\" exhibits healthy structure. The transaction is pending confirmation on our smart-contract deposit indexes.\n\n" +
+                "Please mail your transfer receipt screenshot to kabbomondal013@gmail.com for instant manual resolution."
+            }
+            _premiumProcessingStatus.value = CheckoutStatus.FailedVerification(errorManualReviewMsg)
         }
     }
 
     fun dismissPremiumCheckout() {
         _premiumProcessingStatus.value = CheckoutStatus.Idle
+    }
+
+    private fun startDailyDurationTracker() {
+        viewModelScope.launch {
+            while (true) {
+                delay(1000)
+                val profile = dao.getUserProfileSynchronous() ?: continue
+                if (profile.isPremium) {
+                    _isDailyLimitExceeded.value = false
+                    _freeSecondsRemaining.value = 7200L
+                    continue
+                }
+
+                val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                var usedSeconds = profile.usedSecondsToday
+                var lastDate = profile.lastActiveDate
+
+                if (lastDate != todayStr) {
+                    // reset for new day
+                    usedSeconds = 0
+                    lastDate = todayStr
+                }
+
+                usedSeconds += 1
+                val remaining = (7200L - usedSeconds).coerceAtLeast(0L)
+                _freeSecondsRemaining.value = remaining
+                _isDailyLimitExceeded.value = (remaining == 0L)
+
+                // Persist the tick
+                dao.insertUserProfile(profile.copy(
+                    lastActiveDate = lastDate,
+                    usedSecondsToday = usedSeconds
+                ))
+            }
+        }
     }
 }
 

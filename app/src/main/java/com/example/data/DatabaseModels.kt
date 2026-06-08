@@ -23,7 +23,9 @@ data class UserProfile(
     val burnoutRiskScore: Int = 15, // 0 - 100
     val primarySolvingStyle: String = "Analytical", // Analytical, Intuitive, Formula-Heavy
     val missionTarget: String = "MIT", // MIT, Stanford, Harvard, Oxford, Cambridge
-    val activeMentorPersona: String = "Feynman" // Einstein, Fischer, Feynman, Military, Exam Assassin
+    val activeMentorPersona: String = "Feynman", // Einstein, Fischer, Feynman, Military, Exam Assassin
+    val lastActiveDate: String = "",
+    val usedSecondsToday: Long = 0
 )
 
 @Keep

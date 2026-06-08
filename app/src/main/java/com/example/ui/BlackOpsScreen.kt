@@ -28,6 +28,13 @@ import com.example.viewmodel.MainViewModel
 import com.example.viewmodel.MockExamState
 import java.util.Locale
 
+data class PremiumPlan(
+    val name: String,
+    val usdPrice: String,
+    val bdtPrice: String,
+    val description: String
+)
+
 @Composable
 fun BlackOpsScreen(
     viewModel: MainViewModel,
@@ -39,13 +46,15 @@ fun BlackOpsScreen(
 
     var activePanelMode by remember { mutableStateOf(0) } // 0: Mocks & Challenges, 1: Premium Shop
 
+    var selectedPlanIndex by remember { mutableStateOf(0) }
     var selectedCryptoChain by remember { mutableStateOf("TRC20") }
     var userSubmittedTxHash by remember { mutableStateOf("") }
 
     val cryptoAddresses = mapOf(
         "TRC20" to "THrBL9ZvjnEH981PPJRG9gQMoyz2XAqqR3",
         "ERC20" to "0x86b09ecf2e35a74a5c1a06e126f417277f9723f8",
-        "BEP20" to "0x86b09ecf2e35a74a5c1a06e126f417277f9723f8"
+        "BEP20" to "0x86b09ecf2e35a74a5c1a06e126f417277f9723f8",
+        "bKash" to "01922934076"
     )
 
     LazyColumn(
@@ -392,26 +401,125 @@ fun BlackOpsScreen(
                 }
             }
 
+            item {
+                Text(
+                    text = "SELECT RE-ALIGNMENT POWER TIER",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = NeonPurple,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    val plans = listOf(
+                        PremiumPlan("1 Month Access", "$27", "3700 BDT", "Perfect for rapid calibration"),
+                        PremiumPlan("3 Months Access", "$77", "10,500 BDT", "Most popular choice for intense training"),
+                        PremiumPlan("1 Year Infinity", "$277", "37,800 BDT", "Ultimate long-range learning index")
+                    )
+                    plans.forEachIndexed { index, plan ->
+                        val isSelected = selectedPlanIndex == index
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    width = if (isSelected) 1.5.dp else 1.dp,
+                                    color = if (isSelected) NeonPurple else BorderCyberDark,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clickable { selectedPlanIndex = index },
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (isSelected) DeepSpaceSlate else CyberBlack
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            text = plan.name,
+                                            style = MaterialTheme.typography.titleLarge,
+                                            color = if (isSelected) NeonPurple else TextWhite,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        if (index == 1) {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(
+                                                modifier = Modifier
+                                                    .background(NeonCyan.copy(alpha = 0.2f))
+                                                    .border(1.dp, NeonCyan, RoundedCornerShape(4.dp))
+                                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                                            ) {
+                                                Text("POPULAR", fontSize = 8.sp, color = NeonCyan, fontWeight = FontWeight.Bold)
+                                            }
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = plan.description,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = TextMutedGrey
+                                    )
+                                }
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text(
+                                        text = plan.usdPrice,
+                                        style = MaterialTheme.typography.titleLarge,
+                                        color = NeonGreen,
+                                        fontWeight = FontWeight.ExtraBold
+                                    )
+                                    Text(
+                                        text = plan.bdtPrice,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = NeonCyan,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Payment dispatcher desk
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
+                        .border(1.5.dp, NeonPurple, RoundedCornerShape(12.dp)),
                     colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        val activePlan = listOf(
+                            PremiumPlan("1 Month Access", "$27", "3700 BDT", "Perfect for rapid calibration"),
+                            PremiumPlan("3 Months Access", "$77", "10,500 BDT", "Most popular choice for intense training"),
+                            PremiumPlan("1 Year Infinity", "$277", "37,800 BDT", "Ultimate long-range learning index")
+                        )[selectedPlanIndex]
+
                         Text(
-                            text = "cross-chain cryptographic checkout".uppercase(Locale.getDefault()),
+                            text = if (selectedCryptoChain == "bKash") "SECURE bKASH PAYOUT PROTOCOL" else "cross-chain cryptographic checkout".uppercase(Locale.getDefault()),
                             style = MaterialTheme.typography.labelMedium,
                             color = NeonPurple
+                        )
+
+                        Text(
+                            text = "Selected Package: ${activePlan.name} — Transfer ${if (selectedCryptoChain == "bKash") activePlan.bdtPrice else activePlan.usdPrice} to verify.",
+                            color = NeonGreen,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyMedium
                         )
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
-                            listOf("TRC20", "ERC20", "BEP20").forEach { chain ->
+                            listOf("TRC20", "ERC20", "BEP20", "bKash").forEach { chain ->
                                 val isSelected = selectedCryptoChain == chain
                                 Box(
                                     modifier = Modifier
@@ -436,13 +544,19 @@ fun BlackOpsScreen(
                                 .border(1.dp, BorderCyberDark, RoundedCornerShape(8.dp))
                                 .padding(12.dp)
                         ) {
-                            Text("DEPOSIT ADDRESS FOR $selectedCryptoChain", fontSize = 10.sp, color = TextMutedGrey)
+                            val headerLabel = if (selectedCryptoChain == "bKash") {
+                                "bKASH PERSONAL NUMBER (SEND MONEY ONLY)"
+                            } else {
+                                "DEPOSIT ADDRESS FOR $selectedCryptoChain"
+                            }
+                            Text(headerLabel, fontSize = 10.sp, color = if (selectedCryptoChain == "bKash") WarningCrimson else TextMutedGrey, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = targetAddress,
                                 style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-                                color = NeonGreen,
-                                fontSize = 11.sp
+                                color = if (selectedCryptoChain == "bKash") NeonCyan else NeonGreen,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         }
 
@@ -450,7 +564,14 @@ fun BlackOpsScreen(
                         OutlinedTextField(
                             value = userSubmittedTxHash,
                             onValueChange = { userSubmittedTxHash = it },
-                            placeholder = { Text("Paste cryptographic TX Hash receipt hashes...", fontSize = 12.sp) },
+                            placeholder = {
+                                val placeholderText = if (selectedCryptoChain == "bKash") {
+                                    "Enter bKash 10-char TrxID (Transaction ID)..."
+                                } else {
+                                    "Paste cryptographic TX Hash receipt hashes..."
+                                }
+                                Text(placeholderText, fontSize = 12.sp)
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .testTag("premium_tx_hash_field"),
@@ -473,7 +594,12 @@ fun BlackOpsScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = NeonPurple),
                             enabled = userSubmittedTxHash.isNotEmpty() && checkoutStatus !is CheckoutStatus.VerifyingHash
                         ) {
-                            Text("SUBMIT ON-CHAIN TX FOR INDEXER", fontWeight = FontWeight.Bold)
+                            val buttonText = if (selectedCryptoChain == "bKash") {
+                                "ACTIVATE ${activePlan.name.uppercase(Locale.getDefault())} VIA bKASH"
+                            } else {
+                                "VERIFY ON-CHAIN PAYOUT FOR ${activePlan.name.uppercase(Locale.getDefault())}"
+                            }
+                            Text(buttonText, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -494,7 +620,8 @@ fun BlackOpsScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("BLOCKCHAIN INDEXER RECEIPT STATUS", style = MaterialTheme.typography.labelMedium, color = NeonCyan)
+                                val receiptHeader = if (selectedCryptoChain == "bKash") "bKASH SECURE GATEWAY RECEIPT STATUS" else "BLOCKCHAIN INDEXER RECEIPT STATUS"
+                                Text(receiptHeader, style = MaterialTheme.typography.labelMedium, color = NeonCyan)
                                 Icon(Icons.Default.Clear, contentDescription = "Close", tint = TextMutedGrey, modifier = Modifier.size(16.dp).clickable { viewModel.dismissPremiumCheckout() })
                             }
                             Divider(modifier = Modifier.padding(vertical = 10.dp), color = BorderCyberDark)
@@ -504,7 +631,12 @@ fun BlackOpsScreen(
                                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                                         CircularProgressIndicator(color = NeonPurple)
                                         Spacer(modifier = Modifier.height(8.dp))
-                                        Text("Reading transaction parameters. Quering ERC-20 / TRC-20 nodes...", color = TextMutedGrey, fontSize = 11.sp)
+                                        val statusText = if (selectedCryptoChain == "bKash") {
+                                            "Querying bKash secure SSL gateway protocol logs..."
+                                        } else {
+                                            "Reading transaction parameters. Quering ERC-20 / TRC-20 nodes..."
+                                        }
+                                        Text(statusText, color = TextMutedGrey, fontSize = 11.sp)
                                     }
                                 }
 
@@ -517,10 +649,16 @@ fun BlackOpsScreen(
                                             .padding(12.dp)
                                     ) {
                                         Column {
-                                            Text("ON-CHAIN CONFIRMATION SECURED", color = NeonGreen, fontWeight = FontWeight.Bold)
+                                            val successTitle = if (selectedCryptoChain == "bKash") "bKASH PAYMENT CERTIFIED" else "ON-CHAIN CONFIRMATION SECURED"
+                                            val successDesc = if (selectedCryptoChain == "bKash") {
+                                                "Transaction verified successfully. Premium study tools unlocked permanently. Portfolio rewarded +500 AP."
+                                            } else {
+                                                "Transaction verified on mainnets coordinate. Premium advanced neural solvers unlocked permanently. Portfolio rewarded +500 AP."
+                                            }
+                                            Text(successTitle, color = NeonGreen, fontWeight = FontWeight.Bold)
                                             Spacer(modifier = Modifier.height(4.dp))
                                             Text(
-                                                "Transaction verified on mainnets coordinate. Premium advanced neural solvers unlocked permanently. Portfolio rewarded +500 AP.",
+                                                successDesc,
                                                 fontSize = 11.sp,
                                                 color = NeonGreen
                                             )
@@ -537,7 +675,8 @@ fun BlackOpsScreen(
                                             .padding(12.dp)
                                     ) {
                                         Column {
-                                            Text("ON-CHAIN VERIFICATION REJECTED", color = WarningCrimson, fontWeight = FontWeight.Bold)
+                                            val failureTitle = if (selectedCryptoChain == "bKash") "bKASH GATEWAY VERIFICATION REJECTED" else "ON-CHAIN VERIFICATION REJECTED"
+                                            Text(failureTitle, color = WarningCrimson, fontWeight = FontWeight.Bold)
                                             Spacer(modifier = Modifier.height(4.dp))
                                             Text(
                                                 status.errorMsg,

@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
         WorldCard::class,
         HistoricalMistake::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

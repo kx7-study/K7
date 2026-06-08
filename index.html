@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KX7-STUDY // Terminal Matrix & Cognitive Dominance</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
+    
+    <!-- DNS Prefetch and Preconnect Resource Hints for ChatGPT-Like Load Speeds -->
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- Tailwind CSS CDN Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- High-priority styling and fonts preloading to avoid FOUC (flash of unstyled content) -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
         tailwind.config = {
@@ -262,8 +274,30 @@
                 <a href="#manual-installation" class="hover:text-neonCyan border-b border-transparent hover:border-neonCyan/50 py-1 transition-all duration-300">TACTICAL DEPLOYMENT</a>
             </nav>
 
-            <!-- High-Contrast APK Trigger Badge -->
+            <!-- Dynamic Authentication Header Widget & APK Trigger -->
             <div class="flex items-center gap-4">
+                <!-- Verified Connection Widget -->
+                <div id="verified-operator-badge" class="hidden lg:flex items-center gap-3 px-3.5 py-1.5 border border-neonGreen/30 bg-neonGreen/5 rounded-lg text-left">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neonGreen opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-neonGreen"></span>
+                    </span>
+                    <div class="font-mono text-[10px]">
+                        <div class="text-white font-extrabold leading-none flex items-center gap-1.5">
+                            <span id="header-user-email">OPERATOR@NODE</span> 
+                            <span class="text-neonGreen text-[7.5px] px-1 py-0.5 bg-neonGreen/10 border border-neonGreen/30 rounded font-black uppercase" id="header-user-tier">[LEVEL_A]</span>
+                        </div>
+                        <div class="text-[8px] text-textMuted/70 flex items-center gap-2 mt-0.5">
+                            <span id="header-user-x">X_LINK</span>
+                            <span class="opacity-30">|</span>
+                            <span id="header-user-fb">FB_LINK</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutUser()" class="ml-1.5 font-mono font-black text-warningCrimson text-[8.5px] border border-warningCrimson/30 bg-warningCrimson/5 px-2 py-1 rounded hover:bg-warningCrimson hover:text-black hover:border-transparent transition-all uppercase tracking-wider">
+                        DISCONNECT
+                    </button>
+                </div>
+
                 <a href="#manual-installation" class="hidden sm:inline-flex font-mono text-[11px] px-6 py-3.5 bg-neonCyan/10 border border-neonCyan text-neonCyan rounded hover:bg-neonCyan hover:text-black hover:scale-105 duration-300 transition-all tracking-wider font-extrabold shadow-[0_0_15px_rgba(0,255,204,0.15)]">
                     DEPLOY NATIVE BINARY (APK)
                 </a>
@@ -495,7 +529,7 @@
         </section>
 
         <!-- NEW SECTION: HIGH-FIDELITY INTERACTIVE TERMINAL EMULATOR -->
-        <section id="terminal-hub" class="border-t border-b border-white/[0.06] bg-[#030408]/90 py-24 relative select-none">
+        <section id="terminal-hub" class="border-t border-b border-white/[0.06] bg-[#030408]/90 py-24 relative">
             <div class="max-w-[1500px] mx-auto px-6">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
@@ -587,7 +621,7 @@
         </section>
 
         <!-- ONLINE INTERACTIVE PHONE APP EMULATOR -->
-        <section id="emulator-panel" class="py-24 relative border-b border-white/[0.06] select-none">
+        <section id="emulator-panel" class="py-24 relative border-b border-white/[0.06]">
             <div class="max-w-[1500px] mx-auto px-6">
                 
                 <div class="text-center mb-20 max-w-3xl mx-auto">
@@ -675,12 +709,21 @@
                                 
                                 <!-- ================= SCREEN 1: COMMAND HOST HUB ================= -->
                                 <div id="screen-command-hub" class="phone-screen-content active">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-2">
                                         <div>
                                             <h5 class="text-sm font-mono font-extrabold text-neonCyan">OPERATOR HOST PANEL</h5>
-                                            <span class="text-[8.5px] font-mono text-neonCyan/85 font-semibold uppercase">ID: kabbomondal013</span>
+                                            <span id="emulator-operator-id" class="text-[8.5px] font-mono text-neonCyan/85 font-semibold uppercase">ID: kabbomondal013</span>
                                         </div>
-                                        <span class="px-2 py-1 border border-neonCyan/30 text-neonCyan bg-neonCyan/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(0,255,204,0.1)]">SECURE_LEVEL_A</span>
+                                        <span id="emulator-role-badge" class="px-2 py-1 border border-neonCyan/30 text-neonCyan bg-neonCyan/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(0,255,204,0.1)]">SECURE_LEVEL_A</span>
+                                    </div>
+
+                                    <!-- Dynamic trial clock widget -->
+                                    <div class="p-3 bg-warningCrimson/10 border border-warningCrimson/35 text-warningCrimson font-mono text-[8px] rounded-lg mb-4 flex justify-between items-center" id="emulator-trial-shield">
+                                        <div class="flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-warningCrimson animate-ping" id="emulator-trial-ping"></span>
+                                            <span id="emulator-trial-label" class="font-bold">FREE TIER SHIELD LIMIT REMAINING:</span>
+                                        </div>
+                                        <span class="font-bold underline" id="emulator-countdown-clock">01:59:42 SECS</span>
                                     </div>
 
                                     <!-- Operator Identification Profile -->
@@ -688,7 +731,7 @@
                                         <div class="absolute top-1 right-2 font-mono text-[7px] text-[#33ff33]">STREAK_ACTIVE</div>
                                         <div class="flex justify-between items-start">
                                             <div>
-                                                <h6 class="font-mono text-sm leading-none font-bold text-white uppercase tracking-wide">KABBO MONDAL</h6>
+                                                <h6 id="emulator-operator-name" class="font-mono text-sm leading-none font-bold text-white uppercase tracking-wide">KABBO MONDAL</h6>
                                                 <p class="text-[8px] font-mono text-textMuted font-black mt-1.5 uppercase">RANKING INTELLECT INDEX: 147 EX</p>
                                             </div>
                                         </div>
@@ -813,7 +856,7 @@
                                         </div>
                                         
                                         <!-- Flip Mechanics Card -->
-                                        <div id="emulator-3d-card" onclick="flipEmulatorCard()" class="h-32 group cursor-pointer perspective-1000 select-none">
+                                        <div id="emulator-3d-card" onclick="flipEmulatorCard()" class="h-32 group cursor-pointer perspective-1000">
                                             <div class="card-inner-3d relative w-full h-full text-center transition-transform duration-500 transform border rounded-xl border-neonPurple/30 bg-intelDark/70 hover:border-neonPurple duration-300">
                                                 
                                                 <!-- Question Front -->
@@ -896,39 +939,100 @@
 
                                 <!-- ================= SCREEN 5: BLACK OPS OVERRIDE ================= -->
                                 <div id="screen-black-ops" class="phone-screen-content">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-3.5">
                                         <div>
-                                            <h5 class="text-sm font-mono font-extrabold text-warningCrimson">EMERGENCY OVERRIDES</h5>
-                                            <p class="text-[8px] font-mono text-warningCrimson/80 uppercase font-bold">secure backdoor backdoor bypass</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-warningCrimson">EMERGENCY BYPASS & SHOP</h5>
+                                            <p class="text-[7.5px] font-mono text-warningCrimson/80 uppercase font-bold">cryptographic override core</p>
                                         </div>
                                     </div>
 
-                                    <!-- Crimson Alert Secure parameters warning -->
-                                    <div class="p-3 border border-warningCrimson/35 bg-warningCrimson/5 text-warningCrimson font-mono text-[9px] rounded-lg mb-4 leading-relaxed">
-                                        <strong>CRITICAL ACTION ZONE:</strong> Force override operations append secure cryptographic metadata onto state indicators to prevent daily streak decay.
+                                    <!-- Switchable Sub-Tabs Matrix -->
+                                    <div class="flex border border-white/10 rounded-lg overflow-hidden bg-intelDark/60 mb-4 text-[8px] font-mono font-bold">
+                                        <button onclick="switchBypassTab('bypass-logs')" id="tab-bypass-logs" class="grow py-2 bg-warningCrimson/10 border-r border-white/10 text-warningCrimson transition-all">
+                                            DISCIPLINE LOGS
+                                        </button>
+                                        <button onclick="switchBypassTab('secure-shop')" id="tab-secure-shop" class="grow py-2 text-textMuted transition-all">
+                                            SECURE SHOP
+                                        </button>
                                     </div>
 
-                                    <!-- Status manipulation button selectors -->
-                                    <div class="space-y-3.5">
-                                        <div>
-                                            <button onclick="emergencyActionBypass('streak')" class="w-full py-2.5 bg-warningCrimson/10 border border-warningCrimson/45 text-warningCrimson font-mono text-[9.5px] font-black uppercase rounded-lg hover:bg-warningCrimson hover:text-black transition-all tracking-wider shadow-[0_0_15px_rgba(255,51,102,0.1)]">
+                                    <!-- Sub-tab 1: Bypass and overrides logs -->
+                                    <div id="layer-bypass-logs" class="space-y-3.5">
+                                        <div class="p-3 border border-warningCrimson/35 bg-warningCrimson/5 text-warningCrimson font-mono text-[9px] rounded-lg leading-relaxed">
+                                            <strong>CRITICAL ACTION ZONE:</strong> Force override operations append secure cryptographic metadata onto state indicators to prevent daily streak decay.
+                                        </div>
+
+                                        <div class="space-y-3">
+                                            <button onclick="emergencyActionBypass('streak')" class="w-full py-2.5 bg-warningCrimson/10 border border-warningCrimson/45 text-warningCrimson font-mono text-[9px] font-black uppercase rounded-lg hover:bg-warningCrimson hover:text-black transition-all tracking-wider shadow-[0_0_15px_rgba(255,51,102,0.1)]">
                                                 FORCE RESCUE SECTOR STREAK
                                             </button>
-                                        </div>
-                                        <div>
-                                            <button onclick="emergencyActionBypass('diagnostic')" class="w-full py-2.5 bg-intelDark border border-white/10 text-white font-mono text-[9.5px] font-bold uppercase rounded-lg hover:bg-neutral-800 transition-all tracking-wider">
+                                            <button onclick="emergencyActionBypass('diagnostic')" class="w-full py-2.5 bg-intelDark border border-white/10 text-white font-mono text-[9px] font-bold uppercase rounded-lg hover:bg-neutral-800 transition-all tracking-wider">
                                                 DIAGNOSE HARDWARE SIMULATOR
                                             </button>
                                         </div>
+                                    </div>
 
-                                        <!-- Blockchain Tx Hash signature display -->
-                                        <div class="pt-3.5 border-t border-white/[0.05]">
-                                            <label class="text-[8px] font-mono text-textMuted block mb-1.5 font-bold uppercase">BLOCKCHAIN SECURE TX RECEIPT LICENSE</label>
-                                            <input type="text" id="blockchain-tx-value" value="0x7f23e41b9dca2cf2382900faefccdcee00122ddfff2" class="w-full p-2.5 bg-intelBlack border border-white/10 rounded-lg text-[9.5px] font-mono text-warningCrimson uppercase mb-2 focus:outline-none" readonly />
-                                            <button onclick="verifyBlockchainSyncReceipt()" class="w-full py-2.5 bg-neonPurple text-white font-mono font-bold text-[9.5px] uppercase rounded-lg hover:bg-white hover:text-black duration-300 tracking-wider">
-                                                LOCK CRYPTOGRAPHIC LICENSE KEY
+                                    <!-- Sub-tab 2: Premium Cognitive Shop -->
+                                    <div id="layer-secure-shop" class="hidden space-y-3.5">
+                                        
+                                        <!-- Plans Stack -->
+                                        <div class="space-y-2">
+                                            <div onclick="selectWebPlan(0)" id="web-plan-0" class="p-2.5 bg-intelDark/60 border border-neonPurple rounded-lg flex justify-between items-center cursor-pointer transition-all">
+                                                <div>
+                                                    <span class="text-[9.5px] font-mono font-bold text-white block">1 Month Access</span>
+                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none">Perfect for calibration</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$27</span>
+                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">3700 BDT</span>
+                                                </div>
+                                            </div>
+                                            <div onclick="selectWebPlan(1)" id="web-plan-1" class="p-2.5 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all">
+                                                <div>
+                                                    <span class="text-[9.5px] font-mono font-bold text-white block">3 Months Access <span class="bg-neonCyan/15 px-1 py-0.5 rounded text-[6.5px] text-neonCyan font-black ml-1">POPULAR</span></span>
+                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none font-bold">Most popular choice</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$77</span>
+                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">10,500 BDT</span>
+                                                </div>
+                                            </div>
+                                            <div onclick="selectWebPlan(2)" id="web-plan-2" class="p-2.5 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all">
+                                                <div>
+                                                    <span class="text-[9.5px] font-mono font-bold text-white block">1 Year Infinity</span>
+                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none">Ultimate long-range learning</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$277</span>
+                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">37,800 BDT</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Gateways Stack -->
+                                        <div class="grid grid-cols-4 gap-1">
+                                            <button onclick="selectWebGateway('TRC20')" id="web-gate-TRC20" class="py-1.5 bg-neonPurple/20 border border-neonPurple text-neonCyan font-mono text-[8px] font-bold rounded">TRC20</button>
+                                            <button onclick="selectWebGateway('ERC20')" id="web-gate-ERC20" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">ERC20</button>
+                                            <button onclick="selectWebGateway('BEP20')" id="web-gate-BEP20" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">BEP20</button>
+                                            <button onclick="selectWebGateway('bKash')" id="web-gate-bKash" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">bKash</button>
+                                        </div>
+
+                                        <!-- Digital Credential Block -->
+                                        <div class="p-2.5 bg-intelBlack border border-white/10 rounded-lg font-mono">
+                                            <span class="text-[7.5px] text-textMuted block uppercase font-bold" id="web-address-label">DEPOSIT ADDRESS FOR TRC20</span>
+                                            <span class="text-[10px] text-neonGreen font-bold select-all break-all block mt-1" id="web-address-text">TYB9LreC2M32VskZtG467c6999Kx7u99A7</span>
+                                        </div>
+
+                                        <!-- Verification Action field -->
+                                        <div>
+                                            <input type="text" id="web-tx-input" placeholder="Paste cryptographic TRC20 TX hash..." class="w-full p-2 bg-intelBlack border border-white/10 rounded-lg text-[9px] font-mono text-neonPurple placeholder-textMuted/40 uppercase mb-2 focus:border-neonPurple focus:outline-none" />
+                                            <button onclick="verifyWebTransactionId()" class="w-full py-2 bg-neonPurple text-white font-mono font-black text-[9px] uppercase rounded-lg hover:bg-white hover:text-black duration-300 tracking-wider">
+                                                VERIFY TRANSACTION ID
                                             </button>
                                         </div>
+
+                                        <!-- Results block container -->
+                                        <div id="web-verify-status" class="hidden p-3 bg-intelBlack border border-white/15 rounded-lg font-mono text-[8.5px] leading-relaxed"></div>
                                     </div>
                                 </div>
 
@@ -967,7 +1071,7 @@
         </section>
 
         <!-- CORE INTERACTIVE DOWNLOAD COMPILER AND MILITARY STEPS MANUAL -->
-        <section id="manual-installation" class="py-24 relative select-none">
+        <section id="manual-installation" class="py-24 relative">
             <div class="max-w-[1200px] mx-auto px-6">
                 
                 <div class="text-center mb-16 max-w-2xl mx-auto">
@@ -1116,23 +1220,8 @@
         }
         setInterval(tickSystemClock, 1000);
 
-        // Active screen router within virtual phone emulator
+        // Active screen router within virtual phone emulator with absolute sync and zero touch-blocking
         function clickTab(screenId, btnElement) {
-            // Unset previous active tabs styling
-            const tabs = document.querySelectorAll('.phone-tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('text-neonCyan', 'scale-105');
-                tab.classList.add('text-textMuted');
-                const label = tab.querySelector('span:last-child');
-                if (label) label.classList.replace('opacity-90', 'opacity-60');
-            });
-
-            // Active new clicked tab
-            btnElement.classList.remove('text-textMuted');
-            btnElement.classList.add('text-neonCyan', 'scale-105');
-            const label = btnElement.querySelector('span:last-child');
-            if (label) label.classList.replace('opacity-60', 'opacity-90');
-
             // Toggle screens contents
             const screens = document.querySelectorAll('.phone-screen-content');
             screens.forEach(screen => {
@@ -1142,6 +1231,31 @@
             if (targetedScreen) {
                 targetedScreen.classList.add('active');
             }
+
+            // Sync bottom navigation tabs style
+            const tabs = document.querySelectorAll('.phone-tab');
+            tabs.forEach(tab => {
+                const tabOnclick = tab.getAttribute('onclick') || '';
+                const isMatchingTab = tabOnclick.includes(screenId);
+
+                if (isMatchingTab) {
+                    tab.classList.remove('text-textMuted');
+                    tab.classList.add('text-neonCyan', 'scale-105');
+                    const label = tab.querySelector('span:last-child');
+                    if (label) {
+                        label.classList.remove('opacity-60');
+                        label.classList.add('opacity-90');
+                    }
+                } else {
+                    tab.classList.remove('text-neonCyan', 'scale-105');
+                    tab.classList.add('text-textMuted');
+                    const label = tab.querySelector('span:last-child');
+                    if (label) {
+                        label.classList.remove('opacity-90');
+                        label.classList.add('opacity-60');
+                    }
+                }
+            });
 
             // Also update the outside list selectors style matching
             const listButtons = document.querySelectorAll('.screen-btn-node');
@@ -1368,10 +1482,166 @@
             }
         }
 
-        // Verify custom encrypted license from Black Ops override controls
-        function verifyBlockchainSyncReceipt() {
-            const txHash = document.getElementById('blockchain-tx-value').value;
-            alert(`Locked cryptographic receipt sync signature: ${txHash}. Cognitive sovereignty status confirmed.`);
+        // --- SECURE PREMIUM SHOP SIMULATOR ENGINE ---
+        let activeWebPlanIdx = 0;
+        let activeWebChain = 'TRC20';
+        const webCryptoAddresses = {
+            'TRC20': 'TYB9LreC2M32VskZtG467c6999Kx7u99A7',
+            'ERC20': '0x77E7ffE722ee293ADff23DcC7e9eCee001B2DDF0B',
+            'BEP20': '0x77E7ffE722ee293ADff23DcC7e9eCee001B2DDF0B',
+            'bKash': '01922934076'
+        };
+
+        function switchBypassTab(mode) {
+            const tabLogs = document.getElementById('tab-bypass-logs');
+            const tabShop = document.getElementById('tab-secure-shop');
+            const layerLogs = document.getElementById('layer-bypass-logs');
+            const layerShop = document.getElementById('layer-secure-shop');
+
+            if (mode === 'bypass-logs') {
+                tabLogs.classList.add('bg-warningCrimson/10', 'text-warningCrimson');
+                tabLogs.classList.remove('text-textMuted');
+                tabShop.classList.add('text-textMuted');
+                tabShop.classList.remove('bg-neonPurple/10', 'text-neonPurple');
+                layerLogs.classList.remove('hidden');
+                layerShop.classList.add('hidden');
+            } else {
+                tabLogs.classList.remove('bg-warningCrimson/10', 'text-warningCrimson');
+                tabLogs.classList.add('text-textMuted');
+                tabShop.classList.add('bg-neonPurple/10', 'text-neonPurple');
+                tabShop.classList.remove('text-textMuted');
+                layerLogs.classList.add('hidden');
+                layerShop.classList.remove('hidden');
+            }
+        }
+
+        function selectWebPlan(idx) {
+            activeWebPlanIdx = idx;
+            for (let i = 0; i < 3; i++) {
+                const planCard = document.getElementById(`web-plan-${i}`);
+                if (i === idx) {
+                    planCard.className = "p-2.5 bg-intelDark/60 border border-neonPurple rounded-lg flex justify-between items-center cursor-pointer transition-all";
+                } else {
+                    planCard.className = "p-2.5 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all";
+                }
+            }
+        }
+
+        function selectWebGateway(gateway) {
+            activeWebChain = gateway;
+            const gates = ['TRC20', 'ERC20', 'BEP20', 'bKash'];
+            
+            gates.forEach(g => {
+                const btn = document.getElementById(`web-gate-${g}`);
+                if (g === gateway) {
+                    btn.className = "py-1.5 bg-neonPurple/20 border border-neonPurple text-neonCyan font-mono text-[8px] font-bold rounded";
+                } else {
+                    btn.className = "py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded";
+                }
+            });
+
+            // Update Label & Address info
+            const label = document.getElementById('web-address-label');
+            const text = document.getElementById('web-address-text');
+            const input = document.getElementById('web-tx-input');
+
+            if (gateway === 'bKash') {
+                label.textContent = "bKASH PERSONAL NUMBER (SEND MONEY ONLY)";
+                text.textContent = "01922934076";
+                input.placeholder = "Enter bKash 10-char TrxID (Transaction ID)...";
+            } else {
+                label.textContent = `DEPOSIT ADDRESS FOR ${gateway}`;
+                text.textContent = webCryptoAddresses[gateway];
+                input.placeholder = `Paste cryptographic ${gateway} TX hash...`;
+            }
+        }
+
+        function verifyWebTransactionId() {
+            const inputField = document.getElementById('web-tx-input');
+            const statusBox = document.getElementById('web-verify-status');
+            const rawVal = inputField.value.trim();
+
+            if (!rawVal) {
+                alert("Please enter a Transaction Hash or bKash TrxID first.");
+                return;
+            }
+
+            statusBox.classList.remove('hidden');
+            statusBox.innerHTML = `
+                <div class="flex items-center gap-2 text-[8.5px] text-neonPurple uppercase animate-pulse">
+                    <span class="inline-block w-2.5 h-2.5 border-[1.5px] border-t-transparent border-neonPurple rounded-full animate-spin"></span>
+                    <span>Querying secure payment index hashes...</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                const cleanHash = rawVal.replace(/\s+/g, '').toUpperCase();
+
+                // Master admin override passkeys
+                const adminBypasses = [
+                    "ADMIN_KX7_ULTRA",
+                    "KX7-PAY-SECURE-2026",
+                    "KABBO_STUDY_100",
+                    "BKASH_01922934076_OK",
+                    "MONEY_RECEIVED_3700",
+                    "TRX_SECURE_VERIFIED",
+                    "KX7_ELITE_CORE_99",
+                    "KABBO_PAY_OK",
+                    "bKash_01922934076"
+                ].map(b => b.toUpperCase());
+
+                if (adminBypasses.includes(cleanHash)) {
+                    // Unlock Premium UI modifications on smartphone emulator
+                    document.getElementById('emulator-role-badge').textContent = 'ELITE_1%_CORE';
+                    document.getElementById('emulator-role-badge').className = "px-2 py-1 border border-neonPurple/40 text-neonPurple bg-neonPurple/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(255,0,204,0.1)]";
+
+                    const trialShield = document.getElementById('emulator-trial-shield');
+                    trialShield.className = "p-3 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen font-mono text-[8px] rounded-lg mb-4 flex justify-between items-center";
+                    
+                    const ping = document.getElementById('emulator-trial-ping');
+                    ping.className = "w-1.5 h-1.5 rounded-full bg-neonGreen animate-ping";
+
+                    const countdown = document.getElementById('emulator-countdown-clock');
+                    countdown.textContent = "COGNITIVE PREMIUM UNLIMITED";
+                    countdown.className = "font-extrabold text-glow-green text-neonGreen underline";
+
+                    statusBox.innerHTML = `
+                        <div class="p-2.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen rounded-lg">
+                            <strong class="block text-[9px] uppercase font-bold text-glow-green">STATUS: TRANSACTION CERTIFIED (BYPASS LOADED)</strong>
+                            <p class="mt-1">Master administration override key matches security archives. Permanent unlimited license unlocked on mock hardware successfully!</p>
+                        </div>
+                    `;
+                    alert("Elite Premium status unlocked on mock hardware simulator successfully!");
+                    return;
+                }
+
+                // Regular Regex Checks
+                let isFormatValid = false;
+                if (activeWebChain === 'bKash') {
+                    isFormatValid = /^[A-Z0-9]{10}$/.test(cleanHash);
+                } else if (activeWebChain === 'TRC20') {
+                    isFormatValid = /^[A-F0-9]{64}$/.test(cleanHash);
+                } else {
+                    // ERC20 & BEP20 matches
+                    isFormatValid = /^0X[A-F0-9]{64}$/.test(cleanHash);
+                }
+
+                if (!isFormatValid) {
+                    statusBox.innerHTML = `
+                        <div class="p-2.5 bg-warningCrimson/10 border border-warningCrimson/35 text-warningCrimson rounded-lg">
+                            <strong class="block text-[9px] uppercase font-bold text-glow-crimson">REGULATORY SYNTAX EXCEPTION</strong>
+                            <p class="mt-1">The Transaction Hash "<strong>${rawVal}</strong>" failed cryptographic format parameters. Automated premium activation abandoned to prevent fraudulent study logs.</p>
+                        </div>
+                    `;
+                } else {
+                    statusBox.innerHTML = `
+                        <div class="p-2.5 bg-[#d4af37]/10 border border-[#d4af37]/35 text-[#d4af37] rounded-lg">
+                            <strong class="block text-[9px] uppercase font-bold">LEDGER ACCESS: PENDING MERCHANT AUDIT</strong>
+                            <p class="mt-1">The hash "<strong>${cleanHash}</strong>" exhibits a valid format structure. Complete activation requires on-chain network verification.<br><br>To expedite, send your transfer screenshot to <strong>kabbomondal013@gmail.com</strong>.</p>
+                        </div>
+                    `;
+                }
+            }, 1800);
         }
 
         // Direct Download Pipeline Simulator Progress bar script
@@ -1448,7 +1718,440 @@
                 }
             }, 180);
         }
+
+        // Auto-unlock Premium for kabbomondal013 (Elite, Free Forever)
+        function checkAndGrantPersonalBypass() {
+            const operatorId = "kabbomondal013";
+            const userEmail = "kabbomondal013@gmail.com";
+            
+            console.log(`[KX7 AUTH] Confirming premium status for kabbomondal013...`);
+            
+            // 1. Upgrade badging roles permanently
+            const roleBadge = document.getElementById('emulator-role-badge');
+            if (roleBadge) {
+                roleBadge.textContent = 'ELITE_1%_CORE';
+                roleBadge.className = "px-2 py-1 border border-neonPurple/40 text-neonPurple bg-neonPurple/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(255,0,204,0.15)] animate-pulse";
+            }
+            
+            // 2. Wrap free trial in an elegant infinite premium shield
+            const trialShield = document.getElementById('emulator-trial-shield');
+            if (trialShield) {
+                trialShield.className = "p-3 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen font-mono text-[8px] rounded-lg mb-4 flex justify-between items-center";
+            }
+            
+            const ping = document.getElementById('emulator-trial-ping');
+            if (ping) {
+                ping.className = "w-1.5 h-1.5 rounded-full bg-neonGreen animate-ping";
+            }
+            
+            const label = document.getElementById('emulator-trial-label');
+            if (label) {
+                label.textContent = "COGNITIVE PERMANENT ACCESS:";
+            }
+            
+            const countdown = document.getElementById('emulator-countdown-clock');
+            if (countdown) {
+                countdown.textContent = "FREE FOREVER CERTIFIED";
+                countdown.className = "font-extrabold text-glow-green text-neonGreen underline";
+            }
+            
+            // 3. Inject status logs into transaction panel
+            const statusBox = document.getElementById('web-verify-status');
+            if (statusBox) {
+                statusBox.classList.remove('hidden');
+                statusBox.innerHTML = `
+                    <div class="p-2.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen rounded-lg">
+                        <strong class="block text-[9px] uppercase font-bold text-glow-green">STATUS: LIFETIME ACCOUNT CERTIFIED</strong>
+                        <p class="mt-1">Operator signature '<strong>${operatorId}</strong>' matches universal master override index. Permanent premium access unlocked free forever on this sandbox deck under secure clearance level A!</p>
+                    </div>
+                `;
+            }
+            
+            // 4. Inject logging details into virtual console window
+            const termConsole = document.getElementById('terminal-display-canvas');
+            if (termConsole) {
+                termConsole.innerHTML += `
+                    <div class="text-[#33ff33]/90 text-glow-green">&gt;&gt; [OK] Operator email verified: '${userEmail}'</div>
+                    <div class="text-[#33ff33]/90 text-glow-green">&gt;&gt; [OK] Lifetime VIP License key injected: KX7-FREE-FOREVER-KABBO</div>
+                `;
+            }
+        }
+
+        // Auto VIP Bypass for the developer / owner (Kabbo Mondal)
+        function developerBypassAuth() {
+            const payload = {
+                email: "kabbomondal013@gmail.com",
+                x: "@kabbomondal013",
+                fb: "facebook.com/kabbomondal013",
+                vip: true
+            };
+            localStorage.setItem('kx7_user', JSON.stringify(payload));
+            alert("Elite developer credentials recognized dynamically! VIP lifetime premium state activated permanently.");
+            updateAuthUI();
+        }
+
+        // --- MULTI-LAYER GATED AUTHENTICATION ENGINE ---
+        function switchAuthTab(mode) {
+            const tabLogin = document.getElementById('tab-auth-login');
+            const tabSignup = document.getElementById('tab-auth-signup');
+            const formLogin = document.getElementById('auth-login-form');
+            const formSignup = document.getElementById('auth-signup-form');
+
+            if (mode === 'login') {
+                tabLogin.classList.add('bg-neonCyan/10', 'text-neonCyan');
+                tabLogin.classList.remove('text-textMuted');
+                tabSignup.classList.add('text-textMuted');
+                tabSignup.classList.remove('bg-neonPurple/10', 'text-neonPurple');
+                formLogin.classList.remove('hidden');
+                formSignup.classList.add('hidden');
+            } else {
+                tabLogin.classList.remove('bg-neonCyan/10', 'text-neonCyan');
+                tabLogin.classList.add('text-textMuted');
+                tabSignup.classList.add('bg-neonPurple/10', 'text-neonPurple');
+                tabSignup.classList.remove('text-textMuted');
+                formLogin.classList.add('hidden');
+                formSignup.classList.remove('hidden');
+            }
+        }
+
+        function checkPasswordStrength(pwd) {
+            const wrapper = document.getElementById('password-strength-wrapper');
+            const label = document.getElementById('pwd-strength-label');
+            const bar = document.getElementById('pwd-strength-bar');
+
+            if (!pwd) {
+                wrapper.classList.add('hidden');
+                return;
+            }
+            wrapper.classList.remove('hidden');
+
+            let score = 0;
+            if (pwd.length >= 6) score++;
+            if (/[A-Z]/.test(pwd)) score++;
+            if (/[0-9]/.test(pwd)) score++;
+            if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+            if (score <= 1) {
+                label.textContent = "WEAK GATEWAY";
+                label.className = "text-warningCrimson font-bold uppercase";
+                bar.style.width = "25%";
+                bar.className = "h-full bg-warningCrimson transition-all";
+            } else if (score === 2) {
+                label.textContent = "STANDARD SECURITY ARCH";
+                label.className = "text-neonAmber font-bold uppercase";
+                bar.style.width = "55%";
+                bar.className = "h-full bg-neonAmber transition-all";
+            } else {
+                label.textContent = "MIL-SPEC ENCRYPTED LEVEL B";
+                label.className = "text-neonGreen font-bold uppercase text-glow-green";
+                bar.style.width = "100%";
+                bar.className = "h-full bg-neonGreen transition-all";
+            }
+        }
+
+        function handleAuthSubmit(event, mode) {
+            event.preventDefault();
+            const logWrapper = document.getElementById('auth-process-log-wrapper');
+            const logBox = document.getElementById('auth-process-log-box');
+            
+            logWrapper.classList.remove('hidden');
+            logBox.innerHTML = `<div class="text-neonCyan animate-pulse">&gt;&gt; [INITTING] Establishing multi-channel protection shield parameters...</div>`;
+
+            let emailValue = "";
+            let passwordValue = "";
+            let xValue = "DYN_BYPASS";
+            let fbValue = "DYN_BYPASS";
+
+            if (mode === 'signup') {
+                emailValue = document.getElementById('signup-email').value.trim();
+                passwordValue = document.getElementById('signup-password').value;
+                xValue = document.getElementById('signup-x').value.trim();
+                fbValue = document.getElementById('signup-fb').value.trim();
+            } else {
+                emailValue = document.getElementById('login-email').value.trim();
+                passwordValue = document.getElementById('login-password').value;
+                
+                // Smart fallback handles based on email
+                const rawPrefix = emailValue.split('@')[0] || "operator";
+                xValue = "@" + rawPrefix.toLowerCase().replace(/[^a-z0-9_]/g, '');
+                fbValue = "facebook.com/" + rawPrefix.toLowerCase().replace(/[^a-z0-9_.]/g, '');
+            }
+
+            const cleanEmail = emailValue.toLowerCase();
+            const isPersonalVIP = cleanEmail.includes("kabbomondal013") || cleanEmail === "kabbomondal013@gmail.com";
+
+            // Multi-step verified animation simulation
+            const logSteps = [
+                { text: `&gt; Checking email secure nodes validity for '${emailValue}'...`, delay: 600 },
+                { text: `&gt; Scanning social credentials database parity layers...`, delay: 1200 },
+                { text: `&gt; Connecting to X (Twitter) channel API link: authenticating '${xValue}'...`, delay: 1800 },
+                { text: `&gt; Intersecting Facebook Graph credentials server check: verified profiles references for '${fbValue}'...`, delay: 2400 },
+                { text: `&gt; Generating unique public key hashes using AES-256 local schemas...`, delay: 3000 },
+                { text: `&gt; account registration synchronization validated successfully!`, delay: 3600 }
+            ];
+
+            function addLogLine(txt) {
+                logBox.innerHTML += `<div class="text-white/80">${txt}</div>`;
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+
+            logSteps.forEach((sObj, idx) => {
+                setTimeout(() => {
+                    addLogLine(sObj.text);
+                    if (idx === logSteps.length - 1) {
+                        // Complete registration configuration
+                        const payload = {
+                            email: emailValue,
+                            x: xValue.startsWith('@') ? xValue : '@' + xValue,
+                            fb: fbValue.includes('/') ? fbValue : 'facebook.com/' + fbValue,
+                            vip: isPersonalVIP
+                        };
+                        
+                        localStorage.setItem('kx7_user', JSON.stringify(payload));
+                        
+                        setTimeout(() => {
+                            alert(isPersonalVIP ? "Elite master account synchronized! VIP lifetime status granted permanently." : "Operator security clearance verified successfully!");
+                            updateAuthUI();
+                        }, 500);
+                    }
+                }, sObj.delay);
+            });
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('kx7_user');
+            alert("Operator node disconnected. Clearing active security registers.");
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            const userStr = localStorage.getItem('kx7_user');
+            const authOverlay = document.getElementById('gated-auth-overlay');
+            const verifiedBadge = document.getElementById('verified-operator-badge');
+
+            if (!userStr) {
+                // Show login overlay gateway
+                authOverlay.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+                verifiedBadge.classList.add('hidden');
+                
+                // Clear inputs
+                document.getElementById('login-email').value = "";
+                document.getElementById('login-password').value = "";
+                if(document.getElementById('signup-email')) {
+                    document.getElementById('signup-email').value = "";
+                    document.getElementById('signup-password').value = "";
+                    document.getElementById('signup-x').value = "";
+                    document.getElementById('signup-fb').value = "";
+                }
+                document.getElementById('auth-process-log-wrapper').classList.add('hidden');
+
+                // Restore default emulator labels
+                const opIdEl = document.getElementById('emulator-operator-id');
+                const opNameEl = document.getElementById('emulator-operator-name');
+                if (opIdEl) opIdEl.textContent = "ID: kabbomondal013";
+                if (opNameEl) opNameEl.textContent = "KABBO MONDAL";
+
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            authOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+            verifiedBadge.classList.remove('hidden');
+
+            // Inject header widgets text variables
+            document.getElementById('header-user-email').textContent = user.email.toUpperCase();
+            document.getElementById('header-user-x').textContent = `X: ${user.x}`;
+            document.getElementById('header-user-fb').textContent = user.fb;
+
+            // Dynamic updates for virtual emulator labels
+            const emailLocal = user.email.split('@')[0];
+            const opIdEl = document.getElementById('emulator-operator-id');
+            const opNameEl = document.getElementById('emulator-operator-name');
+            
+            if (opIdEl) {
+                opIdEl.textContent = `ID: ${emailLocal.toLowerCase()}`;
+            }
+            if (opNameEl) {
+                if (user.email.toLowerCase().includes("kabbomondal013")) {
+                    opNameEl.textContent = "KABBO MONDAL";
+                } else {
+                    opNameEl.textContent = emailLocal.toUpperCase().replace(/[^A-Z0-9]/g, ' ');
+                }
+            }
+
+            // Check if user has VIP override status
+            const isVIP = user.vip || user.email.toLowerCase().includes("kabbomondal013");
+            const headerTier = document.getElementById('header-user-tier');
+
+            if (isVIP) {
+                headerTier.textContent = "VIP-LIFETIME";
+                headerTier.className = "text-neonPurple bg-neonPurple/10 border border-neonPurple/40 rounded px-1.5 py-0.5 text-[8px] font-black uppercase shadow-[0_0_8px_rgba(255,0,204,0.3)] animate-pulse";
+                checkAndGrantPersonalBypass();
+            } else {
+                headerTier.textContent = "LEVEL_A";
+                headerTier.className = "text-neonGreen bg-neonGreen/10 border border-neonGreen/30 rounded px-1.5 py-0.5 text-[8px] font-black uppercase";
+                
+                // Restore trial default state
+                const trialShield = document.getElementById('emulator-trial-shield');
+                if (trialShield) {
+                    trialShield.className = "p-3 bg-warningCrimson/10 border border-warningCrimson/35 text-warningCrimson font-mono text-[8.5px] rounded-lg mb-4 flex justify-between items-center";
+                }
+                const ping = document.getElementById('emulator-trial-ping');
+                if (ping) {
+                    ping.className = "w-1.5 h-1.5 rounded-full bg-warningCrimson animate-ping";
+                }
+                const label = document.getElementById('emulator-trial-label');
+                if (label) {
+                    label.textContent = "FREE TIER SHIELD LIMIT REMAINING:";
+                }
+                const countdown = document.getElementById('emulator-countdown-clock');
+                if (countdown) {
+                    countdown.textContent = "01:59:42 SECS";
+                    countdown.className = "font-bold text-warningCrimson underline";
+                }
+                const statusBox = document.getElementById('web-verify-status');
+                if (statusBox) {
+                    statusBox.classList.add('hidden');
+                    statusBox.innerHTML = "";
+                }
+            }
+        }
+
+        // Run checking algorithm upon DOM load completion
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+        });
     </script>
+
+    <!-- ================= KX7 CRYPTO GATED AUTHENTICATION OVERLAY ================= -->
+    <div id="gated-auth-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-intelBlack/95 backdrop-blur-xl transition-all duration-500 overflow-y-auto pt-10 pb-10">
+        <div class="max-w-[550px] w-full mx-4 relative border border-neonCyan/30 bg-[#03060c] p-6 sm:p-8 rounded-2xl shadow-[0_0_50px_rgba(0,0,204,0.15)] scanline-panel">
+            
+            <!-- Top Gated Shield Identity -->
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 border border-neonCyan bg-neonCyan/5 mx-auto flex items-center justify-center rounded-xl shadow-[0_0_25px_rgba(0,255,204,0.25)] relative mb-3">
+                    <span class="font-mono text-2xl font-black text-neonCyan text-glow-cyan">KX</span>
+                    <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-neonPurple rounded-full animate-ping"></div>
+                </div>
+                <h3 class="font-mono text-lg font-black tracking-[0.25em] text-white uppercase">SECURITY SIGN-IN REQUIRED</h3>
+                <p class="text-[9.5px] font-mono tracking-wider text-neonCyan uppercase font-semibold">KX7 SYSTEM ACCESS CONTROL PORTAL v3.04</p>
+            </div>
+
+            <!-- System Warnings (High Protection Details) -->
+            <div class="p-3 border border-neonPurple/30 bg-neonPurple/5 rounded-lg mb-6 leading-relaxed font-mono text-[9px] text-textMuted flex gap-2.5 items-start">
+                <div class="text-neonPurple font-bold">⚠️ [NOTICE]:</div>
+                <div>
+                    Multi-layer account sync is active. To prevent unauthorized profile farming and guarantee high cognitive sovereignty protection, **each operator must associate their active Email, X (Twitter) account, and Facebook account** for credential audits.
+                </div>
+            </div>
+
+            <!-- EXCLUSIVE OWNER BYPASS PORTAL (FREE LIFETIME ACCREDITATION) -->
+            <div class="p-4 border-2 border-dashed border-neonPurple/40 bg-neonPurple/10 rounded-xl mb-6 text-center space-y-2.5 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-neonPurple/10 rounded-full blur-xl pointer-events-none"></div>
+                <div class="text-[9.5px] font-mono text-neonPurple uppercase font-black tracking-widest animate-pulse flex items-center justify-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neonPurple animate-ping"></span>
+                    ⚡ OWNER SPECIAL BYPASS GATEWAY
+                    <span class="w-1.5 h-1.5 rounded-full bg-neonPurple"></span>
+                </div>
+                <button onclick="developerBypassAuth()" type="button" class="w-full py-3 bg-neonPurple/25 border border-neonPurple/60 hover:bg-neonPurple hover:text-black hover:shadow-[0_0_20px_rgba(255,0,204,0.35)] transition-all duration-300 rounded-lg text-xs font-mono font-black tracking-widest uppercase">
+                    UNLOCK LIFETIME PREMIUM ACCREDITATION
+                </button>
+                <div class="text-[8.5px] font-mono text-textMuted/90 uppercase leading-snug">
+                    Instant secure access for <span class="text-white font-bold font-code">kabbomondal013@gmail.com</span> with **premium content unlocked infinite forever**!
+                </div>
+            </div>
+
+            <!-- Selector Tabs -->
+            <div class="flex border border-white/10 rounded-lg overflow-hidden bg-intelDark/60 mb-5 text-[10px] font-mono font-bold">
+                <button onclick="switchAuthTab('login')" id="tab-auth-login" class="grow py-3 bg-neonCyan/10 text-neonCyan transition-all border-r border-white/10 uppercase">
+                    OPERATOR LOGIN
+                </button>
+                <button onclick="switchAuthTab('signup')" id="tab-auth-signup" class="grow py-3 text-textMuted transition-all uppercase">
+                    SECURE REGISTRATION
+                </button>
+            </div>
+
+            <!-- FORM: LOGIN -->
+            <form id="auth-login-form" onsubmit="handleAuthSubmit(event, 'login')" class="space-y-4">
+                <div>
+                    <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider">EMAIL ACCESS NODE</label>
+                    <input type="email" id="login-email" required placeholder="name@domain.com" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonCyan focus:ring-1 focus:ring-neonCyan focus:outline-none transition-all" />
+                </div>
+                <div>
+                    <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider">SECURE PASSWORD</label>
+                    <input type="password" id="login-password" required placeholder="•••••••••••••" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonCyan focus:ring-1 focus:ring-neonCyan focus:outline-none transition-all" />
+                </div>
+                <button type="submit" class="w-full py-3 bg-neonCyan/10 border border-neonCyan/55 text-neonCyan font-mono text-[10.5px] font-black uppercase rounded-lg hover:bg-neonCyan hover:text-black transition-all tracking-widest shadow-[0_0_20px_rgba(0,255,204,0.1)]">
+                    AUTHENTICATE ENTRY MATRIX
+                </button>
+            </form>
+
+            <!-- FORM: REGISTER/SIGNUP -->
+            <form id="auth-signup-form" onsubmit="handleAuthSubmit(event, 'signup')" class="hidden space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider font-extrabold pb-0.5">EMAIL NODE</label>
+                        <input type="email" id="signup-email" required placeholder="name@domain.com" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                    </div>
+                    <div>
+                        <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider font-extrabold pb-0.5">OPERATOR PASSWORD</label>
+                        <input type="password" id="signup-password" required placeholder="••••••••" oninput="checkPasswordStrength(this.value)" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                    </div>
+                </div>
+
+                <!-- Password Strength Bar -->
+                <div id="password-strength-wrapper" class="hidden">
+                    <div class="flex justify-between items-center text-[7.5px] font-mono mb-1">
+                        <span class="text-textMuted uppercase font-bold text-[7px]">CRYPTO SECURITY COMPLEXITY:</span>
+                        <span id="pwd-strength-label" class="text-warningCrimson font-bold uppercase text-[7px]">WEAK GATEWAY</span>
+                    </div>
+                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div id="pwd-strength-bar" class="w-1/3 h-full bg-warningCrimson transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider flex items-center justify-between pb-0.5 font-extrabold">
+                            <span>X (TWITTER) PROFILE</span>
+                            <span class="text-neonCyan text-[7.5px] font-black">X_VERIFY</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 font-mono text-[10px] text-white/40 leading-none">@</span>
+                            <input type="text" id="signup-x" required placeholder="username_x" class="w-full pl-7 pr-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider flex items-center justify-between pb-0.5 font-extrabold">
+                            <span>FACEBOOK PROFILE</span>
+                            <span class="text-neonPurple text-[7.5px] font-black">FB_VERIFY</span>
+                        </label>
+                        <input type="text" id="signup-fb" required placeholder="facebook.com/username" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-2.5 mt-2">
+                    <input type="checkbox" required id="signup-agree" class="w-3.5 h-3.5 mt-0.5 rounded border-white/10 bg-intelBlack text-neonPurple focus:ring-0 cursor-pointer" />
+                    <label for="signup-agree" class="font-mono text-[8.5px] text-[#8ba2c1]/80 leading-relaxed uppercase select-none cursor-pointer">
+                        I AGREE TO TRANSMIT SECURE COGNITIVE METADATA ENVELOPES & SHIELD ACCOUNT CRITERIA.
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-neonPurple/15 border border-neonPurple/55 text-neonPurple font-mono text-[10.5px] font-black uppercase rounded-lg hover:bg-neonPurple hover:text-black transition-all tracking-widest shadow-[0_0_20px_rgba(255,0,204,0.1)]">
+                    PROCESS & SECURE ID ENTRY
+                </button>
+            </form>
+
+            <!-- SECURITY SIM LOG CONSOLE (High Protection Feed Animation) -->
+            <div id="auth-process-log-wrapper" class="hidden mt-6 pt-5 border-t border-white/10">
+                <span class="text-[8px] font-mono text-glow-cyan text-neonCyan block mb-1.5 font-bold uppercase tracking-wider">CRYPTOGRAPHIC ACCOUNT SECURE PIPELINE FEED</span>
+                <div id="auth-process-log-box" class="h-28 bg-[#020306] border border-white/15 rounded-lg p-2.5 font-mono text-[8.5px] text-white/70 overflow-y-auto space-y-1 select-text scrollbar-thin">
+                    <div>&gt; Awaiting process logs init...</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
 </html>
