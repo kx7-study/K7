@@ -913,11 +913,12 @@
                                     <!-- Dynamic Solver controls grid dashboard -->
                                     <div class="space-y-2.5">
                                         <!-- Subject Area Selectors -->
-                                        <div class="grid grid-cols-4 gap-1">
-                                            <button onclick="selectSolverSubject('math')" id="solver-sub-math" class="py-1 bg-neonCyan text-black font-mono text-[7px] font-black rounded uppercase">MATHS</button>
-                                            <button onclick="selectSolverSubject('physics')" id="solver-sub-physics" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">PHYSICS</button>
-                                            <button onclick="selectSolverSubject('chemistry')" id="solver-sub-chemistry" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">CHEMISTRY</button>
-                                            <button onclick="selectSolverSubject('language')" id="solver-sub-language" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">LANGS</button>
+                                        <div class="grid grid-cols-5 gap-0.5">
+                                            <button onclick="selectSolverSubject('math')" id="solver-sub-math" class="py-1 bg-neonCyan text-black font-mono text-[6px] font-black rounded uppercase">MATHS</button>
+                                            <button onclick="selectSolverSubject('physics')" id="solver-sub-physics" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[6px] font-bold rounded uppercase">PHYSICS</button>
+                                            <button onclick="selectSolverSubject('chemistry')" id="solver-sub-chemistry" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[6px] font-bold rounded uppercase">CHEMISTRY</button>
+                                            <button onclick="selectSolverSubject('language')" id="solver-sub-language" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[6px] font-bold rounded uppercase">LANGS</button>
+                                            <button onclick="selectSolverSubject('biology')" id="solver-sub-biology" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[6px] font-bold rounded uppercase">BIOLOGY</button>
                                         </div>
 
                                         <!-- Real Exam boards / Predefined quick test prompts -->
@@ -1649,6 +1650,12 @@ service cloud.firestore {
                 'NCTB_BD': { label: 'Bangla OLE: Translate matrix to high-stakes terminology', text: 'Translate high-stakes mathematical syllabus terms to authentic Bangla linguistic structures.', latex: '\\text{Calculus} \\rightarrow \\text{কলনবিদ্যা (যোজন/বিয়োজন)}' },
                 'CAMBRIDGE_UK': { label: 'A-Level Lang: Stylistic convergence values', text: 'Evaluate semantic densities of syntax paradigms.', latex: '\\text{Density} = \\frac{\\text{Words (Lexical)}}{\\text{Total Words}} h \\times 100' },
                 'CBSE_IN': { label: 'CBSE English: Formal vector email directives', text: 'Construct rigorous professional communication structures.', latex: '\\text{Format} = \\text{Salutation} + \\text{Direct Intent} + \\text{Sign-off}' }
+            },
+            'biology': {
+                'SAT_USA': { label: 'SAT Biology: Cell Organelles and DNA structures', text: 'Describe the double helix DNA cell coordinates and protein synthesis patterns.', latex: '\\text{DNA} \\rightarrow 5\' \\text{-ATGC-} 3\'' },
+                'NCTB_BD': { label: 'HSC Biology: Plant physiology and photosynthesis', text: 'Analyze the light-dependent reactions and photophosphorylation parameters in plants.', latex: '\\text{Photosynthesis} \\rightarrow 6H_2O + 6CO_2' },
+                'CAMBRIDGE_UK': { label: 'A-Level Biology: Mendelian Genetics & protein replication', text: 'Deduce homozygous and heterozygous crosses matching genetic matrices.', latex: '\\text{Punnett Square: } Tt \\times Tt' },
+                'CBSE_IN': { label: 'CBSE Biology: Cell division mitosis and meiosis pathways', text: 'Detail the prophase and metaphase chromosomes alignment guidelines.', latex: '\\text{Mitosis} \\rightarrow 2n' }
             }
         };
 
@@ -1679,14 +1686,14 @@ service cloud.firestore {
         // Subject Toggle Buttons
         function selectSolverSubject(sub) {
             activeSolverSubject = sub;
-            const subjects = ['math', 'physics', 'chemistry', 'language'];
+            const subjects = ['math', 'physics', 'chemistry', 'language', 'biology'];
             subjects.forEach(s => {
                 const btn = document.getElementById(`solver-sub-${s}`);
                 if (btn) {
                     if (s === sub) {
-                        btn.className = "py-1 bg-neonCyan text-black font-mono text-[7px] font-black rounded uppercase";
+                        btn.className = "py-1 bg-neonCyan text-black font-mono text-[6.5px] font-black rounded uppercase";
                     } else {
-                        btn.className = "py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase";
+                        btn.className = "py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[6.5px] font-bold rounded uppercase";
                     }
                 }
             });
@@ -2190,6 +2197,26 @@ service cloud.firestore {
                 return;
             }
 
+            // SUBJECT SELECTION FALLBACK MATRIX
+            const valLower = rawVal.toLowerCase();
+            let routeSubject = activeSolverSubject;
+
+            if (/(force|motion|law|velocity|gravity|acceleration)/i.test(valLower)) {
+                routeSubject = 'physics';
+            } else if (/(atom|organic|bond|reaction|acid|molecule)/i.test(valLower)) {
+                routeSubject = 'chemistry';
+            } else if (/(solve|x=|trigonometry|matrix|integral|limit)/i.test(valLower)) {
+                routeSubject = 'math';
+            } else if (/(cell|dna|plant|organism|genetics|protein)/i.test(valLower)) {
+                routeSubject = 'biology';
+            } else if (/(grammar|sentence|essay|sat|ielts|verb)/i.test(valLower)) {
+                routeSubject = 'language';
+            }
+
+            if (routeSubject !== activeSolverSubject) {
+                selectSolverSubject(routeSubject);
+            }
+
             procState.textContent = 'RUNNING_NEURAL_SOLVER';
             procState.classList.add('text-[#00ffcc]');
 
@@ -2211,7 +2238,6 @@ service cloud.firestore {
 
             // DYNAMIC TOPIC RECONSTRUCTION ENGINE
             let detectedTopic = "default";
-            const valLower = rawVal.toLowerCase();
             
             if (valLower.includes("escape velocity") || valLower.includes("escape speed") || valLower.includes("v_e")) {
                 detectedTopic = "escape_velocity";
@@ -2247,6 +2273,8 @@ service cloud.firestore {
                 detectedTopic = "stylistic";
             } else if (valLower.includes("email") || valLower.includes("sender") || valLower.includes("formal")) {
                 detectedTopic = "formal_email";
+            } else if (valLower.includes("cell") || valLower.includes("dna") || valLower.includes("plant") || valLower.includes("organism") || valLower.includes("genetics") || valLower.includes("protein") || valLower.includes("mitosis") || valLower.includes("meiosis") || valLower.includes("biology")) {
+                detectedTopic = "biology_cell";
             }
 
             function generateExplanation(topic, persona) {
@@ -2953,6 +2981,47 @@ service cloud.firestore {
                         mastery = "Always check attachment reference notations inside the mail text to preserve professional standards.";
                         colorClass = "text-[#ff00cc]";
                     }
+                } else if (topic === "biology_cell") {
+                    coreAnswer = "DNA structure is double helix paired via A-T (2 bonds) and G-C (3 bonds). Cell division occurs via Mitosis (identical 2n) and Meiosis (haploid n).";
+                    formulaText = "DNA Base Pairing: A=T, G-C";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Examine the spatial geometry of the polynucleotide chains wrapping around a central coordinate axis.",
+                            "Analyze electrostatic hydrogen bonding forces stabilizing purine and pyrimidine base pair assemblies.",
+                            "Deduce biological replica symmetry rules governing cellular mitosis cycles."
+                        ];
+                        mastery = "Symmetric base pairing ensures flawless mechanical reproduction of genetic sequences across cycles.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "DNA is like a twisted zipper where teeth only fit with their special neighbors: A matches T, G matches C.",
+                            "Cells duplicate by building dynamic scaffold ropes called chromosomes inside mitotic arenas.",
+                            "Split genetic cargo equally so each daughter cell gets a perfect blueprint set."
+                        ];
+                        mastery = "Meiosis cuts chromosomes half-and-half, ready to mix with partner sets during reproduction.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Treat G-C and A-T links as strategic coordination pairs across cellular boards.",
+                            "Map chromosomes replication pathways through precise spatial checkpoints.",
+                            "Solve division matrices ensuring exact karyokinetic separations."
+                        ];
+                        mastery = "Double chromatid alignment is the game-winning configuration that prevents genomic instability.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "IDENTIFY TARGET SEQUENCE: Enforce specific codon structures mapping key active proteins.",
+                            "EXECUTE DIVISION PROTOCOL: Accelerate mitosis stages through prophase, metaphase, anaphase, and telophase.",
+                            "ESTABLISH DAUGHTER COHESION: Confirm identical karyotype balances inside target boundaries."
+                        ];
+                        mastery = "In meiosis, crossing-over during prophase I generates strategic genetic variations.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Identify nuclear chromatin condensation processes [1 Mark].",
+                            "Describe alignment and segregation of sister chromatids at cell equator [1 Mark].",
+                            "Verify cytokinetic envelope formation yielding complete child cells [1 Mark]."
+                        ];
+                        mastery = "Always specify chromatid separation in Anaphase to score maximum grading marks.";
+                        colorClass = "text-[#ff00cc]";
+                    }
                 } else { // DEFAULT / GENERAL MATH & SCIENCE
                     coreAnswer = "Real-time secure neural answer compiled successfully for: " + rawVal;
                     formulaText = "General AI Solver Integration Active";
@@ -3022,7 +3091,29 @@ service cloud.firestore {
 
             setTimeout(() => {
                 const subLabel = activeSolverSubject.toUpperCase();
-                document.getElementById('solver-latex-display').textContent = matchedLatex;
+                let cleanLatexDisplay = matchedLatex
+                    .replace(/\\mathcal\{E\}/g, "EMF")
+                    .replace(/\\sqrt\{([^}]+)\}/g, "square_root($1)")
+                    .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, "($1 / $2)")
+                    .replace(/\\ln/g, "ln")
+                    .replace(/\\sin/g, "sin")
+                    .replace(/\\theta/g, "theta")
+                    .replace(/\\lambda/g, "lambda")
+                    .replace(/\\Delta/g, "Delta")
+                    .replace(/\\Phi_B/g, "Phi_B")
+                    .replace(/\\epsilon_0/g, "epsilon_0")
+                    .replace(/\\pi/g, "pi")
+                    .replace(/\\to/g, "->")
+                    .replace(/\\text\{([^}]+)\}/g, "$1")
+                    .replace(/\\lim_\{([^}]+)\}/g, "lim($1)")
+                    .replace(/\\int_\{([^}]+)\}\^\{([^}]+)\}/g, "integral(from $1 to $2)")
+                    .replace(/\\,/g, " ")
+                    .replace(/_/g, "_")
+                    .replace(/\{/g, "")
+                    .replace(/\}/g, "")
+                    .replace(/\\/g, "");
+                
+                document.getElementById('solver-latex-display').textContent = cleanLatexDisplay;
                 document.getElementById('solver-step-breakdown').innerHTML = `
                     <div class="p-1 px-1.5 bg-intelDark rounded border border-white/5 uppercase text-[7px] text-white font-extrabold mb-1">Subject Node Resolved: ` + subLabel + ` (` + matchedLabel + `)</div>
                     ` + explanation + `
@@ -3081,15 +3172,76 @@ service cloud.firestore {
                 if (line.includes('//')) {
                     const parts = line.split('//');
                     addedCards.push({ q: parts[0].trim(), a: parts[1].trim() });
-                } else if (line.includes('?')) {
-                    const parts = line.split('?');
-                    addedCards.push({ q: parts[0].trim() + '?', a: parts[1].trim() || 'Decrypt core documentation details.' });
                 } else {
-                    if (line.length > 20) {
-                        addedCards.push({ q: line.substring(0, 40) + "...", a: line });
+                    // COMPILER RECOGNITION PROTOCOL
+                    const lLower = line.toLowerCase();
+                    let question = line;
+                    let answer = "";
+
+                    if (lLower.includes("newton") && (lLower.includes("1st") || lLower.includes("first"))) {
+                        question = "What is Newton's 1st law?";
+                        answer = "An object at rest stays at rest, and an object in motion stays in motion with the same speed and direction unless acted upon by an unbalanced force.";
+                    } else if (lLower.includes("newton") && (lLower.includes("2nd") || lLower.includes("second"))) {
+                        question = "What is Newton's 2nd law?";
+                        answer = "The acceleration of an object is directly proportional to the net force acting on it, and inversely proportional to its mass (F = ma).";
+                    } else if (lLower.includes("newton") && (lLower.includes("3rd") || lLower.includes("third"))) {
+                        question = "What is Newton's 3rd law?";
+                        answer = "For every action, there is an equal and opposite reaction.";
+                    } else if (lLower.includes("escape velocity") || lLower.includes("escape speed")) {
+                        question = "What is escape velocity?";
+                        answer = "The minimum speed needed for a free, non-propelled object to escape from the gravitational influence of a primary body: v_e = square_root(2*G*M/R).";
+                    } else if (lLower.includes("bohr") && (lLower.includes("radius") || lLower.includes("orbit"))) {
+                        question = "What is the Bohr radius?";
+                        answer = "The physical constant representing the distance between the nucleus and the electron in a hydrogen ground state: approx. 0.529 Angstroms.";
+                    } else if (lLower.includes("induced emf") || lLower.includes("faraday") || lLower.includes("lenz")) {
+                        question = "What is Faraday's Law of Induction?";
+                        answer = "The induced electromotive force in a circuit is proportional to the rate of change of magnetic flux: EMF = -N * (dPhi_B / dt).";
+                    } else if (lLower.includes("bragg") && lLower.includes("diffraction")) {
+                        question = "What is Bragg's law?";
+                        answer = "The relation determining diffraction angles of waves off crystal systems: 2 * d * sin(theta) = n * lambda.";
+                    } else if (lLower.includes("ideal gas") || lLower.includes("pv = nrt") || lLower.includes("pv=nrt")) {
+                        question = "What is the Ideal Gas Law?";
+                        answer = "The equation of state of a hypothetical ideal gas relating pressure, volume, temperature, and moles: PV = nRT.";
+                    } else if (lLower.includes("solubility") || lLower.includes("ksp")) {
+                        question = "What is the Solubility Product Constant?";
+                        answer = "The equilibrium constant for a solid substance dissolving in aqueous solution (K_sp), determining saturation thresholds.";
+                    } else if (lLower.includes("gibbs") || lLower.includes("spontaneous")) {
+                        question = "What is Gibbs Free Energy spontaneity?";
+                        answer = "Thermodynamic state function indicating process spontaneity (Delta G = Delta H - T * Delta S). Spontaneous if Delta G < 0.";
+                    } else if (lLower.includes("nernst")) {
+                        question = "What is the Nernst equation?";
+                        answer = "Equation relating reduction potential to standard electrode potential and species concentrations: E = E_0 - (R*T/(n*F)) * ln(Q).";
+                    } else if (lLower.includes("mitosis")) {
+                        question = "What is Mitosis?";
+                        answer = "A cell division cycle producing two genetically identical diploid (2n) daughter cells for growth and repair.";
+                    } else if (lLower.includes("meiosis")) {
+                        question = "What is Meiosis?";
+                        answer = "A cell division cycle reducing chromosomes by half, producing four genetically diverse haploid (n) gametes.";
+                    } else if (lLower.includes("agreement") || lLower.includes("subject-verb") || lLower.includes("coordination")) {
+                        question = "What is Subject-Verb agreement?";
+                        answer = "The grammatical requirement that a singular subject aligns with a singular verb, and a plural subject with a plural verb.";
+                    } else if (lLower.includes("lexical density") || lLower.includes("stylistic")) {
+                        question = "What is Lexical Density?";
+                        answer = "The informational load index defined as content words (nouns, action verbs) divided by total words: Density = (L / T) * 100.";
+                    } else if (lLower.includes("dna") || lLower.includes("genetics") || lLower.includes("cell") || lLower.includes("biology") || lLower.includes("protein")) {
+                        question = "What are DNA and chromosomes boundaries?";
+                        answer = "DNA represents the double-helix inheritance matrix, while chromosomes package this sequence within the nucleus.";
                     } else {
-                        addedCards.push({ q: "Concept Definition", a: line });
+                        if (line.includes('?')) {
+                            const parts = line.split('?');
+                            question = parts[0].trim() + '?';
+                            answer = parts[1].trim() || 'Core sandbox textbook explanation compiled.';
+                        } else {
+                            if (line.length > 20) {
+                                question = line.substring(0, 40) + "...";
+                                answer = line;
+                            } else {
+                                question = "Concept Definition";
+                                answer = line;
+                            }
+                        }
                     }
+                    addedCards.push({ q: question, a: answer });
                 }
             });
 
