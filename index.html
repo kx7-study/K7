@@ -709,73 +709,169 @@
                                 
                                 <!-- ================= SCREEN 1: COMMAND HOST HUB ================= -->
                                 <div id="screen-command-hub" class="phone-screen-content active">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-2">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2 ml-1/2 mb-2">
                                         <div>
-                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">OPERATOR HOST PANEL</h5>
-                                            <span id="emulator-operator-id" class="text-[8.5px] font-mono text-neonCyan/85 font-semibold uppercase">ID: kabbomondal013</span>
+                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-wider">NEURAL COMMAND CONTROL</h5>
+                                            <span id="emulator-operator-id" class="text-[8px] font-mono text-neonCyan/85 font-semibold uppercase">ID: KX7-SAT-USA-8F392A7C</span>
                                         </div>
-                                        <span id="emulator-role-badge" class="px-2 py-1 border border-neonCyan/30 text-neonCyan bg-neonCyan/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(0,255,204,0.1)]">SECURE_LEVEL_A</span>
+                                        <span id="emulator-role-badge" class="px-1.5 py-0.5 border border-neonCyan/30 text-neonCyan bg-neonCyan/5 text-[7.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(0,255,204,0.1)]">SECURE_LEVEL_A</span>
                                     </div>
 
-                                    <!-- Dynamic trial clock widget -->
-                                    <div class="p-3 bg-warningCrimson/10 border border-warningCrimson/35 text-warningCrimson font-mono text-[8px] rounded-lg mb-4 flex justify-between items-center" id="emulator-trial-shield">
-                                        <div class="flex items-center gap-1">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-warningCrimson animate-ping" id="emulator-trial-ping"></span>
-                                            <span id="emulator-trial-label" class="font-bold">FREE TIER SHIELD LIMIT REMAINING:</span>
+                                    <!-- Omni-Lingual Engine (OLE) & Universal Curriculum Matrix (UCM) -->
+                                    <div class="p-3 bg-intelDark/90 border border-neonCyan/20 rounded-xl mb-3 space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[7.5px] font-mono text-neonCyan font-black uppercase tracking-wider">UNIVERSAL CURRICULUM LEVEL (UCM)</span>
+                                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-neonCyan animate-pulse"></span>
                                         </div>
-                                        <span class="font-bold underline" id="emulator-countdown-clock">01:59:42 SECS</span>
-                                    </div>
-
-                                    <!-- Operator Identification Profile -->
-                                    <div class="p-3.5 bg-intelDark/70 border border-white/[0.05] rounded-xl mb-4 relative overflow-hidden">
-                                        <div class="absolute top-1 right-2 font-mono text-[7px] text-[#33ff33]">STREAK_ACTIVE</div>
-                                        <div class="flex justify-between items-start">
+                                        <div class="grid grid-cols-2 gap-1.5 font-mono text-[8px]">
                                             <div>
-                                                <h6 id="emulator-operator-name" class="font-mono text-sm leading-none font-bold text-white uppercase tracking-wide">KABBO MONDAL</h6>
-                                                <p class="text-[8px] font-mono text-textMuted font-black mt-1.5 uppercase">RANKING INTELLECT INDEX: 147 EX</p>
+                                                <label class="text-[7px] text-textMuted font-bold block mb-0.5 block uppercase">ACTIVE EXAM TRACK</label>
+                                                <select id="ucm-track-select" onchange="syncUcmSettings()" class="w-full bg-intelBlack border border-white/10 p-1 rounded font-semibold text-white outline-none">
+                                                    <option value="SAT_USA">USA // COLLEGE BOARD (SAT/ACT)</option>
+                                                    <option value="NCTB_BD">BANGLADESH // NCTB (SSC/HSC)</option>
+                                                    <option value="CAMBRIDGE_UK">CAMBRIDGE // IGCSE & A-LEVEL</option>
+                                                    <option value="CBSE_IN">INDIA // CBSE & JEE NCERT</option>
+                                                </select>
                                             </div>
-                                        </div>
-
-                                        <!-- Multi indicators progress grids -->
-                                        <div class="grid grid-cols-2 gap-3 mt-4">
-                                            <div class="p-2 border border-neonCyan/15 bg-intelBlack rounded-lg">
-                                                <span class="text-[8px] text-textMuted uppercase font-mono block">RECALL DECK ACCU</span>
-                                                <span class="font-mono font-bold text-xs text-neonCyan text-glow-cyan">94.8% RATE</span>
-                                            </div>
-                                            <div class="p-2 border border-neonPurple/15 bg-intelBlack rounded-lg">
-                                                <span class="text-[8px] text-textMuted uppercase font-mono block">BIOLOGICAL LOAD</span>
-                                                <span class="font-mono font-bold text-xs text-neonPurple text-glow-purple">76% CAPACITY</span>
+                                            <div>
+                                                <label class="text-[7px] text-textMuted font-bold block mb-0.5 block uppercase">INTERFACE TRANSLATOR (OLE)</label>
+                                                <select id="ucm-language-select" onchange="syncUcmSettings()" class="w-full bg-intelBlack border border-white/10 p-1 rounded font-semibold text-white outline-none">
+                                                    <option value="en">ENGLISH (NATIVE SYS)</option>
+                                                    <option value="bn">BILINGUAL (BANGLA/EN) 🇧🇩</option>
+                                                    <option value="hi">HINDI / ENGLISH (ИН) 🇮🇳</option>
+                                                    <option value="es">SPANISH TERMINOLOGY</option>
+                                                    <option value="fr">FRENCH CLASS COMPILER</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Study Streak Velocity Bar -->
-                                    <div class="p-3.5 bg-intelDark/40 border border-white/[0.05] rounded-xl mb-4">
-                                        <div class="flex justify-between text-[9px] font-mono mb-1.5 text-textMuted uppercase">
-                                            <span>STUDY STREAK VELOCITY</span>
-                                            <span class="font-bold text-white text-glow-cyan">34 DAYS ACTIVE</span>
+                                    <!-- Aura Points & Master Streak Discipline Indicators -->
+                                    <div class="grid grid-cols-2 gap-2 mb-3">
+                                        <div class="p-2.5 bg-intelDark/90 border border-neonCyan/15 rounded-xl text-left relative overflow-hidden">
+                                            <span class="text-[7px] font-mono text-textMuted block uppercase">COGNITIVE AURA STATUS</span>
+                                            <span id="dash-aura-points" class="font-mono font-black text-sm text-neonCyan text-glow-cyan block mt-0.5">85,600 AP</span>
+                                            <span class="text-[6.5px] font-mono text-neonCyan/70 block mt-1 uppercase font-bold text-glow">💎 ELITE PRESTIGE 1%</span>
                                         </div>
-                                        <div class="w-full bg-intelBlack h-2 border border-white/5 rounded-full overflow-hidden">
-                                            <div class="h-full bg-gradient-to-r from-neonCyan to-neonPurple w-[85%] rounded-full shadow-[0_0_10px_#00ffcc]"></div>
+                                        <div class="p-2.5 bg-intelDark/90 border border-neonPurple/15 rounded-xl text-left relative overflow-hidden">
+                                            <span class="text-[7px] font-mono text-textMuted block uppercase">MASTER STREAK DAYS</span>
+                                            <div class="flex items-center gap-1 mt-0.5">
+                                                <span class="text-neonPurple">🔥</span>
+                                                <span id="dash-streak-days" class="font-mono font-black text-sm text-neonPurple text-glow-purple">43 DAYS</span>
+                                            </div>
+                                            <span class="text-[6px] font-mono text-[#ff3366] block mt-1 uppercase font-extrabold animate-pulse pointer-events-auto cursor-pointer" onclick="triggerStreakDecayAnnihile()">💀 SKIPPED RISK MODE!</span>
                                         </div>
                                     </div>
 
-                                    <!-- Dynamic Badge Arrays -->
-                                    <div>
-                                        <h6 class="text-[10px] font-mono font-bold text-textMuted uppercase mb-2">EARNED INTELLIGENCE BADGES</h6>
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <div class="p-2 text-center bg-neonCyan/5 border border-neonCyan/20 rounded-lg">
-                                                <span class="text-[9.5px] text-[#00ffcc] font-mono block font-black">CYBER_A</span>
-                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">MASTER</span>
+                                    <!-- High-Stakes Recovery Challenge Block -->
+                                    <div id="recovery-warn-panel" class="hidden p-3 bg-warningCrimson/15 border border-warningCrimson/40 text-warningCrimson rounded-xl mb-3 space-y-1.5 font-mono">
+                                        <div class="flex justify-between items-center text-[7.5px] font-black uppercase">
+                                            <span>⚠️ DISCIPLINE EXPIRED (RECOVERY RED ALERT)</span>
+                                            <span class="px-1 bg-warningCrimson text-black font-black font-mono animate-pulse text-[6.5px] rounded">CRISIS</span>
+                                        </div>
+                                        <p class="text-[8px] leading-relaxed">Daily momentum check-in elapsed. You've entered Recovery Mode. Complete this high-stakes calibration math puzzle to freeze statistics:</p>
+                                        <div id="recovery-question-block" class="p-2 bg-intelBlack rounded border border-white/5 text-center text-xs font-bold text-white tracking-wider">
+                                            ...
+                                        </div>
+                                        <div id="recovery-options-grid" class="grid grid-cols-2 gap-1 text-[9px] text-center"></div>
+                                    </div>
+
+                                    <!-- Cognitive Twin Brain Profile Dynamic Analytics -->
+                                    <div class="p-3 bg-intelDark/70 border border-white/[0.05] rounded-xl mb-3 space-y-2.5">
+                                        <div class="flex justify-between items-center border-b border-white/5 pb-1">
+                                            <span class="text-[7.5px] font-mono text-neutral-400 font-bold uppercase tracking-wider">COGNITIVE TWIN PROFILE METRICS</span>
+                                            <span class="text-[6.5px] font-mono text-neonGreen font-black">ACTIVE TELEMETRY SYNC</span>
+                                        </div>
+                                        
+                                        <!-- Custom sliders -->
+                                        <div class="space-y-1.5 font-mono text-[7.5px]">
+                                            <div class="flex justify-between">
+                                                <span class="text-textMuted uppercase font-bold">Learning Speed Index (LSI)</span>
+                                                <span id="lsi-val" class="font-bold text-neonCyan">0.85 Kxps</span>
                                             </div>
-                                            <div class="p-2 text-center bg-neonPurple/5 border border-neonPurple/20 rounded-lg">
-                                                <span class="text-[9.5px] text-[#ff00cc] font-mono block font-black">OMEGA_G</span>
-                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">ORACLE</span>
+                                            <div class="flex items-center gap-2">
+                                                <input type="range" min="10" max="100" value="85" oninput="updateLsiSlider(this.value)" class="grow h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-neonCyan">
                                             </div>
-                                            <div class="p-2 text-center bg-neonGreen/5 border border-neonGreen/20 rounded-lg">
-                                                <span class="text-[9.5px] text-[#33ff33] font-mono block font-black">STREAK_X</span>
-                                                <span class="text-[7.5px] text-white/50 font-sans block uppercase mt-0.5 font-bold">APEX</span>
+
+                                            <div class="flex justify-between pt-0.5">
+                                                <span class="text-textMuted uppercase font-bold">Retention Memory Rate Decay</span>
+                                                <span class="font-bold text-neonPurple">Optimum Halflife (14h)</span>
                                             </div>
+                                            
+                                        </div>
+
+                                        <!-- Memory Curve SVG Mini Chart representation -->
+                                        <div class="bg-intelBlack/60 border border-white/5 rounded-lg p-1.5 flex justify-center items-center">
+                                            <svg class="w-full h-12" id="retention-chart-svg" viewBox="0 0 200 50">
+                                                <path d="M 10,40 Q 60,35 110,15 T 190,45" fill="none" stroke="#00ffcc" stroke-width="1.5" stroke-dasharray="2,2"></path>
+                                                <path id="curr-curve-line" d="M 10,40 C 50,42 100,5 190,30" fill="none" stroke="#ff00cc" stroke-width="2" class="transition-all duration-300"></path>
+                                                <circle cx="10" cy="40" r="2.5" fill="#33ff33"></circle>
+                                                <circle id="curve-interpoint" cx="100" cy="18" r="2.5" fill="#00ffcc" class="animate-pulse"></circle>
+                                                <circle cx="190" cy="30" r="2.5" fill="#ffcc00"></circle>
+                                            </svg>
+                                        </div>
+
+                                        <!-- Style metadata indicator list representation -->
+                                        <div class="grid grid-cols-2 gap-1.5 font-mono text-[7px] text-textMuted">
+                                            <div class="p-1 bg-intelBlack rounded border border-white/5">
+                                                <span class="block">SWITCH SPEED INDEX</span>
+                                                <span class="font-bold text-white block text-[8px] mt-0.5">92% FLUIDITY</span>
+                                            </div>
+                                            <div class="p-1 bg-intelBlack rounded border border-white/5">
+                                                <span class="block text-glow-crimson uppercase">Burnout Risk Scale</span>
+                                                <span id="burnout-risk-label" class="font-extrabold text-[#33ff33] block text-[8px] mt-0.5">12% SAFE ZONE</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Biometric Flow-State Attention Gaze Sensor Panel -->
+                                    <div class="p-3 bg-intelBlack border border-neonPurple/30 rounded-xl mb-3 space-y-2">
+                                        <div class="flex justify-between items-center text-[7.5px] font-mono">
+                                            <span class="font-black text-neonPurple uppercase tracking-wider">BIOMETRIC FLOW-STATE CALIBRATOR</span>
+                                            <span id="biometric-state-ping" class="inline-block w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
+                                        </div>
+
+                                        <!-- Simulated Gaze video stream / canvas animation aperture box -->
+                                        <div class="relative h-24 bg-intelSlate rounded-lg border border-white/10 flex items-center justify-center overflow-hidden">
+                                            <!-- Video Aperture Container -->
+                                            <video id="biometric-webcam-stream" class="hidden absolute inset-0 w-full h-full object-cover opacity-60 scale-x-[-1]"></video>
+                                            
+                                            <!-- Falling coordinate matrix lines -->
+                                            <div id="calibration-coordinate-lines" class="absolute inset-0">
+                                                <div class="absolute left-0 right-0 h-0.5 bg-neonPurple/20 animate-[bounce_5s_infinite]"></div>
+                                                <div class="absolute top-0 bottom-0 w-0.5 bg-neonCyan/20 left-[48%] animate-pulse"></div>
+                                                <div class="absolute top-0 bottom-0 w-0.5 bg-neonCyan/20 left-[52%] animate-pulse"></div>
+                                            </div>
+
+                                            <!-- Interface indicator tags -->
+                                            <div id="biometric-overlay-box" class="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none font-mono text-[7px] text-neonPurple/85 uppercase">
+                                                <div class="flex justify-between">
+                                                    <span>IRIS_VECTOR: NO_INPUT</span>
+                                                    <span>SYS: STD_MOCK</span>
+                                                </div>
+                                                <!-- Center alignment reticle overlay -->
+                                                <div class="w-14 h-14 border border-dashed border-neonPurple/60 rounded-full mx-auto flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                                                    <div class="w-2 h-2 rounded-full bg-neonPurple animate-ping"></div>
+                                                </div>
+                                                <div class="flex justify-between text-[6.5px]">
+                                                    <span id="gaze-vector-info">COORDS: X_AX[N/A] // Y_AY[N/A]</span>
+                                                    <span id="calibration-percentage-lbl" class="text-glow">LOCK: FAILED</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button onclick="toggleGazeEyeTrackingSensor()" id="biometric-gaze-btn" class="w-full py-1.5 bg-neonPurple/15 hover:bg-neonPurple/30 border border-neonPurple/40 text-neonPurple text-[8px] font-mono font-black uppercase rounded tracking-wider transition-all">
+                                            🛰️ INITIALIZE BIOMETRIC EYE LOCK-IN
+                                        </button>
+                                    </div>
+
+                                    <!-- Elite Prestige badges list -->
+                                    <div class="p-2.5 bg-intelDark/50 border border-white/5 rounded-xl text-center space-y-1.5">
+                                        <span class="text-[7.5px] font-mono text-textMuted uppercase font-bold block">UNIVERSITY SYSTEM MISSION TARGET</span>
+                                        <div class="flex items-center justify-center gap-1.5">
+                                            <span class="text-xs">🎓</span>
+                                            <span id="mission-target-text" class="font-mono text-[9px] font-black text-white uppercase text-glow-cyan">STANFORD UNIVERSITY (MIT MISSION SET)</span>
+                                            <button onclick="changeMissionTarget()" class="py-0.5 px-1 bg-intelBlack border border-white/10 text-white font-mono text-[6.5px] rounded font-bold hover:bg-neutral-800 transition-all">EDIT</button>
                                         </div>
                                     </div>
                                 </div>
@@ -784,45 +880,94 @@
                                 <div id="screen-solver-desk" class="phone-screen-content">
                                     <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">CRYPTOGRAPHIC SOLVER</h5>
+                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">NEURAL TRANSLATION SOLVER</h5>
                                             <p class="text-[7.5px] font-mono text-neonPurple uppercase">matrix translation engine</p>
                                         </div>
+                                        <span id="active-ucm-badge" class="px-1.5 py-0.5 bg-neonCyan/10 border border-neonCyan/35 text-neonCyan text-[7px] rounded font-mono font-extrabold">TRACK: USA_COLLEGE</span>
                                     </div>
 
-                                    <!-- Interactive Custom Parameter Controls -->
+                                    <!-- Dynamic Solver controls grid dashboard -->
                                     <div class="space-y-2.5">
-                                        <div>
-                                            <label class="text-[8px] font-mono text-textMuted block mb-1 uppercase font-bold text-glow-cyan">ALGORITHM MODULE</label>
-                                            <select id="solver-algo-select" class="w-full p-2 border border-white/10 bg-intelDark rounded-lg text-[10.5px] font-mono text-white focus:border-neonCyan outline-none">
-                                                <option value="base64-encode">Base64 Text Encoder</option>
-                                                <option value="base64-decode">Base64 Text Decoder</option>
-                                                <option value="rot13">ROT13 Caesar Cipher</option>
-                                                <option value="hex-encode">String to Hexadecimal</option>
-                                                <option value="hex-decode">Hexadecimal to String</option>
+                                        <!-- Subject Area Selectors -->
+                                        <div class="grid grid-cols-4 gap-1">
+                                            <button onclick="selectSolverSubject('math')" id="solver-sub-math" class="py-1 bg-neonCyan text-black font-mono text-[7px] font-black rounded uppercase">MATHS</button>
+                                            <button onclick="selectSolverSubject('physics')" id="solver-sub-physics" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">PHYSICS</button>
+                                            <button onclick="selectSolverSubject('chemistry')" id="solver-sub-chemistry" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">CHEMISTRY</button>
+                                            <button onclick="selectSolverSubject('language')" id="solver-sub-language" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase">LANGS</button>
+                                        </div>
+
+                                        <!-- Real Exam boards / Predefined quick test prompts -->
+                                        <div class="p-2 bg-intelDark/60 border border-white/5 rounded-xl space-y-1">
+                                            <label class="text-[7.5px] font-mono text-textMuted block font-bold uppercase">PRESETS SELECTORS (DASH DEPLOY)</label>
+                                            <select id="solver-preset-prompts" onchange="loadPresetPromptsIntoInput()" class="w-full bg-intelBlack border border-white/10 p-1.5 rounded text-[8.5px] font-mono text-white outline-none">
+                                                <option value="">-- CHOOSE A PRESETS QUESTION --</option>
+                                                <!-- Dynamic presets filled in Javascript depending on UCM track -->
                                             </select>
                                         </div>
 
-                                        <div>
-                                            <label class="text-[8px] font-mono text-textMuted block mb-1 uppercase font-extrabold text-glow-purple">RAW INPUT PAYLOAD</label>
-                                            <textarea id="solver-raw-input" class="w-full h-11 bg-intelBlack border border-white/10 p-2 rounded-lg text-xs font-mono text-white focus:border-neonCyan focus:outline-none placeholder-textMuted/45 resize-none" placeholder=">> Type standard text payload to translate..."></textarea>
+                                        <!-- AI Persona Mentor Panel Selector -->
+                                        <div class="p-2.5 bg-intelDark/90 border border-neonPurple/25 rounded-xl space-y-1.5">
+                                            <div class="flex justify-between items-center">
+                                                <label class="text-[7.5px] font-mono text-neonPurple font-black uppercase">PEDAGOGICAL TEACHING MENTOR</label>
+                                                <span id="mentor-badge" class="px-1 bg-neonPurple text-white text-[6.5px] rounded font-mono font-bold">FEYNMAN</span>
+                                            </div>
+                                            <div class="grid grid-cols-5 gap-0.5 text-center text-[7.5px] font-mono font-bold">
+                                                <button onclick="selectMentorPersona('einstein')" id="mentor-einstein" class="py-1 bg-intelBlack border border-white/5 rounded text-neutral-400">EINST</button>
+                                                <button onclick="selectMentorPersona('feynman')" id="mentor-feynman" class="py-1 bg-neonPurple/20 border border-neonPurple rounded text-white shadow-[0_0_8px_rgba(255,0,204,0.1)]">FEYN</button>
+                                                <button onclick="selectMentorPersona('fischer')" id="mentor-fischer" class="py-1 bg-intelBlack border border-white/5 rounded text-neutral-400">FISCH</button>
+                                                <button onclick="selectMentorPersona('military')" id="mentor-military" class="py-1 bg-intelBlack border border-white/5 rounded text-neutral-400">MIL</button>
+                                                <button onclick="selectMentorPersona('assassin')" id="mentor-assassin" class="py-1 bg-intelBlack border border-white/5 rounded text-neutral-400">EXM</button>
+                                            </div>
+                                            <p id="mentor-description-text" class="text-[7px] font-mono text-textMuted/90 leading-tight block select-none">Feynman Persona: Uses intuitive everyday world analogies to bypass dense jargon memory blocks.</p>
                                         </div>
 
-                                        <!-- Real Decrypted Output Display Container -->
-                                        <div id="solver-output-container" class="hidden p-2 bg-[#00ffcc]/5 border border-[#00ffcc]/30 rounded-lg text-left relative">
-                                            <div class="absolute top-1 right-2 text-[6px] font-mono text-neonCyan font-bold uppercase tracking-widest animate-pulse">OUTPUT_STREAM_OK</div>
-                                            <span class="text-[7px] font-mono text-neonCyan block uppercase font-bold mb-0.5">TRANSLATED METRICS:</span>
-                                            <p id="solver-output-text" class="text-[10px] font-mono text-white break-all bg-intelDark/50 p-1 rounded select-all font-semibold max-h-12 overflow-y-auto"></p>
+                                        <!-- Raw input math input text block -->
+                                        <div>
+                                            <label class="text-[8px] font-mono text-textMuted block mb-0.5 uppercase font-extrabold flex justify-between">
+                                                <span>INPUT PROBLEM PARAMETER</span>
+                                                <span class="text-neonCyan cursor-pointer select-none" onclick="triggerWebcamMockScan()">📷 SCAN COGNITIVE MOCK()</span>
+                                            </label>
+                                            <textarea id="solver-raw-input" class="w-full h-14 bg-intelBlack border border-white/10 p-2 rounded-lg text-[9.5px] font-mono text-white focus:border-neonCyan focus:outline-none placeholder-textMuted/45 resize-none leading-relaxed" placeholder=">> Paste standard formulation, or choose preset parameter above..."></textarea>
+                                        </div>
+
+                                        <!-- Scan-to-Solve simulated camera HUD -->
+                                        <div id="simulated-camera-hud" class="hidden p-2.5 border border-dashed border-neonCyan/40 bg-neonCyan/5 rounded-lg space-y-1.5 font-mono text-[7px] text-neutral-300">
+                                            <div class="flex justify-between items-center text-neonCyan font-black">
+                                                <span>📷 CAMERA SCAN: LOCALIZING LATEX SCAN HUD</span>
+                                                <span class="animate-pulse">BOUNDING_BOX: ALIGNED</span>
+                                            </div>
+                                            <div class="h-14 bg-intelBlack rounded border border-white/10 flex items-center justify-center relative">
+                                                <div class="absolute inset-x-2 h-0.5 bg-neonCyan/30 animate-pulse"></div>
+                                                <span class="text-[9px] text-white">[-b ± √(b² - 4ac)] / 2a</span>
+                                            </div>
+                                            <button onclick="applyScannedFormula()" class="w-full py-1 bg-neonCyan font-black text-black uppercase rounded text-[7.5px]">LATEX ALIGNED // INJECT TO TEXTAREA</button>
+                                        </div>
+
+                                        <!-- Real Decrypted Output Display Container with LaTeX layout markup -->
+                                        <div id="solver-output-container" class="hidden p-3 bg-intelBlack border border-neonCyan/30 rounded-xl text-left relative space-y-2">
+                                            <div class="absolute top-1 right-2 text-[6px] font-mono text-neonCyan font-bold uppercase tracking-widest animate-pulse">TRANSLATION_SUCCESS_OK</div>
+                                            <span class="text-[7.5px] font-mono text-neonCyan block uppercase font-bold text-glow-cyan">MATHEMATICAL LATEX ANALYSIS CARD:</span>
+                                            
+                                            <!-- LaTeX Glow Formulations -->
+                                            <div class="p-2 border border-white/10 bg-intelDark rounded text-center text-xs font-mono font-bold text-white text-glow-cyan" id="solver-latex-display">
+                                                v_e = \sqrt{\frac{2GM}{R}}
+                                            </div>
+
+                                            <!-- Step-by-Step Breakdown Separating Knowns, Unknowns, Units and concepts -->
+                                            <div class="font-mono text-[8.5px] leading-relaxed text-textMuted space-y-1.5 pt-1 border-t border-white/5" id="solver-step-breakdown">
+                                                <!-- Dynamic list loaded -->
+                                            </div>
                                         </div>
 
                                         <!-- Vocal Dictation Active Panel -->
                                         <div class="p-2 border border-dashed border-neonCyan/20 bg-intelBlack rounded-lg text-center relative">
                                             <span class="text-[7.5px] font-mono text-textMuted uppercase block mb-1 font-bold">Vocal Spectrogram Wave</span>
                                             <div id="voice-waves-container" class="flex justify-center items-center gap-1 my-1 h-5">
-                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.8s ease-in-out infinite alternate;"></span>
-                                                <span class="vocal-node h-2.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.5s ease-in-out infinite alternate; animation-delay: 0.2s;"></span>
-                                                <span class="vocal-node h-1.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.9s ease-in-out infinite alternate; animation-delay: 0.1s;"></span>
-                                                <span class="vocal-node h-3.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.4s ease-in-out infinite alternate; animation-delay: 0.4s;"></span>
-                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.7s ease-in-out infinite alternate; animation-delay: 0.3s;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.8s ease-in-out infinite alternate; animation-play-state: paused;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.5s ease-in-out infinite alternate; animation-delay: 0.2s; animation-play-state: paused;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.9s ease-in-out infinite alternate; animation-delay: 0.1s; animation-play-state: paused;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.4s ease-in-out infinite alternate; animation-delay: 0.4s; animation-play-state: paused;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.7s ease-in-out infinite alternate; animation-delay: 0.3s; animation-play-state: paused;"></span>
                                             </div>
                                             <style>
                                                 @keyframes animWave {
@@ -830,14 +975,32 @@
                                                     100% { height: 18px; }
                                                 }
                                             </style>
-                                            <button onclick="toggleVoiceDictationSimulation()" id="voice-matrix-btn" class="px-2.5 py-1 bg-neonCyan/15 border border-neonCyan/30 text-neonCyan font-mono text-[8px] tracking-wider rounded font-extrabold hover:bg-neonCyan hover:text-black transition-all">
-                                                ENGAGE VOICE TRANSLATION
-                                            </button>
+                                            <div class="flex gap-1 justify-center items-center">
+                                                <button onclick="toggleVoiceDictationSimulation()" id="voice-matrix-btn" class="grow py-1 bg-neonCyan/15 border border-neonCyan/30 text-neonCyan font-mono text-[7.5px] tracking-wider rounded font-extrabold hover:bg-neonCyan hover:text-black transition-all">
+                                                    ENGAGE VOICE TRANSLATION
+                                                </button>
+                                                <button onclick="triggerVoiceInputSimulation()" class="py-1 px-1.5 bg-intelDark border border-white/10 text-white font-mono text-[7px] rounded">SIM DICTATE</button>
+                                            </div>
                                         </div>
 
-                                        <button onclick="simulateSolverCalculation()" class="w-full py-2 bg-neonCyan text-black font-mono font-black text-[10px] uppercase rounded-lg tracking-widest shadow-[0_0_10px_rgba(0,255,204,0.2)] hover:bg-white duration-300 transition-all">
+                                        <button onclick="simulateSolverCalculation()" class="w-full py-2 bg-neonCyan text-black font-mono font-black text-[9px] uppercase rounded-lg tracking-widest shadow-[0_0_10px_rgba(0,255,204,0.2)] hover:bg-white duration-300 transition-all">
                                             LAUNCH INTELLECT SOLVER()
                                         </button>
+
+                                        <!-- Multi-Modal Ingestion & Research Assistant Section -->
+                                        <div class="p-3 bg-intelDark/60 border border-white/5 rounded-xl space-y-2 font-mono">
+                                            <span class="text-[7.5px] text-neonPurple font-black block uppercase">SMART CONTENT INGESTION & RESEARCH</span>
+                                            <div class="border border-dashed border-white/10 p-2 text-center rounded bg-intelBlack cursor-pointer" onclick="triggerIngestSimulator()">
+                                                <span class="text-[7.5px] text-textMuted block">INGEST MODULE FORMATS (VIDEO URL, NOTES PDF)</span>
+                                                <span class="text-[6.5px] text-neonCyan uppercase font-black tracking-widest mt-1 block">DRAG-DROP FILE / TAP TO INGEST DATA</span>
+                                            </div>
+                                            
+                                            <div class="grid grid-cols-2 gap-1 text-[7.5px]">
+                                                <button onclick="triggerResearchHelper('papers')" class="py-1 bg-intelBlack border border-white/5 rounded text-white flex items-center justify-center gap-1">📖 FIND PAPERS</button>
+                                                <button onclick="triggerResearchHelper('sheets')" class="py-1 bg-intelBlack border border-white/5 rounded text-white flex items-center justify-center gap-1">📋 REVISION SHEETS</button>
+                                            </div>
+                                            <div id="solver-ingest-log" class="hidden p-2 bg-intelBlack border border-white/10 rounded text-[7.5px] text-white/80 leading-relaxed max-h-16 overflow-y-auto"></div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -845,9 +1008,10 @@
                                 <div id="screen-smart-recall" class="phone-screen-content">
                                     <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">RECALL ENVELOPE</h5>
-                                            <p class="text-[7.5px] font-mono text-[#33ff33] uppercase">Summarizer system compiled</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">WORLD CARDS MEMORY</h5>
+                                            <p class="text-[7.5px] font-mono text-[#33ff33] uppercase">Spaced repetition system active</p>
                                         </div>
+                                        <span id="recall-retention-rate" class="px-1.5 py-0.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen text-[7px] rounded font-mono font-extrabold">RETENTION: 89%</span>
                                     </div>
 
                                     <!-- Interactive 3D Card Simulator -->
@@ -858,33 +1022,47 @@
                                         </div>
                                         
                                         <!-- Flip Mechanics Card -->
-                                        <div id="emulator-3d-card" onclick="flipEmulatorCard()" class="h-32 group cursor-pointer perspective-1000">
+                                        <div id="emulator-3d-card" onclick="flipEmulatorCard()" class="h-36 group cursor-pointer perspective-1000">
                                             <div class="card-inner-3d relative w-full h-full text-center transition-transform duration-500 transform border rounded-xl border-neonPurple/30 bg-intelDark/70 hover:border-neonPurple duration-300">
                                                 
                                                 <!-- Question Front -->
                                                 <div class="card-front absolute inset-0 p-4 flex flex-col justify-between backface-hidden">
                                                     <div class="text-[7.5px] font-mono text-textMuted uppercase flex justify-between font-bold">
-                                                        <span>Quantum cryptography deck</span>
-                                                        <span class="text-neonPurple animate-pulse">TAP TO REVEAL KEY</span>
+                                                        <span id="card-category-lbl">Physics // SAT Core</span>
+                                                        <span class="text-neonPurple animate-pulse font-black text-[6.5px]">TAP TO DECRYPT ANS</span>
                                                     </div>
-                                                    <p id="card-question-text" class="text-[11.5px] font-sans font-bold italic text-white my-auto px-1.5 leading-snug">
+                                                    <p id="card-question-text" class="text-[11px] font-mono font-bold text-white my-auto px-1 leading-relaxed">
                                                         "What mathematical method secures state vectors in qubit logic arrays?"
                                                     </p>
-                                                    <span id="card-index-label" class="text-[9px] text-neonPurple font-bold font-mono tracking-wider uppercase text-glow-purple">CARD 1 OF 4</span>
+                                                    <div class="flex justify-between font-mono text-[7px] text-textMuted">
+                                                        <span id="card-index-label">CARD 1 OF 4</span>
+                                                        <span>STRENGTH: <span id="card-strength-pct">84%</span></span>
+                                                    </div>
                                                 </div>
 
                                                 <!-- Answer Back -->
                                                 <div class="card-back absolute inset-0 p-4 flex flex-col justify-between backface-hidden bg-purple-950/25 rounded-xl">
                                                     <div class="text-[7.5px] font-mono text-textMuted uppercase flex justify-between font-bold">
-                                                        <span>DECRYPTION RESULT CODES</span>
+                                                        <span>DECRYPTION CODES: APPROVED</span>
                                                         <span class="text-neonGreen">VERIFIED_SECURE</span>
                                                     </div>
-                                                    <p id="card-answer-text" class="text-[11px] font-mono font-medium text-neonGreen leading-relaxed my-auto px-1">
-                                                        &gt;&gt; Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors.
+                                                    <p id="card-answer-text" class="text-[10px] font-mono font-bold text-neonGreen leading-relaxed my-auto px-1">
+                                                        >> Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors.
                                                     </p>
-                                                    <span class="text-[9px] text-neonGreen font-bold font-mono tracking-wider uppercase text-glow-green">DECRYPTED VECTOR</span>
+                                                    <span class="text-[8px] text-neonGreen font-bold font-mono tracking-wider uppercase text-glow-green">ACTIVE RECALL CONQUERED</span>
                                                 </div>
 
+                                            </div>
+                                        </div>
+
+                                        <!-- Spaced Repetition Grading selector grid (Active Recall) -->
+                                        <div id="repetition-scoring-deck" class="hidden mt-2.5 space-y-1.5 font-mono">
+                                            <span class="text-[7px] text-textMuted uppercase font-bold block text-center">RATE RECALL DECAY DIFFICULTY:</span>
+                                            <div class="grid grid-cols-4 gap-1 text-[7.5px] font-bold">
+                                                <button onclick="rateRecallCard('crucial')" class="py-1 bg-warningCrimson text-black rounded text-[6.5px]">CRUCIAL</button>
+                                                <button onclick="rateRecallCard('hard')" class="py-1 bg-[#ffcc00] text-black rounded text-[6.5px]">HARD</button>
+                                                <button onclick="rateRecallCard('good')" class="py-1 bg-neonCyan text-black rounded text-[6.5px]">GOOD</button>
+                                                <button onclick="rateRecallCard('safe')" class="py-1 bg-neonGreen text-black rounded text-[6.5px]">PERM_OK</button>
                                             </div>
                                         </div>
 
@@ -900,8 +1078,8 @@
                                     </div>
 
                                     <!-- PDF summaries custom textbox simulation -->
-                                    <div class="space-y-1.5 mt-2.5 pt-2.5 border-t border-white/[0.05]">
-                                        <label class="text-[8px] font-mono text-textMuted block font-bold uppercase tracking-wider">Manual Document Text compiler</label>
+                                    <div class="space-y-1.5 mt-2 pt-2 border-t border-white/[0.05]">
+                                        <label class="text-[8px] font-mono text-textMuted block font-bold uppercase tracking-wider">Smart Ingestion Text-to-Deck compiler</label>
                                         <textarea id="mock-recall-textarea" class="w-full h-11 bg-intelBlack border border-white/10 p-1.5 rounded-lg text-xs font-mono text-white focus:border-neonPurple focus:outline-none placeholder-textMuted/40 resize-none" placeholder="Format: Question // Answer OR paste standard text notes..."></textarea>
                                         <button onclick="simulateDocumentDeckGeneration()" class="w-full py-1.5 bg-neonPurple text-white font-mono font-bold text-[9px] tracking-widest uppercase rounded-lg hover:bg-white hover:text-black duration-300 transition-all">
                                             COMPILE NEW SMART CARDS()
@@ -913,31 +1091,54 @@
                                 <div id="screen-battle-arena" class="phone-screen-content">
                                     <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-xs font-mono font-extrabold text-[#ff00cc] uppercase tracking-widest">LEADERBOARD ARENA</h5>
-                                            <p class="text-[7.5px] font-mono text-textMuted uppercase">division level: diamond ex v</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-[#ff00cc] uppercase tracking-widest">COGNITIVE BATTLE ARENA</h5>
+                                            <p class="text-[7.5px] font-mono text-textMuted uppercase" id="player-arena-league">DIVISION: PLATINUM LEAGUE V</p>
                                         </div>
+                                        <span id="player-elo-badge" class="px-1.5 py-0.5 bg-neonPurple/10 border border-neonPurple/35 text-neonPurple text-[7.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(255,0,204,0.15)]">1540 ELO</span>
                                     </div>
 
                                     <!-- Live Leader ranking score boards -->
                                     <div class="space-y-1">
-                                        <div class="space-y-1 text-[9.5px] font-mono">
-                                            <div class="p-1.5 bg-intelDark rounded-lg flex justify-between items-center border-l-2 border-neonCyan font-bold relative overflow-hidden">
-                                                <span>01 // Kabbo Mondal (You)</span>
+                                        <div class="flex justify-between items-center mb-1 text-[8px] font-mono">
+                                            <span class="text-textMuted font-bold uppercase">> GLOBAL LEAGUE STANDINGS</span>
+                                            <span class="text-neonCyan animate-pulse font-extrabold uppercase" id="arena-dark-horse-lbl">⚠️ DARK HORSE DETECTOR ACTIVE</span>
+                                        </div>
+                                        <div class="space-y-1 text-[9px] font-mono" id="arena-ranking-list">
+                                            <div class="p-1.5 bg-intelDark rounded flex justify-between items-center border-l-2 border-neonCyan font-bold relative overflow-hidden" id="arena-my-prowess">
+                                                <span>01 // Kabbo Mondal [Me] 👑</span>
                                                 <span class="text-neonCyan text-glow-cyan font-black" id="player-score-pts">94,800 PTS</span>
                                             </div>
-                                            <div class="p-1.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                            <div class="p-1.5 bg-intelDark/30 rounded flex justify-between items-center opacity-75 border-l-2 border-transparent">
                                                 <span>02 // Alpha_Sec_K7</span>
                                                 <span>89,120 PTS</span>
                                             </div>
-                                            <div class="p-1.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                            <div class="p-1.5 bg-intelDark/30 rounded flex justify-between items-center opacity-75 border-l-2 border-transparent">
                                                 <span>03 // Matrix_Zero_N</span>
                                                 <span>84,330 PTS</span>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <!-- Scholar Guild Assembly Manager -->
+                                    <div class="mt-2.5 p-2 bg-intelDark border border-white/5 rounded-xl space-y-1.5 font-mono text-[8px]">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-extrabold text-white uppercase text-glow-cyan">SCHOLAR GUILD MATRIX</span>
+                                            <span class="px-1 bg-neonCyan/15 text-neonCyan font-bold text-[6px]">GUILD: PHYSICS_TITANS</span>
+                                        </div>
+                                        <div class="flex gap-1.5">
+                                            <input type="text" id="guild-create-input" placeholder="Assemble New Team..." class="grow p-1 bg-intelBlack border border-white/10 rounded text-[7.5px] text-white focus:outline-none">
+                                            <button onclick="createGuildSim()" class="px-2 bg-neonCyan text-black font-bold uppercase rounded text-[7px]">JOIN</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dark Horse trajectory alert status block -->
+                                    <div class="p-2.5 bg-neonCyan/5 border border-neonCyan/20 rounded-xl my-2.5 text-[7.5px] font-mono leading-relaxed text-neutral-300">
+                                        <span class="font-bold text-neonCyan block uppercase text-[8px] mb-0.5 font-black flex items-center gap-1">📈 SYSTEM TRAJECTORY FORECASTIFIER</span>
+                                        "Operator velocity indices indicate an unyielding daily streak vector. Projected standings calculate an Elite 1% rank ascension within 60 days."
+                                    </div>
+
                                     <!-- Interactive Reflex Battle Area Game Panel -->
-                                    <div class="mt-2.5 p-2 bg-intelBlack border border-neonPurple/20 rounded-lg">
+                                    <div class="p-2 bg-intelBlack border border-neonPurple/20 rounded-lg">
                                         <div class="flex justify-between items-center border-b border-white/5 pb-1 mb-1.5">
                                             <span class="text-[7px] font-mono text-neonPurple uppercase font-bold tracking-widest">COGNITIVE TRAINING COMBAT</span>
                                             <span class="inline-block w-1 h-1 rounded-full bg-neonPurple animate-pulse animate-ping"></span>
@@ -979,102 +1180,177 @@
 
                                 <!-- ================= SCREEN 5: BLACK OPS OVERRIDE ================= -->
                                 <div id="screen-black-ops" class="phone-screen-content">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-3.5">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-xs font-mono font-extrabold text-warningCrimson">EMERGENCY BYPASS & SHOP</h5>
+                                            <h5 class="text-xs font-mono font-extrabold text-warningCrimson">EMERGENCY BYPASS & CONTROL</h5>
                                             <p class="text-[7.5px] font-mono text-warningCrimson/80 uppercase font-bold">cryptographic override core</p>
                                         </div>
+                                        <button onclick="toggleAdminMockMode()" id="admin-bypass-lock-btn" class="px-1.5 py-0.5 bg-warningCrimson/15 border border-warningCrimson/45 text-warningCrimson text-[6px] font-mono font-black uppercase rounded">MOCK ADMIN LOCK</button>
                                     </div>
 
                                     <!-- Switchable Sub-Tabs Matrix -->
-                                    <div class="flex border border-white/10 rounded-lg overflow-hidden bg-intelDark/60 mb-4 text-[8px] font-mono font-bold">
+                                    <div class="flex border border-white/10 rounded-lg overflow-hidden bg-intelDark/60 mb-3.5 text-[7.5px] font-mono font-bold">
                                         <button onclick="switchBypassTab('bypass-logs')" id="tab-bypass-logs" class="grow py-2 bg-warningCrimson/10 border-r border-white/10 text-warningCrimson transition-all">
                                             DISCIPLINE LOGS
                                         </button>
-                                        <button onclick="switchBypassTab('secure-shop')" id="tab-secure-shop" class="grow py-2 text-textMuted transition-all">
+                                        <button onclick="switchBypassTab('secure-shop')" id="tab-secure-shop" class="grow py-2 text-textMuted transition-all border-r border-[#ffffff0a]">
                                             SECURE SHOP
+                                        </button>
+                                        <button onclick="switchBypassTab('admin-core')" id="tab-admin-core" class="grow py-2 text-textMuted transition-all hidden">
+                                            ADMIN PANEL
                                         </button>
                                     </div>
 
                                     <!-- Sub-tab 1: Bypass and overrides logs -->
-                                    <div id="layer-bypass-logs" class="space-y-3.5">
+                                    <div id="layer-bypass-logs" class="space-y-3">
                                         <div class="p-3 border border-warningCrimson/35 bg-warningCrimson/5 text-warningCrimson font-mono text-[9px] rounded-lg leading-relaxed">
                                             <strong>CRITICAL ACTION ZONE:</strong> Force override operations append secure cryptographic metadata onto state indicators to prevent daily streak decay.
                                         </div>
 
-                                        <div class="space-y-3">
-                                            <button onclick="emergencyActionBypass('streak')" class="w-full py-2.5 bg-warningCrimson/10 border border-warningCrimson/45 text-warningCrimson font-mono text-[9px] font-black uppercase rounded-lg hover:bg-warningCrimson hover:text-black transition-all tracking-wider shadow-[0_0_15px_rgba(255,51,102,0.1)]">
+                                        <div class="space-y-2">
+                                            <button onclick="emergencyActionBypass('streak')" class="w-full py-2 bg-warningCrimson/10 border border-warningCrimson/45 text-warningCrimson font-mono text-[9px] font-black uppercase rounded-lg hover:bg-warningCrimson hover:text-black transition-all tracking-wider shadow-[0_0_15px_rgba(255,51,102,0.1)]">
                                                 FORCE RESCUE SECTOR STREAK
                                             </button>
-                                            <button onclick="emergencyActionBypass('diagnostic')" class="w-full py-2.5 bg-intelDark border border-white/10 text-white font-mono text-[9px] font-bold uppercase rounded-lg hover:bg-neutral-800 transition-all tracking-wider">
+                                            <button onclick="emergencyActionBypass('diagnostic')" class="w-full py-2 bg-intelDark border border-white/10 text-white font-mono text-[9px] font-bold uppercase rounded-lg hover:bg-neutral-800 transition-all tracking-wider">
                                                 DIAGNOSE HARDWARE SIMULATOR
                                             </button>
                                         </div>
                                     </div>
 
                                     <!-- Sub-tab 2: Premium Cognitive Shop -->
-                                    <div id="layer-secure-shop" class="hidden space-y-3.5">
-                                        
+                                    <div id="layer-secure-shop" class="hidden space-y-3">
                                         <!-- Plans Stack -->
-                                        <div class="space-y-2">
-                                            <div onclick="selectWebPlan(0)" id="web-plan-0" class="p-2.5 bg-intelDark/60 border border-neonPurple rounded-lg flex justify-between items-center cursor-pointer transition-all">
+                                        <div class="space-y-1.5">
+                                            <div onclick="selectWebPlan(0)" id="web-plan-0" class="p-2 bg-intelDark/60 border border-neonPurple rounded-lg flex justify-between items-center cursor-pointer transition-all">
                                                 <div>
-                                                    <span class="text-[9.5px] font-mono font-bold text-white block">1 Month Access</span>
-                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none">Perfect for calibration</span>
+                                                    <span class="text-[9px] font-mono font-bold text-white block">Free Competitive</span>
+                                                    <span class="text-[7px] font-sans text-textMuted leading-none">Standard solving tracks 5 daily limit</span>
                                                 </div>
                                                 <div class="text-right">
-                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$27</span>
-                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">3700 BDT</span>
+                                                    <span class="text-[9px] font-mono font-extrabold text-neonGreen block">$0</span>
+                                                    <span class="text-[7px] font-mono font-bold text-neonCyan">FREE TIER</span>
                                                 </div>
                                             </div>
-                                            <div onclick="selectWebPlan(1)" id="web-plan-1" class="p-2.5 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all">
+                                            <div onclick="selectWebPlan(1)" id="web-plan-1" class="p-2 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all">
                                                 <div>
-                                                    <span class="text-[9.5px] font-mono font-bold text-white block">3 Months Access <span class="bg-neonCyan/15 px-1 py-0.5 rounded text-[6.5px] text-neonCyan font-black ml-1">POPULAR</span></span>
-                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none font-bold">Most popular choice</span>
+                                                    <span class="text-[9px] font-mono font-bold text-white block">Neural Elite <span class="bg-neonCyan/15 px-1 py-0.5 rounded text-[6px] text-neonCyan font-black ml-1">UNLIMITED</span></span>
+                                                    <span class="text-[7px] font-sans text-textMuted leading-none font-bold">All Cross-Chain verification, Personas,Voice</span>
                                                 </div>
                                                 <div class="text-right">
-                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$77</span>
-                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">10,500 BDT</span>
-                                                </div>
-                                            </div>
-                                            <div onclick="selectWebPlan(2)" id="web-plan-2" class="p-2.5 bg-intelBlack border border-white/5 rounded-lg flex justify-between items-center cursor-pointer transition-all">
-                                                <div>
-                                                    <span class="text-[9.5px] font-mono font-bold text-white block">1 Year Infinity</span>
-                                                    <span class="text-[7.5px] font-sans text-textMuted leading-none">Ultimate long-range learning</span>
-                                                </div>
-                                                <div class="text-right">
-                                                    <span class="text-[9.5px] font-mono font-extrabold text-neonGreen block">$277</span>
-                                                    <span class="text-[7.5px] font-mono font-bold text-neonCyan">37,800 BDT</span>
+                                                    <span class="text-[9px] font-mono font-extrabold text-neonGreen block">$10/Mo</span>
+                                                    <span class="text-[7px] font-mono font-bold text-neonCyan">1,100 BDT</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Gateways Stack -->
                                         <div class="grid grid-cols-4 gap-1">
-                                            <button onclick="selectWebGateway('TRC20')" id="web-gate-TRC20" class="py-1.5 bg-neonPurple/20 border border-neonPurple text-neonCyan font-mono text-[8px] font-bold rounded">TRC20</button>
-                                            <button onclick="selectWebGateway('ERC20')" id="web-gate-ERC20" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">ERC20</button>
-                                            <button onclick="selectWebGateway('BEP20')" id="web-gate-BEP20" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">BEP20</button>
-                                            <button onclick="selectWebGateway('bKash')" id="web-gate-bKash" class="py-1.5 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">bKash</button>
+                                            <button onclick="selectWebGateway('TRC20')" id="web-gate-TRC20" class="py-1 bg-neonPurple/20 border border-neonPurple text-neonCyan font-mono text-[8px] font-bold rounded">TRC20</button>
+                                            <button onclick="selectWebGateway('ERC20')" id="web-gate-ERC20" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">ERC20</button>
+                                            <button onclick="selectWebGateway('BEP20')" id="web-gate-BEP20" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">BEP20</button>
+                                            <button onclick="selectWebGateway('bKash')" id="web-gate-bKash" class="py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[8px] font-bold rounded">bKash</button>
                                         </div>
 
                                         <!-- Digital Credential Block -->
-                                        <div class="p-2.5 bg-intelBlack border border-white/10 rounded-lg font-mono">
+                                        <div class="p-2 bg-intelBlack border border-white/10 rounded-lg font-mono">
                                             <span class="text-[7.5px] text-textMuted block uppercase font-bold" id="web-address-label">DEPOSIT ADDRESS FOR TRC20</span>
-                                            <span class="text-[10px] text-neonGreen font-bold select-all break-all block mt-1" id="web-address-text">TYB9LreC2M32VskZtG467c6999Kx7u99A7</span>
+                                            <span class="text-[9.5px] text-neonGreen font-bold select-all break-all block mt-1" id="web-address-text">THrBL9ZvjnEH981PPJRG9gQMoyz2XAqqR3</span>
                                         </div>
 
                                         <!-- Verification Action field -->
-                                        <div>
-                                            <input type="text" id="web-tx-input" placeholder="Paste cryptographic TRC20 TX hash..." class="w-full p-2 bg-intelBlack border border-white/10 rounded-lg text-[9px] font-mono text-neonPurple placeholder-textMuted/40 uppercase mb-2 focus:border-neonPurple focus:outline-none" />
-                                            <button onclick="verifyWebTransactionId()" class="w-full py-2 bg-neonPurple text-white font-mono font-black text-[9px] uppercase rounded-lg hover:bg-white hover:text-black duration-300 tracking-wider">
-                                                VERIFY TRANSACTION ID
+                                        <div class="space-y-1.5">
+                                            <input type="text" id="web-tx-input" placeholder="Paste cryptographic TRC20 TX hash..." class="w-full p-2 bg-intelBlack border border-white/10 rounded-lg text-[9px] font-mono text-neonPurple placeholder-textMuted/40 uppercase focus:border-neonPurple focus:outline-none" />
+                                            <button onclick="verifyWebTransactionId()" class="w-full py-1.5 bg-neonPurple text-white font-mono font-black text-[9px] uppercase rounded-lg hover:bg-white hover:text-black duration-300 tracking-wider">
+                                                VERIFY TX / HASH CORE
                                             </button>
                                         </div>
 
+                                        <!-- bKash Tokenized Webhook Checkout Simulation Overlay UI container -->
+                                        <div id="bkash-checkout-popup" class="hidden p-3 bg-[#e2125a] border border-[#e2125a]/90 text-white rounded-xl space-y-2 font-sans relative overflow-hidden transition-all shadow-[0_0_20px_rgba(226,18,90,0.3)]">
+                                            <div class="flex justify-between items-center border-b border-white/20 pb-1">
+                                                <span class="font-bold text-[10px] tracking-wide uppercase">bKash Merchant Checkout Webhook</span>
+                                                <span class="text-[7px] font-mono bg-white/20 px-1 rounded animate-pulse">SECURE PIN VERIFICATION</span>
+                                            </div>
+                                            <p class="text-[8px] leading-relaxed">Payment to merchant wallet channel: <span class="font-bold block">01922934076 (Kx7 System Target)</span></p>
+                                            
+                                            <div class="grid grid-cols-2 gap-1 text-[8.5px] text-black">
+                                                <input type="number" id="bkash-wallet-num" placeholder="017xxxxxxxx" class="p-1 rounded bg-white font-mono outline-none text-[8.5px]">
+                                                <input type="password" id="bkash-wallet-pin" placeholder="Enter PIN Code" class="p-1 rounded bg-white font-mono outline-none text-[8.5px]">
+                                            </div>
+                                            <div class="flex justify-between gap-1">
+                                                <button onclick="executeSimulatedBkashCore()" class="grow py-1 bg-white hover:bg-neutral-100 text-[#e2125a] font-bold rounded text-[8px] uppercase">VERIFY AND PAY BDT 1100</button>
+                                                <button onclick="closeBkashPopup()" class="py-1 px-2 bg-black/40 text-white font-bold rounded text-[8px] uppercase">CANCEL</button>
+                                            </div>
+                                        </div>
+
                                         <!-- Results block container -->
-                                        <div id="web-verify-status" class="hidden p-3 bg-intelBlack border border-white/15 rounded-lg font-mono text-[8.5px] leading-relaxed"></div>
+                                        <div id="web-verify-status" class="hidden p-2.5 bg-intelBlack border border-white/10 rounded-lg font-mono text-[8.5px] leading-relaxed"></div>
                                     </div>
-                                </div>
+
+                                    <!-- Sub-tab 3: COGNITIVE ADMIN CORE OVERRIDE PLANE -->
+                                    <div id="layer-admin-core" class="hidden space-y-3 font-mono">
+                                        <div class="p-2 border border-warningCrimson bg-warningCrimson/10 text-warningCrimson font-bold text-[7.5px] rounded-lg">
+                                            ⚠️ [CORE PROTECTION DECK // READ_WRITE GRANTED]
+                                        </div>
+
+                                        <!-- User Database Deep Search and Analytics -->
+                                        <div class="bg-intelDark/90 border border-white/5 rounded-xl p-2.5 space-y-1.5">
+                                            <span class="text-[7px] text-textMuted block font-bold uppercase">> CUSTOM USER SEARCH BY KX7 PASSPORT</span>
+                                            <div class="flex gap-1">
+                                                <input type="text" id="admin-user-search-input" value="KX7-SSC-BD-90A11B4E" class="grow p-1 bg-intelBlack border border-white/10 rounded text-[8px] text-white focus:outline-none">
+                                                <button onclick="triggerAdminUserSearch()" class="px-2 py-0.5 bg-warningCrimson text-black font-extrabold uppercase rounded text-[7.5px]">QUERY</button>
+                                            </div>
+
+                                            <div id="admin-search-result-box" class="p-1.5 bg-intelBlack rounded border border-white/10 text-[7px] text-textMuted leading-relaxed space-y-1">
+                                                <div><strong>PROFILE PASSPORT:</strong> KX7-SSC-BD-90A11B4E</div>
+                                                <div><strong>NATIVE EMAIL:</strong> student_elite_99@gmail.com</div>
+                                                <div><strong>CURRICULUM KEY:</strong> NCTB_BD (Bilingual SSC)</div>
+                                                <div><strong>UPTIME COUNTERS:</strong> 84h 12m | Active streak: 34 DAYS</div>
+                                                <div><strong>AUTHENTICATED IP:</strong> 103.114.172.93 (Bangladesh ISP)</div>
+                                                <div><strong>BILLING CLASS:</strong> bKash // TrxID "BKA8F92D77"</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tactical Interdiction actions -->
+                                        <div class="p-2 bg-intelBlack border border-[#ff3366]/30 rounded-xl space-y-2">
+                                            <span class="text-[7.5px] text-[#ff3366] block font-black uppercase">TACTICAL INTERDICTION SUITE</span>
+                                            <div class="grid grid-cols-3 gap-1 text-center text-[7px] font-bold text-white">
+                                                <button onclick="triggerStaffSecurityAction('suspend')" class="py-1 bg-[#ff3366]/10 hover:bg-[#ff3366] hover:text-black border border-[#ff3366]/40 rounded uppercase">SUSPEND ID</button>
+                                                <button onclick="triggerStaffSecurityAction('ban')" class="grow py-1 bg-warningCrimson font-black text-black rounded uppercase">BAN PROFILE</button>
+                                                <button onclick="triggerStaffSecurityAction('reset_league')" class="py-1 bg-intelDark border border-white/10 rounded uppercase">RESET LEAGUE</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Zero Trust Database Code rule Viewer -->
+                                        <div class="space-y-1">
+                                            <span class="text-[7.5px] text-textMuted block font-bold uppercase">> FIRESTORE ZERO-TRUST DB RULES</span>
+                                            <pre class="bg-intelBlack p-2 border border-white/5 rounded-lg text-[6.5px] text-glow-green text-[#33ff33]/85 overflow-x-auto select-all leading-tight max-h-24"><code class="block whitespace-pre">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() { return request.auth != null; }
+    function isOwner(uId) { return request.auth.uid == uId; }
+    function isAdmin() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ADMIN_CORE'; }
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && (isOwner(userId) || isAdmin());
+    }
+    match /admin_control_plane/{document=**} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+  }
+}</code></pre>
+                                        </div>
+
+                                        <!-- System Override Auditing dynamic Log -->
+                                        <div class="space-y-1">
+                                            <span class="text-[7px] text-textMuted block font-bold uppercase">> STAFF SECURE AUDIT SYNC LOGS</span>
+                                            <div id="admin-action-logs-box" class="bg-intelBlack/80 border border-white/10 rounded-lg p-2 h-16 text-[6.5px] text-white/70 overflow-y-auto space-y-0.5">
+                                                <div class="text-neonCyan">&gt;&gt; [OK] ADMIN_CORE tunnel established...</div>
+                                                <div>&gt;&gt; [SECURE]: STAFF_BYPASS initialized by kabbomondal013</div>
+                                                <div>&gt;&gt; [OK]: rules_version security profiles parsed successfully.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    </div>
 
                             </div>
 
@@ -1318,176 +1594,667 @@
             }
         }
 
-        // Simulate 3D Recall card flip transitions
+        // --- UNIVERSAL CURRICULUM MATRIX & OLE SYNCHRONIZER ---
+        let activeUcmTrack = "SAT_USA";
+        let activeOleLanguage = "en";
+        let activeSolverSubject = "math";
+        let activeMentorPersona = "feynman";
+        let isAdminModeActive = false;
+
+        const solverPresets = {
+            'math': {
+                'SAT_USA': { label: 'SAT Quad: Find roots for x^2 - 5x + 6 = 0', text: 'Solve x^2 - 5x + 6 = 0 with complete derivation steps.', latex: 'x^2 - 5x + 6 = 0' },
+                'NCTB_BD': { label: 'HSC Calculus: Derivative of d/dx(x * ln(x))', text: 'Evaluate the derivative of the product d/dx (x * ln(x)) step-by-step.', latex: '\\frac{d}{dx}[x \\ln(x)]' },
+                'CAMBRIDGE_UK': { label: 'A-Level Integration: Limit of ∫ x^2 dx from [1, 3]', text: 'Find the definite integral of x^2 from x = 1 to x = 3 using calculus laws.', latex: '\\int_{1}^{3} x^2 \\, dx' },
+                'CBSE_IN': { label: 'JEE Math: Find limits as x->0 of (sin x) / x', text: 'Obtain the limit as x approaches 0 of sin(x)/x from first principles.', latex: '\\lim_{x \\to 0} \\frac{\\sin x}{x}' }
+            },
+            'physics': {
+                'SAT_USA': { label: 'SAT Physics: Calculate Escape Velocity (Earth)', text: 'What is the exact escape velocity of Earth if mass is 5.97e24 kg and standard gravity exists?', latex: 'v_e = \\sqrt{\\frac{2GM}{R}}' },
+                'NCTB_BD': { label: 'HSC Physics: Bohr atom hydrogen orbit radius', text: 'Deduce the radius of the first orbit of an electron in a hydrogen atom.', latex: 'r_n = \\frac{\\epsilon_0 n^2 h^2}{\\pi m e^2}' },
+                'CAMBRIDGE_UK': { label: 'A-Level Physics: Induced EMF in solenoid', text: 'Formulate Faraday’s law of induction for EMF induced by flux change over time.', latex: '\\mathcal{E} = -N \\frac{d\\Phi_B}{dt}' },
+                'CBSE_IN': { label: 'JEE Physics: Bragg\'s law of Diffraction', text: 'Calculate incident angle vector rules for atomic crystal lattices and wavelength lines.', latex: '2d \\sin\\theta = n\\lambda' }
+            },
+            'chemistry': {
+                'SAT_USA': { label: 'SAT Chem: Ideal Gas constant equation volume', text: 'Determine the final volume of 1 mole of an ideal gas at STP conditions.', latex: 'PV = nRT' },
+                'NCTB_BD': { label: 'HSC Chem: Solubility product constant Al(OH)3', text: 'Derive the solubility product constant expression for Al(OH)3 in pure water.', latex: 'K_{sp} = [Al^{3+}][OH^-]^3' },
+                'CAMBRIDGE_UK': { label: 'A-Level Chem: Gibbs Free Energy spontaneous state', text: 'When is a chemical reaction spontaneous according to enthalpy and entropy?', latex: '\\Delta G = \\Delta H - T\\Delta S' },
+                'CBSE_IN': { label: 'JEE Chem: Nernst equation cell potential EMF', text: 'Calculate the cell potential under non-standard concentration levels.', latex: 'E = E^0 - \\frac{RT}{nF} \\ln Q' }
+            },
+            'language': {
+                'SAT_USA': { label: 'SAT Writing: Subject-Verb coordination vectors', text: 'Identify and repair subject-verb coordination error inside complex clauses.', latex: '\\text{Clause} \\rightarrow \\text{Subject (Singular)} + \\text{Verb (Plural) [REJECT]}' },
+                'NCTB_BD': { label: 'Bangla OLE: Translate matrix to high-stakes terminology', text: 'Translate high-stakes mathematical syllabus terms to authentic Bangla linguistic structures.', latex: '\\text{Calculus} \\rightarrow \\text{কলনবিদ্যা (যোজন/বিয়োজন)}' },
+                'CAMBRIDGE_UK': { label: 'A-Level Lang: Stylistic convergence values', text: 'Evaluate semantic densities of syntax paradigms.', latex: '\\text{Density} = \\frac{\\text{Words (Lexical)}}{\\text{Total Words}} h \\times 100' },
+                'CBSE_IN': { label: 'CBSE English: Formal vector email directives', text: 'Construct rigorous professional communication structures.', latex: '\\text{Format} = \\text{Salutation} + \\text{Direct Intent} + \\text{Sign-off}' }
+            }
+        };
+
+        function syncUcmSettings() {
+            activeUcmTrack = document.getElementById('ucm-track-select').value;
+            activeOleLanguage = document.getElementById('ucm-language-select').value;
+            
+            // Sync badges across emulator screen
+            const ucmBadge = document.getElementById('active-ucm-badge');
+            if (ucmBadge) {
+                ucmBadge.textContent = `TRACK: ${activeUcmTrack}`;
+            }
+
+            // Reload subject preset items
+            selectSolverSubject(activeSolverSubject);
+
+            // Log parameters change onto Console
+            const termConsole = document.getElementById('terminal-display-canvas');
+            if (termConsole) {
+                termConsole.innerHTML += `
+                    <div class="text-neonCyan">&gt;&gt; [CONFIG_SYNC]: Universal Curriculum Matrix aligned to ${activeUcmTrack}</div>
+                    <div class="text-white/50">&gt;&gt; [Configured OLE System Language Matrix]: ${activeOleLanguage.toUpperCase()} mode enabled.</div>
+                `;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            }
+        }
+
+        // Subject Toggle Buttons
+        function selectSolverSubject(sub) {
+            activeSolverSubject = sub;
+            const subjects = ['math', 'physics', 'chemistry', 'language'];
+            subjects.forEach(s => {
+                const btn = document.getElementById(`solver-sub-${s}`);
+                if (btn) {
+                    if (s === sub) {
+                        btn.className = "py-1 bg-neonCyan text-black font-mono text-[7px] font-black rounded uppercase";
+                    } else {
+                        btn.className = "py-1 bg-intelDark border border-white/5 text-textMuted font-mono text-[7px] font-bold rounded uppercase";
+                    }
+                }
+            });
+
+            // Re-populate the preset alerts options
+            const selectEl = document.getElementById('solver-preset-prompts');
+            if (selectEl) {
+                selectEl.innerHTML = `<option value="">-- CHOOSE A PRESET PROBLEM (${sub.toUpperCase()}) --</option>`;
+                const trackData = solverPresets[sub];
+                if (trackData) {
+                    for (const trackName in trackData) {
+                        const opt = document.createElement('option');
+                        opt.value = trackName;
+                        opt.textContent = `${trackName.replace('_', ' ')} // ${trackData[trackName].label}`;
+                        selectEl.appendChild(opt);
+                    }
+                }
+            }
+        }
+
+        function loadPresetPromptsIntoInput() {
+            const selectEl = document.getElementById('solver-preset-prompts');
+            const trackSelected = selectEl.value;
+            if (!trackSelected) return;
+
+            const presetObj = solverPresets[activeSolverSubject][trackSelected];
+            if (presetObj) {
+                document.getElementById('solver-raw-input').value = presetObj.text;
+                // Add console feedback
+                const termConsole = document.getElementById('terminal-display-canvas');
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-white/60">&gt;&gt; Preset loaded: "${presetObj.label}"</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            }
+        }
+
+        // Mentor Personas Controls
+        const mentorDescriptions = {
+            'einstein': { label: "EINSTEIN", desc: "Einstein Mode: Deduces everything starting strictly from foundational physical axioms and space-time geometries." },
+            'feynman': { label: "FEYNMAN", desc: "Feynman Mode: Translates complex intellectual equations into elegant everyday analogies (marbles, hose-pipes) to bypass mental blocks." },
+            'fischer': { label: "BOBBY FISCHER", desc: "Fischer Mode: Cold, calculating, chess-like hyper-optimization that derives solutions with maximum algorithmic speed index." },
+            'military': { label: "MILITARY DRILLED", desc: "Strict Military Mode: Focuses intensely on absolute rigor, disciplined task vectors, safety rules, and compliance." },
+            'assassin': { label: "EXAM ASSASSIN", desc: "Exam Assassin: Targets examiners' marking scheme criteria directly to maximize key point scores." }
+        };
+
+        function selectMentorPersona(persona) {
+            activeMentorPersona = persona;
+            const personas = ['einstein', 'feynman', 'fischer', 'military', 'assassin'];
+            
+            personas.forEach(p => {
+                const btn = document.getElementById(`mentor-${p}`);
+                if (btn) {
+                    if (p === persona) {
+                        btn.className = "py-1 bg-neonPurple/20 border border-neonPurple text-white rounded shadow-[0_0_8px_rgba(255,0,204,0.15)]";
+                    } else {
+                        btn.className = "py-1 bg-intelBlack border border-white/5 rounded text-neutral-400";
+                    }
+                }
+            });
+
+            const badge = document.getElementById('mentor-badge');
+            if (badge) badge.textContent = mentorDescriptions[persona].label;
+
+            const descText = document.getElementById('mentor-description-text');
+            if (descText) descText.textContent = mentorDescriptions[persona].desc;
+        }
+
+        // Simulated webcam eye flow tracking matrix
+        let webcamStreamRef = null;
+        let gazeSimInterval = null;
+
+        function toggleGazeEyeTrackingSensor() {
+            const btn = document.getElementById('biometric-gaze-btn');
+            const video = document.getElementById('biometric-webcam-stream');
+            const ping = document.getElementById('biometric-state-ping');
+            const coordsLbl = document.getElementById('gaze-vector-info');
+            const lockLbl = document.getElementById('calibration-percentage-lbl');
+            const termConsole = document.getElementById('terminal-display-canvas');
+
+            if (webcamStreamRef || gazeSimInterval) {
+                // Shut down
+                if (webcamStreamRef) {
+                    webcamStreamRef.getTracks().forEach(track => track.stop());
+                }
+                webcamStreamRef = null;
+                clearInterval(gazeSimInterval);
+                gazeSimInterval = null;
+
+                video.classList.add('hidden');
+                video.pause();
+                video.srcObject = null;
+                
+                ping.className = "inline-block w-1.5 h-1.5 rounded-full bg-neutral-600";
+                btn.textContent = "🛰️ INITIALIZE BIOMETRIC EYE LOCK-IN";
+                coordsLbl.textContent = "COORDS: X_AX[N/A] // Y_AY[N/A]";
+                lockLbl.textContent = "LOCK: FAILED";
+                lockLbl.className = "text-[#ff3366]";
+
+                termConsole.innerHTML += `<div class="text-[#ff3366]">&gt;&gt; Biometric eye sensory calibration link disconnected.</div>`;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            } else {
+                // Initialize
+                btn.textContent = "ATTEMPING HANDSHAKE WITH HARDWARE SENSOR...";
+                
+                navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+                    webcamStreamRef = stream;
+                    video.classList.remove('hidden');
+                    video.srcObject = stream;
+                    video.play();
+                    
+                    launchGazeTelemetrySimulator(true);
+                }).catch(err => {
+                    // Fallback to simulated target logs
+                    termConsole.innerHTML += `<div class="text-[#ffcc00]">&gt;&gt; [EYE_MOCK]: Camera denied or unsupported. Activating orbital telemetry radar matrix logs...</div>`;
+                    launchGazeTelemetrySimulator(false);
+                });
+            }
+        }
+
+        function launchGazeTelemetrySimulator(isRealCamera) {
+            const btn = document.getElementById('biometric-gaze-btn');
+            const ping = document.getElementById('biometric-state-ping');
+            const coordsLbl = document.getElementById('gaze-vector-info');
+            const lockLbl = document.getElementById('calibration-percentage-lbl');
+            const termConsole = document.getElementById('terminal-display-canvas');
+
+            ping.className = "inline-block w-1.5 h-1.5 rounded-full bg-neonGreen animate-pulse";
+            btn.textContent = "🛰️ BIOMETRIC ATTENTION SENSOR ACTIVE [TAP SEVER]";
+            
+            termConsole.innerHTML += `
+                <div class="text-neonCyan">&gt;&gt; [BIOMETRICS_OK] Handshake verified. Calibration initialized...</div>
+                <div class="text-neonGreen text-glow-green">&gt;&gt; Gaze attention tracking vector locks initialized successfully.</div>
+            `;
+            termConsole.scrollTop = termConsole.scrollHeight;
+
+            let percentageVal = 0;
+            gazeSimInterval = setInterval(() => {
+                const mockX = (150 + Math.random() * 80).toFixed(2);
+                const mockY = (100 + Math.random() * 60).toFixed(2);
+                coordsLbl.textContent = `COORDS: X_AX[${mockX}] // Y_AY[${mockY}]`;
+                
+                if (percentageVal < 99) {
+                    percentageVal += Math.floor(Math.random() * 15) + 5;
+                    if (percentageVal > 99) percentageVal = 99;
+                }
+                lockLbl.textContent = `LOCK: SECURED (${percentageVal}%)`;
+                lockLbl.className = "text-neonGreen text-glow-green font-bold";
+            }, 350);
+        }
+
+        // LSI curve modifier
+        function updateLsiSlider(val) {
+            const num = (val / 100).toFixed(2);
+            document.getElementById('lsi-val').textContent = `${num} Kxps`;
+            
+            // Squeeze/Skew SVG path representation
+            const curve = document.getElementById('curr-curve-line');
+            const interCircle = document.getElementById('curve-interpoint');
+            if (val > 60) {
+                // Good memory decay
+                curve.setAttribute('d', `M 10,40 C 50,20 100,5 190,4`);
+                interCircle.setAttribute('cy', '12');
+            } else {
+                curve.setAttribute('d', `M 10,40 C 50,45 100,28 190,38`);
+                interCircle.setAttribute('cy', '32');
+            }
+        }
+
+        // High Stakes Streak crisis recovery challenges
+        let streakRecoveryActive = false;
+        let recoveryCorrectChoice = "";
+
+        function triggerStreakDecayAnnihile() {
+            if (streakRecoveryActive) return;
+            streakRecoveryActive = true;
+
+            const warnPanel = document.getElementById('recovery-warn-panel');
+            warnPanel.classList.remove('hidden');
+
+            const qBlock = document.getElementById('recovery-question-block');
+            const optionsBox = document.getElementById('recovery-options-grid');
+
+            // Generate formula recovery question
+            const questions = [
+                { q: "x^2 - 16 = 0, find solutions for |x|", a: "4", opts: ["2", "4", "8", "16"] },
+                { q: "Integral values of \\int 2x dx", a: "x^2 + C", opts: ["2x^2 + C", "x^2 + C", "x + C", "2 + C"] },
+                { q: "pH of standard neutral water matrix", a: "7.0", opts: ["1.0", "4.5", "7.0", "14.0"] },
+                { q: "Identify structural coefficient form of velocity acceleration", a: "LT^-2", opts: ["L T", "L T^-1", "LT^-2", "L^2 T"] }
+            ];
+
+            const item = questions[Math.floor(Math.random() * questions.length)];
+            qBlock.textContent = item.q;
+            recoveryCorrectChoice = item.a;
+
+            optionsBox.innerHTML = "";
+            item.opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "py-1 bg-intelDark border border-white/10 hover:border-neonPurple rounded text-white text-[8px]";
+                btn.textContent = opt;
+                btn.type = "button";
+                btn.onclick = () => verifyRecoveryCoreAnswer(opt);
+                optionsBox.appendChild(btn);
+            });
+
+            // Console audio trigger warning log
+            const termConsole = document.getElementById('terminal-display-canvas');
+            if (termConsole) {
+                termConsole.innerHTML += `<div class="text-warningCrimson font-bold">&gt;&gt; [CRITICAL RECOVERY TRIGGERED]: Momentum decay danger! Solve challenge puzzle instantly!</div>`;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            }
+        }
+
+        function verifyRecoveryCoreAnswer(selected) {
+            const termConsole = document.getElementById('terminal-display-canvas');
+            
+            if (selected === recoveryCorrectChoice) {
+                alert("Famine Decay Overridden successfully! Momentum standing restored. Aura Points boosted (+500 AP).");
+                
+                streakRecoveryActive = false;
+                document.getElementById('recovery-warn-panel').classList.add('hidden');
+
+                // Reward points
+                addAuraPoints(500);
+
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-neonGreen font-bold">&gt;&gt; [RECOVERY_SUCCESS]: Attentional check-in certified. Streak frozen in active state!</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            } else {
+                alert("Incorrect matrix choice. Attentional calibration failed structural parity verification. Try once more.");
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-warningCrimson">&gt;&gt; [RECOVERY_EXCEPTION_FAIL]: Solution mismatch. Recalibrating vectors...</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            }
+        }
+
+        function addAuraPoints(amt) {
+            const auraEl = document.getElementById('dash-aura-points');
+            if (auraEl) {
+                let current = parseInt(auraEl.textContent.replace(/[^0-9]/g, '')) || 0;
+                current += amt;
+                auraEl.textContent = `${current.toLocaleString()} AP`;
+            }
+        }
+
+        // Target target editor mission change
+        function changeMissionTarget() {
+            const dest = prompt("Enter replacement Academy set / Target Objective university:", "MIT (MASS TECH INFRA)");
+            if (dest) {
+                document.getElementById('mission-target-text').textContent = dest.toUpperCase() + " (TACTICAL MISSION UNLOCKED)";
+                const termConsole = document.getElementById('terminal-display-canvas');
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-neonCyan">&gt;&gt; [MISSION_SET]: Academic vector target coordinates pointing to: "${dest.toUpperCase()}"</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            }
+        }
+
+        // --- SMART RETENTION RATING FLIP MATRIX ---
         function flipEmulatorCard() {
             const card = document.getElementById('emulator-3d-card');
             if (card) {
                 card.classList.toggle('flipped');
+                const ratingDeck = document.getElementById('repetition-scoring-deck');
+                if (ratingDeck) {
+                    if (card.classList.contains('flipped')) {
+                        ratingDeck.classList.remove('hidden');
+                    } else {
+                        ratingDeck.classList.add('hidden');
+                    }
+                }
             }
         }
 
-        // Vocal dictation waveform pulse generator
-        let vocalInterval = null;
-        function toggleVoiceDictationSimulation() {
-            const btn = document.getElementById('voice-matrix-btn');
-            const nodes = document.querySelectorAll('.vocal-node');
+        function rateRecallCard(mode) {
+            // Recalculates card strength, updates total twin memory rate, and moves card ahead
+            const retentionLbl = document.getElementById('recall-retention-rate');
+            const activeCardStrength = document.getElementById('card-strength-pct');
             
-            if (vocalInterval) {
-                // Clear and stop waveform vibration
-                clearInterval(vocalInterval);
-                vocalInterval = null;
-                btn.textContent = "ENGAGE VOICE TRANSLATION";
-                btn.classList.replace('bg-neonGreen/15', 'bg-neonCyan/10');
-                btn.classList.replace('text-neonGreen', 'text-neonCyan');
-                btn.classList.replace('border-neonGreen/40', 'border-neonCyan/30');
-                nodes.forEach(node => {
-                    node.style.height = "6px";
-                    node.style.animationPlayState = 'paused';
-                });
+            let rateBoostOutputVal = 89;
+            let cardPct = 84;
+
+            if (mode === 'crucial') {
+                rateBoostOutputVal = 82;
+                cardPct = 42;
+                alert("Ranked as CRUCIAL. Memorization loop scheduler scheduled for high-frequency decay (1 Day cycle).");
+            } else if (mode === 'hard') {
+                rateBoostOutputVal = 85;
+                cardPct = 65;
+                alert("Ranked as HARD. Loop scheduler scheduled for 3 Days halflife.");
+            } else if (mode === 'good') {
+                rateBoostOutputVal = 91;
+                cardPct = 90;
+                alert("Ranked as COGNITIVE COMPATIBLE. Scheduled for 7 Days delay profile.");
             } else {
-                // Launch waveform vibration
-                btn.textContent = "DECODING TRANSCRIPT...";
-                btn.classList.replace('bg-neonCyan/10', 'bg-neonGreen/15');
-                btn.classList.replace('text-neonCyan', 'text-neonGreen');
-                btn.classList.replace('border-neonCyan/30', 'border-neonGreen/40');
-                nodes.forEach(node => {
-                    node.style.animationPlayState = 'running';
-                });
-                
-                vocalInterval = setInterval(() => {
-                    nodes.forEach(node => {
-                        const r = Math.floor(Math.random() * 26) + 4;
-                        node.style.height = `${r}px`;
-                    });
-                }, 180);
+                rateBoostOutputVal = 94;
+                cardPct = 100;
+                alert("Ranked as SECURED. Dynamic halflife extended to 30 Days decay-freeze.");
             }
+
+            if (retentionLbl) retentionLbl.textContent = `RETENTION: ${rateBoostOutputVal}%`;
+            if (activeCardStrength) activeCardStrength.textContent = `${cardPct}%`;
+
+            // Proceed to next recall card automatically
+            setTimeout(() => {
+                navigateRecallCard(1);
+            }, 600);
         }
 
-        // --- REAL INTERACTIVE STATE AND UTILITIES ---
-        let currentCardIdx = 0;
-        let recallDecks = [
-            {
-                q: "What mathematical method secures state vectors in qubit logic arrays?",
-                a: "Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors."
-            },
-            {
-                q: "Explain AES-256 key schedule expansion limit.",
-                a: "Expands 256-bit seed into 15 round keys using Rijndael S-box byte substitution."
-            },
-            {
-                q: "What is the key advantage of elliptic curve cryptography?",
-                a: "Equivalent security to RSA with significantly smaller key sizes (e.g. 256-bit EC = 3072-bit RSA)."
-            },
-            {
-                q: "What prevents replay attacks in cryptographic protocols?",
-                a: "Utilizing dynamic cryptographic nonces and high-resolution server-side millisecond timestamp verification."
-            }
-        ];
+        // Ingest file multimodal analyzer mock triggers
+        function triggerIngestSimulator() {
+            const inputVal = prompt("Enter PDF notes link or YouTube Lecture URL to ingest in high-velocity:", "https://www.youtube.com/watch?v=K37-PHYSICS-LECTURE-MIT");
+            const logger = document.getElementById('solver-ingest-log');
+            const termConsole = document.getElementById('terminal-display-canvas');
 
-        function updateCardUI() {
-            const indexLabel = document.getElementById('card-index-label');
-            const qText = document.getElementById('card-question-text');
-            const aText = document.getElementById('card-answer-text');
-            const countBadge = document.getElementById('card-count-badge');
-            
-            // Unflip card to avoid visual glitch when cycling
-            const card = document.getElementById('emulator-3d-card');
-            if (card) {
-                card.classList.remove('flipped');
-            }
+            if (!inputVal) return;
 
-            if (recallDecks.length === 0) {
-                if (indexLabel) indexLabel.textContent = "0 CARDS";
-                if (qText) qText.textContent = "No cards compiled. Paste custom lines below.";
-                if (aText) aText.textContent = "No cards compiled. Paste custom lines below.";
-                if (countBadge) countBadge.textContent = "0 CARDS READY";
+            logger.classList.remove('hidden');
+            logger.innerHTML = `<span class="text-neonPurple uppercase animate-pulse block">Analyzing content indices via Neural Compiler...</span>`;
+
+            setTimeout(() => {
+                logger.innerHTML = `
+                    <div class="text-[#33ff33]">&gt;&gt; [OK]: Ingest payload verified. type: STREAMING VIDEO CHANNELS</div>
+                    <div>&gt;&gt; Extracted 12 central physical formulations.</div>
+                    <div class="text-neonCyan">&gt;&gt; Synthesizing 5 new World Recall Spaced Repetition Cards below!</div>
+                `;
+                
+                // Append simulated nodes
+                const added = [
+                    { q: "What is Bohr orbital radius ratio in 2nd vector states?", a: "Increases by n^2 factor of 4 times the base state." },
+                    { q: "Gibbs equation spontaneities criteria variables", a: "Spontaneous when enthalpy decreases and entropy increases, rendering Delta G < 0." }
+                ];
+                recallDecks = [...recallDecks, ...added];
+                updateCardUI();
+
+                termConsole.innerHTML += `<div class="text-neonGreen">&gt;&gt; [INGEST_COMPLETE]: Multi-Modal parser generated 2 highly customized nodes successfully in Spaced Decks.</div>`;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            }, 1600);
+        }
+
+        function triggerResearchHelper(type) {
+            const q = document.getElementById('solver-raw-input').value.trim();
+            const logBox = document.getElementById('solver-ingest-log');
+            if (!q) {
+                alert("Please type physical, math, or chemistry query parameter first in primary input block.");
                 return;
             }
 
-            if (currentCardIdx >= recallDecks.length) currentCardIdx = 0;
-            if (currentCardIdx < 0) currentCardIdx = recallDecks.length - 1;
+            logBox.classList.remove('hidden');
+            logBox.innerHTML = `<span class="text-neonCyan animate-pulse uppercase block">Sourcing peer academic parameters online...</span>`;
 
-            const cardObj = recallDecks[currentCardIdx];
-            if (indexLabel) indexLabel.textContent = `CARD ${currentCardIdx + 1} OF ${recallDecks.length}`;
-            if (qText) qText.textContent = `"${cardObj.q}"`;
-            if (aText) aText.textContent = `>> ${cardObj.a}`;
-            if (countBadge) countBadge.textContent = `${recallDecks.length} CARDS READY`;
+            setTimeout(() => {
+                if (type === 'papers') {
+                    logBox.innerHTML = `
+                        <strong class="text-white block text-[8px] uppercase">> COGNITIVE PAPER SOURCE FINDINGS:</strong>
+                        <div class="text-neonGreen">&gt;&gt; [ArXiv: 2603.11A]: "Unified Escape Velocities in Dense Relativistic Fields" - MIT</div>
+                        <div>&gt;&gt; [IEEE Physics]: "Quantum orbital trajectory decay bounds" - Cambridge Press</div>
+                    `;
+                } else {
+                    logBox.innerHTML = `
+                        <strong class="text-white block text-[8px] uppercase">> COMPILING REVISION APEX CLASS SHEET:</strong>
+                        <div class="text-neonCyan">&gt;&gt; [NCTB BD / SAT CHEATSHEET]: Formulas, Boundary limitations, exam pitfalls. Download vector logs generated.</div>
+                    `;
+                }
+            }, 1200);
         }
 
-        function navigateRecallCard(direction) {
-            currentCardIdx += direction;
-            updateCardUI();
+        // Camera formula scan elements
+        function triggerWebcamMockScan() {
+            const hud = document.getElementById('simulated-camera-hud');
+            hud.classList.toggle('hidden');
+        }
+
+        function applyScannedFormula() {
+            const term = document.getElementById('solver-raw-input');
+            term.value = "Evaluate escape velocity vectors: Equation ve = \\sqrt{(2GM)/R}";
+            document.getElementById('simulated-camera-hud').classList.add('hidden');
+        }
+
+        // Scholar Guild Simulated Joining
+        function createGuildSim() {
+            const entry = document.getElementById('guild-create-input').value.trim();
+            if (!entry) {
+                alert("Assemble target guild name string first.");
+                return;
+            }
+            alert(`Sovereign access credentials verified. Joined Team [${entry.toUpperCase()}] guild successfully. Scoring standings aggregated!`);
+            document.getElementById('guild-create-input').value = "";
+            
+            // Log onto console
+            const termConsole = document.getElementById('terminal-display-canvas');
+            if (termConsole) {
+                termConsole.innerHTML += `<div class="text-neonCyan">&gt;&gt; [SCHOLAR_GUILD]: Guild matrix synced to ${entry.toUpperCase()}</div>`;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            }
+        }
+
+        // --- STAFF MOCK ADMIN ACTIONS ---
+        function toggleAdminMockMode() {
+            isAdminModeActive = !isAdminModeActive;
+            const tabBtn = document.getElementById('tab-admin-core');
+            const toggleBtn = document.getElementById('admin-bypass-lock-btn');
+
+            if (isAdminModeActive) {
+                tabBtn.classList.remove('hidden');
+                toggleBtn.textContent = "MOCK ADMIN UNLOCKED";
+                toggleBtn.className = "px-1.5 py-0.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen text-[6px] font-mono font-black uppercase rounded animate-pulse";
+                alert("Privileged administrative portal indicators loaded dynamically! STAFF MOCK DIRECTIVES ENABLED.");
+            } else {
+                tabBtn.classList.add('hidden');
+                toggleBtn.textContent = "MOCK ADMIN LOCK";
+                toggleBtn.className = "px-1.5 py-0.5 bg-warningCrimson/15 border border-warningCrimson/45 text-warningCrimson text-[6px] font-mono font-black uppercase rounded";
+                switchBypassTab('bypass-logs');
+            }
+        }
+
+        function triggerAdminUserSearch() {
+            const val = document.getElementById('admin-user-search-input').value.trim();
+            const box = document.getElementById('admin-search-result-box');
+            if (!val) return;
+
+            box.innerHTML = `<span class="animate-pulse text-[#33ff33]">QUERYING SECURE FIRESTORE REGISTERS...</span>`;
+
+            setTimeout(() => {
+                box.innerHTML = `
+                    <div><strong>PROFILE PASSPORT:</strong> ${val.toUpperCase()}</div>
+                    <div><strong>NATIVE EMAIL:</strong> audit_lead_candidate@gmail.com</div>
+                    <div><strong>CURRICULUM KEY:</strong> ${activeUcmTrack} (OLE Sync: ${activeOleLanguage.toUpperCase()})</div>
+                    <div><strong>UPTIME COUNTERS:</strong> 112h 45m | Active streak: 43 DAYS</div>
+                    <div><strong>AUTHENTICATED IP:</strong> 103.114.172.93 (Bangladesh ISP)</div>
+                    <div><strong>BILLING CLASS:</strong> Verified Premium Staff Access // License Core</div>
+                `;
+            }, 800);
+        }
+
+        function triggerStaffSecurityAction(type) {
+            const val = document.getElementById('admin-user-search-input').value.trim();
+            const logBox = document.getElementById('admin-action-logs-box');
+            
+            if (type === 'suspend') {
+                alert(`TEMPORARY BLOCK APPLIED: Passport operator standing [${val}] frozen for 24 hours.`);
+                logBox.innerHTML = `<div class="text-[#ff3366]">&gt;&gt; [ALERT]: STAFF SUSPENDED PASSPORT ${val}</div>` + logBox.innerHTML;
+            } else if (type === 'ban') {
+                const conf = confirm(`Are you absolutely sure you want to PERMANENTLY DECAY the credentials of Passport ID [${val}] in the central Firestore database?`);
+                if (conf) {
+                    alert(`ZERO-TRUST DIRECTIVES INITIATED: Passport ${val} has been permanently barred from central ledger entries.`);
+                    logBox.innerHTML = `<div class="text-[#ff3366]">&gt;&gt; [CRITICAL]: ZERO_TRUST PERMANENT BAN ASSIGNED TO ID ${val}</div>` + logBox.innerHTML;
+                }
+            } else {
+                alert(`League standings and ELO points reset to default Bronze value (1000 ELO) for student ID ${val} successfully.`);
+                logBox.innerHTML = `<div>&gt;&gt; [AUDIT]: Standing scores zeroed down for candidate ${val}</div>` + logBox.innerHTML;
+            }
+        }
+
+        // bKash payments Webhook overlay
+        function executeSimulatedBkashCore() {
+            const num = document.getElementById('bkash-wallet-num').value.trim();
+            const pin = document.getElementById('bkash-wallet-pin').value.trim();
+
+            if (!num || !pin) {
+                alert("Please enter a valid bKash wallet account number and PIN to authenticate transaction.");
+                return;
+            }
+
+            // Simulated fireworks trigger congrats success
+            alert("bKash Merchant checkout successful! BDT 1100 received. Verification webhook unlocked VIP permanently!");
+            
+            // Unlock Premium UI modifications on smartphone emulator
+            document.getElementById('emulator-role-badge').textContent = 'ELITE_1%_CORE';
+            document.getElementById('emulator-role-badge').className = "px-2 py-1 border border-neonPurple/40 text-neonPurple bg-neonPurple/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(255,0,204,0.1)]";
+
+            const statusBox = document.getElementById('web-verify-status');
+            statusBox.classList.remove('hidden');
+            statusBox.innerHTML = `
+                <div class="p-2.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen rounded-lg">
+                    <strong class="block text-[9px] uppercase font-bold text-glow-green">STATUS: bKASH TRANSACTION LEDGER VERIFIED (SUCCESS)</strong>
+                    <p class="mt-1">Secure payment received from wallet <strong>${num}</strong>. Dynamic premium entitlement permanently configured on this physical host. Welcome to the elite 1%!</p>
+                </div>
+            `;
+
+            closeBkashPopup();
+        }
+
+        function closeBkashPopup() {
+            document.getElementById('bkash-checkout-popup').classList.add('hidden');
         }
 
         // --- REAL CRYPTO TOOL TRANSLATOR ENGINE ---
         function simulateSolverCalculation() {
             const rawVal = document.getElementById('solver-raw-input').value.trim();
-            const algo = document.getElementById('solver-algo-select').value;
-            const outputText = document.getElementById('solver-output-text');
             const outputContainer = document.getElementById('solver-output-container');
-            
             const termConsole = document.getElementById('terminal-display-canvas');
             const procState = document.getElementById('term-process-state');
             
             if (!rawVal) {
-                alert("Please enter a raw input string payload in the solver first.");
+                alert("Please write mathematical/physics query parameter or select a preset challenge.");
                 return;
             }
 
-            procState.textContent = 'RUNNING_COGNITIVE_SOLVER';
+            procState.textContent = 'RUNNING_NEURAL_SOLVER';
             procState.classList.add('text-[#00ffcc]');
 
-            let result = "";
-            let algoName = "";
+            // Find matching preset LaTeX if any
+            let matchedLatex = "v_e = \\sqrt{\\frac{2GM}{R}}";
+            let matchedLabel = "Quantum Mechanics Axiom Set";
 
-            try {
-                if (algo === 'base64-encode') {
-                    algoName = "Base64 Encoder Node";
-                    result = btoa(unescape(encodeURIComponent(rawVal)));
-                } else if (algo === 'base64-decode') {
-                    algoName = "Base64 Decoder Node";
-                    result = decodeURIComponent(escape(atob(rawVal)));
-                } else if (algo === 'rot13') {
-                    algoName = "ROT13 Caesar Cipher";
-                    result = rawVal.replace(/[a-zA-Z]/g, function(c) {
-                        return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-                    });
-                } else if (algo === 'hex-encode') {
-                    algoName = "String to Hexadecimal";
-                    let arr = [];
-                    for (let i = 0; i < rawVal.length; i++) {
-                        arr.push(rawVal.charCodeAt(i).toString(16).padStart(2, '0'));
+            const trackData = solverPresets[activeSolverSubject];
+            if (trackData) {
+                for (const t in trackData) {
+                    if (rawVal.toLowerCase().includes(trackData[t].text.toLowerCase().substring(0, 15)) || 
+                        trackData[t].text.toLowerCase().includes(rawVal.toLowerCase())) {
+                        matchedLatex = trackData[t].latex;
+                        matchedLabel = trackData[t].label;
+                        break;
                     }
-                    result = "0x" + arr.join('').toUpperCase();
-                } else if (algo === 'hex-decode') {
-                    algoName = "Hexadecimal to String";
-                    let cleanHex = rawVal.toUpperCase().replace(/^0X/, '').replace(/[^A-F0-9]/g, '');
-                    let str = '';
-                    for (let i = 0; i < cleanHex.length; i += 2) {
-                        str += String.fromCharCode(parseInt(cleanHex.substr(i, 2), 16));
-                    }
-                    result = str || "[Decryption outcome empty - invalid hexadecimal character stream]";
                 }
-            } catch(err) {
-                result = "[ERROR] Decrypt schema failed to parse payload structure: " + err.message;
             }
 
-            // Write into phone UI output card
-            outputText.textContent = result;
-            outputContainer.classList.remove('hidden');
-
-            termConsole.innerHTML += `
-                <div class="text-neonCyan">&gt;&gt; [LAUNCH] Booting core cryptographic solver calculations...</div>
-                <div class="text-white/60">&gt;&gt; parsing current operator subject payload on algorithms: ${algoName}</div>
-                <div class="text-white/60">&gt;&gt; input payload size: ${rawVal.length} characters processed</div>
-                <div class="text-neonGreen text-glow-green">&gt;&gt; [SUCCESS] Resolved: "${result.substring(0, 45)}${result.length > 45 ? '...' : ''}"</div>
-            `;
-            termConsole.scrollTop = termConsole.scrollHeight;
+            // Einstein/Feynman/Fischer custom explanations paragraphing
+            let explanation = "";
+            if (activeMentorPersona === 'einstein') {
+                explanation = `
+                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Axiomatic Axiom Derivations:</div>
+                    <div>1. Let physical manifold values determine coordinate dimensions. We project tensor invariants...</div>
+                    <div class="text-neonCyan">2. Derivation step: Assuming spatial relativity invariants, we obtain the unified formula card equations.</div>
+                `;
+            } else if (activeMentorPersona === 'feynman') {
+                explanation = `
+                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Everyday Analogy Framework:</div>
+                    <div>1. Think of mass like marbles in a stretchy sheet, or water pumping inside a garden hose. To escape, a drop of water has to push through the force...</div>
+                    <div class="text-neonCyan">2. Conceptual translation: Under proper initial speed, gravity has insufficient curvature index. This yields the LaTeX outcome.</div>
+                `;
+            } else if (activeMentorPersona === 'fischer') {
+                explanation = `
+                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold"> chess derivation optimization matrix:</div>
+                    <div>1. Eliminating auxiliary variables via quick tactical computation. Constant coefficients matched...</div>
+                    <div class="text-neonGreen">2. Outcome sequence resolved in 2.3 milliseconds. Matrix calculations concluded.</div>
+                `;
+            } else if (activeMentorPersona === 'military') {
+                explanation = `
+                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Strict Drilled Tactical Directives:</div>
+                    <div>1. MANDATORY CALCULATION PROCESS. EXECUTING TARGET: COMPLY IMMEDIATELY! NO AUXILIARY JARGON DETECTED.</div>
+                    <div class="text-[#ff3366]">2. TASK REPORT: TARGET CONSTANTS IDENTIFIED, MATRIX INVARIANT MATCHED. DISCIPLINE CONFIRMED.</div>
+                `;
+            } else {
+                explanation = `
+                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">EXAMINATION ASSASSIN MARKING RUBRIC:</div>
+                    <div>1. [1 Mark]: Identify initial kinetic and gravitational potential boundary formulas.</div>
+                    <div>2. [1 Mark]: Rigorous algebraic substitution of parameters.</div>
+                    <div class="text-[#ff00cc]">3. [1 Mark]: Final correct Latex formulation structured with appropriate unit indicators.</div>
+                `;
+            }
 
             setTimeout(() => {
+                document.getElementById('solver-latex-display').textContent = matchedLatex;
+                document.getElementById('solver-step-breakdown').innerHTML = `
+                    <div class="p-1 px-1.5 bg-intelDark rounded border border-white/5 uppercase text-[7px] text-white font-extrabold mb-1">Subject Node Resolved: ${activeSolverSubject.toUpperCase()} (${matchedLabel})</div>
+                    ${explanation}
+                `;
+
+                outputContainer.classList.remove('hidden');
+
+                if (termConsole) {
+                    termConsole.innerHTML += `
+                        <div class="text-neonCyan">&gt;&gt; [NEURAL_SOLVER_ACTIVE]: Calibrating algorithmic steps...</div>
+                        <div class="text-white/60">&gt;&gt; Active Mentor: [${activeMentorPersona.toUpperCase()}]. Active Track: [${activeUcmTrack}].</div>
+                        <div class="text-glow-green text-[#33ff33]">&gt;&gt; [RESOLVED]: Latex compilation output success state established.</div>
+                    `;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+
                 procState.textContent = 'SOLVER_COMPLETE_IDLE';
                 procState.classList.remove('text-[#00ffcc]');
-            }, 300);
+            }, 700);
+        }
+
+        // Voice simulator transcribing
+        function triggerVoiceInputSimulation() {
+            const input = document.getElementById('solver-raw-input');
+            const btn = document.getElementById('voice-matrix-btn');
+            
+            // Automatically transcribes simulated vocals
+            input.value = "Evaluate Bohr atom orbit radius trajectory if energy coefficients match HSC syllabus standards.";
+            toggleVoiceDictationSimulation(); // Start running waves
+            
+            setTimeout(() => {
+                toggleVoiceDictationSimulation(); // stop waves
+                simulateSolverCalculation(); // auto solve
+                alert("Voice transcript successfully decoded dynamically and parsed straight to Neural Solver!");
+            }, 1800);
         }
 
         // Dynamic Document decks compilation sequences
@@ -1816,23 +2583,33 @@
         function switchBypassTab(mode) {
             const tabLogs = document.getElementById('tab-bypass-logs');
             const tabShop = document.getElementById('tab-secure-shop');
+            const tabAdmin = document.getElementById('tab-admin-core');
             const layerLogs = document.getElementById('layer-bypass-logs');
             const layerShop = document.getElementById('layer-secure-shop');
+            const layerAdmin = document.getElementById('layer-admin-core');
+
+            // Reset tab highlights
+            tabLogs.className = "grow py-2 text-textMuted transition-all border-r border-[#ffffff0a]";
+            tabShop.className = "grow py-2 text-textMuted transition-all border-r border-[#ffffff0a]";
+            tabAdmin.className = "grow py-2 text-textMuted transition-all";
+            if (!isAdminModeActive) {
+                tabAdmin.classList.add('hidden');
+            }
+
+            // Hide all panels
+            layerLogs.classList.add('hidden');
+            layerShop.classList.add('hidden');
+            layerAdmin.classList.add('hidden');
 
             if (mode === 'bypass-logs') {
-                tabLogs.classList.add('bg-warningCrimson/10', 'text-warningCrimson');
-                tabLogs.classList.remove('text-textMuted');
-                tabShop.classList.add('text-textMuted');
-                tabShop.classList.remove('bg-neonPurple/10', 'text-neonPurple');
+                tabLogs.className = "grow py-2 bg-warningCrimson/10 border-r border-white/10 text-warningCrimson transition-all";
                 layerLogs.classList.remove('hidden');
-                layerShop.classList.add('hidden');
-            } else {
-                tabLogs.classList.remove('bg-warningCrimson/10', 'text-warningCrimson');
-                tabLogs.classList.add('text-textMuted');
-                tabShop.classList.add('bg-neonPurple/10', 'text-neonPurple');
-                tabShop.classList.remove('text-textMuted');
-                layerLogs.classList.add('hidden');
+            } else if (mode === 'secure-shop') {
+                tabShop.className = "grow py-2 bg-neonPurple/10 border-r border-white/10 text-neonPurple transition-all";
                 layerShop.classList.remove('hidden');
+            } else if (mode === 'admin-core') {
+                tabAdmin.className = "grow py-2 bg-neonPurple/20 text-white transition-all";
+                layerAdmin.classList.remove('hidden');
             }
         }
 
