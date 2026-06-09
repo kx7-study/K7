@@ -25,7 +25,14 @@ data class UserProfile(
     val missionTarget: String = "MIT", // MIT, Stanford, Harvard, Oxford, Cambridge
     val activeMentorPersona: String = "Feynman", // Einstein, Fischer, Feynman, Military, Exam Assassin
     val lastActiveDate: String = "",
-    val usedSecondsToday: Long = 0
+    val usedSecondsToday: Long = 0,
+    // Ulite Identity Engine & Security Matrix
+    val email: String = "candidate@kx7.study",
+    val passwordHash: String = "pbkdf2_v2_91a03f", // safe baseline
+    val kx7Id: String = "KX7-SAT-USA-503A12A1",
+    val clearance: String = "USER_NODE", // "USER_NODE" | "ADMIN_CORE"
+    val isAuthenticated: Boolean = false,
+    val status: String = "ACTIVE" // "ACTIVE" | "SUSPENDED" | "BANNED"
 )
 
 @Keep

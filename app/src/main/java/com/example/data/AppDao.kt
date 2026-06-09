@@ -12,6 +12,15 @@ interface AppDao {
     @Query("SELECT * FROM user_profiles WHERE uid = 'local_user' LIMIT 1")
     suspend fun getUserProfileSynchronous(): UserProfile?
 
+    @Query("SELECT * FROM user_profiles WHERE uid != 'local_user'")
+    fun getAllOtherUserProfiles(): Flow<List<UserProfile>>
+
+    @Query("SELECT * FROM user_profiles WHERE kx7Id = :kx7Id LIMIT 1")
+    suspend fun getUserProfileByKx7Id(kx7Id: String): UserProfile?
+
+    @Query("SELECT * FROM user_profiles WHERE email = :email LIMIT 1")
+    suspend fun getUserProfileByEmail(email: String): UserProfile?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserProfile(profile: UserProfile)
 

@@ -6,6 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import com.example.viewmodel.AdminPaymentAudit
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -44,7 +46,23 @@ fun BlackOpsScreen(
     val mockExamState by viewModel.mockExamState.collectAsState()
     val checkoutStatus by viewModel.premiumProcessingStatus.collectAsState()
 
-    var activePanelMode by remember { mutableStateOf(0) } // 0: Mocks & Challenges, 1: Premium Shop
+    val allOtherUsers by viewModel.allOtherUsers.collectAsState()
+    val paymentAudits by viewModel.paymentAudits.collectAsState()
+    val adminSearchQuery by viewModel.adminSearchQuery.collectAsState()
+
+    val filteredUsers = remember(allOtherUsers, adminSearchQuery) {
+        if (adminSearchQuery.isEmpty()) {
+            allOtherUsers
+        } else {
+            allOtherUsers.filter {
+                it.displayName.contains(adminSearchQuery, ignoreCase = true) ||
+                it.email.contains(adminSearchQuery, ignoreCase = true) ||
+                it.kx7Id.contains(adminSearchQuery, ignoreCase = true)
+            }
+        }
+    }
+
+    var activePanelMode by remember { mutableStateOf(0) } // 0: Mocks & Challenges, 1: Premium Shop, 2: Admin Panel
 
     var selectedPlanIndex by remember { mutableStateOf(0) }
     var selectedCryptoChain by remember { mutableStateOf("TRC20") }
@@ -105,6 +123,25 @@ fun BlackOpsScreen(
                         color = if (activePanelMode == 1) NeonPurple else TextMutedGrey,
                         fontSize = 11.sp
                     )
+                }
+
+                if (profile.clearance == "ADMIN_CORE") {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { activePanelMode = 2 }
+                            .background(if (activePanelMode == 2) NeonGreen.copy(alpha = 0.15f) else Color.Transparent)
+                            .border(if (activePanelMode == 2) 1.dp else 0.dp, NeonGreen)
+                            .padding(vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "ADMIN PLANE",
+                            fontWeight = FontWeight.Bold,
+                            color = if (activePanelMode == 2) NeonGreen else TextMutedGrey,
+                            fontSize = 11.sp
+                        )
+                    }
                 }
             }
         }
@@ -360,7 +397,7 @@ fun BlackOpsScreen(
                 }
             }
 
-        } else {
+        } else if (activePanelMode == 1) {
             // ================== NO RESTRICTIONS COGNITIVE SHOP ==================
 
             item {
@@ -687,6 +724,273 @@ fun BlackOpsScreen(
                                     }
                                 }
                                 else -> {}
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (activePanelMode == 2 && profile.clearance == "ADMIN_CORE") {
+            // ================== SECURE ADMIN COMMAND PLANE ==================
+            item {
+                Column {
+                    Text(
+                        text = "💀 NEURAL COMMAND ADMIN PLANE",
+                        style = MaterialTheme.typography.displayLarge,
+                        color = NeonGreen,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                    Text(
+                        text = "Real-time user interdiction, ledger audits, and system overrides.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextMutedGrey
+                    )
+                }
+            }
+
+            // USER SEARCH matrix section
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
+                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "STUDENT COGNITIVE DIRECTORY SEARCH",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = NeonGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = adminSearchQuery,
+                            onValueChange = { viewModel.updateAdminSearchQuery(it) },
+                            placeholder = { Text("Search by custom ID (e.g. KX7-SSC-BD) or email...", color = TextMutedGrey, fontSize = 12.sp) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("admin_search_input"),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = NeonGreen,
+                                focusedContainerColor = CyberBlack,
+                                unfocusedContainerColor = CyberBlack
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            singleLine = true
+                        )
+                    }
+                }
+            }
+
+            // SEARCH INTERDICTION LIST
+            if (filteredUsers.isEmpty()) {
+                item {
+                    Text(
+                        text = "No matching student nodes found in tracking matrix.",
+                        color = TextMutedGrey,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                items(filteredUsers) { otherUser ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, if (otherUser.status == "ACTIVE") BorderCyberDark else WarningCrimson.copy(alpha = 0.5f), RoundedCornerShape(10.dp)),
+                        colors = CardDefaults.cardColors(containerColor = SurfaceCardDark)
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(otherUser.displayName, style = MaterialTheme.typography.titleMedium, color = TextWhite, fontWeight = FontWeight.Bold)
+                                    Text(otherUser.email, fontSize = 11.sp, color = TextMutedGrey)
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(otherUser.kx7Id, fontSize = 11.sp, color = NeonCyan, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.SemiBold)
+                                }
+                                // Status chip
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(
+                                            when (otherUser.status) {
+                                                "ACTIVE" -> NeonGreen.copy(alpha = 0.15f)
+                                                else -> WarningCrimson.copy(alpha = 0.15f)
+                                            }
+                                        )
+                                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                                ) {
+                                    Text(
+                                        text = otherUser.status,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = when (otherUser.status) {
+                                            "ACTIVE" -> NeonGreen
+                                            else -> WarningCrimson
+                                        }
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Divider(color = BorderCyberDark.copy(alpha = 0.5f))
+                            Spacer(modifier = Modifier.height(6.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "${otherUser.auraPoints} AP | Track: ${otherUser.curriculumTrack}",
+                                    fontSize = 11.sp,
+                                    color = TextMutedGrey
+                                )
+                                if (otherUser.isPremium) {
+                                    Text("⚡ PREMIUM tier unlocked", fontSize = 10.sp, color = NeonPurple, fontWeight = FontWeight.Bold)
+                                } else {
+                                    Text("Free Tier limited", fontSize = 10.sp, color = TextMutedGrey)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // Administrative Control actions (Requirement 6)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                // [SUSPEND USER]
+                                Button(
+                                    onClick = { viewModel.adminSuspendUser(otherUser.kx7Id) },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(36.dp)
+                                        .testTag("admin_suspend_${otherUser.kx7Id}"),
+                                    colors = ButtonDefaults.buttonColors(containerColor = WarningCrimson.copy(alpha = 0.2f)),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, WarningCrimson),
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text("SUSPEND", color = WarningCrimson, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+
+                                // [BAN PERMANENTLY]
+                                Button(
+                                    onClick = { viewModel.adminBanPermanently(otherUser.kx7Id) },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(36.dp)
+                                        .testTag("admin_ban_${otherUser.kx7Id}"),
+                                    colors = ButtonDefaults.buttonColors(containerColor = WarningCrimson),
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text("BAN PERM", color = Color.Black, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+
+                                // [RESET AURA STANDINGS]
+                                Button(
+                                    onClick = { viewModel.adminResetAuraStandings(otherUser.kx7Id) },
+                                    modifier = Modifier
+                                        .weight(1.2f)
+                                        .height(36.dp)
+                                        .testTag("admin_reset_${otherUser.kx7Id}"),
+                                    colors = ButtonDefaults.buttonColors(containerColor = SurfaceCardLight),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderCyberDark),
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text("RESET AP", color = TextWhite, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // AUDITING TRANSACTION matrix section
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
+                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "SECURE LEDGER AUDITING ENGINE",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = NeonGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Audit incoming TRC20/ERC20 ledger hashes or bKash payment receipts.",
+                            fontSize = 11.sp,
+                            color = TextMutedGrey
+                        )
+                    }
+                }
+            }
+
+            // AUDITED PAYMENTS LISTING
+            items(paymentAudits) { audit ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, if (audit.status == "PENDING") WarningCrimson.copy(alpha = 0.3f) else NeonGreen.copy(alpha = 0.3f), RoundedCornerShape(10.dp)),
+                    colors = CardDefaults.cardColors(containerColor = CyberBlack)
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(if (audit.method == "bKash") NeonCyan.copy(alpha = 0.15f) else NeonPurple.copy(alpha = 0.15f))
+                                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                                ) {
+                                    Text(audit.method, fontSize = 10.sp, fontWeight = FontWeight.Bold, color = if (audit.method == "bKash") NeonCyan else NeonPurple)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(audit.amount, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                            }
+
+                            // Payment Status Label
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(if (audit.status == "PENDING") WarningCrimson.copy(alpha = 0.15f) else NeonGreen.copy(alpha = 0.15f))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                            ) {
+                                Text(audit.status, fontSize = 9.sp, fontWeight = FontWeight.Bold, color = if (audit.status == "PENDING") WarningCrimson else NeonGreen)
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text("Source: ${audit.details}", fontSize = 11.sp, color = TextMutedGrey)
+                        Text("Hash/TrxID: ${audit.txHashOrTrxId}", fontSize = 11.sp, color = NeonCyan, fontFamily = FontFamily.Monospace)
+                        Text("Timestamp: ${audit.timestamp}", fontSize = 10.sp, color = TextMutedGrey)
+
+                        if (audit.status == "PENDING") {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = { viewModel.adminApprovePaymentAudit(audit.id) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(36.dp)
+                                    .testTag("admin_confirm_payment_${audit.id}"),
+                                colors = ButtonDefaults.buttonColors(containerColor = NeonGreen)
+                            ) {
+                                Text("CONFIRM SYSTEM OVERRIDE APPROVAL", color = Color.Black, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }

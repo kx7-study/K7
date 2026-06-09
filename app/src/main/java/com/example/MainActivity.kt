@@ -70,6 +70,8 @@ class MainActivity : ComponentActivity() {
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
+                    } else if (!profile.isAuthenticated) {
+                        UliteAuthScreen(viewModel = viewModel, modifier = Modifier.padding(screenPadding))
                     } else {
                         MainScreenLayout(viewModel = viewModel, profile = profile, parentModifier = Modifier.padding(screenPadding))
                     }
