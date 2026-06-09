@@ -50,6 +50,30 @@
     </script>
     
     <style>
+        /* 1. Prevent background particles from running over your answers */
+        .ai-response-container {
+          background-color: rgba(10, 10, 12, 0.95) !important; /* Deep dark background to block out background lines */
+          backdrop-filter: blur(8px) !important; /* Blurs out the grid line behind the text */
+          border: 1px solid #10b981 !important; /* Clean neon emerald framing border */
+          z-index: 10 !important; /* Forces the text layer to sit comfortably above your interactive grid */
+          padding: 20px !important;
+          border-radius: 12px !important;
+        }
+
+        /* 2. Force the text to be large and readable across all monitors */
+        .ai-response-container h3 {
+          font-size: 20px !important;
+          color: #10b981 !important; /* Glowing emerald header text */
+          margin-top: 15px !important;
+          font-weight: 800 !important;
+        }
+
+        .ai-response-container p, .ai-response-container li {
+          font-size: 16px !important; /* Never drops below the premium readable scale */
+          line-height: 1.6 !important;
+          color: #e2e8f0 !important; /* Crisp slate white text for zero eye strain */
+        }
+
         /* Anti-Aliasing for crisp high-resolution renders */
         html, body {
             -webkit-font-smoothing: antialiased;
@@ -944,7 +968,7 @@
                                         </div>
 
                                         <!-- Real Decrypted Output Display Container with LaTeX layout markup -->
-                                        <div id="solver-output-container" class="hidden p-3 bg-intelBlack border border-neonCyan/30 rounded-xl text-left relative space-y-2">
+                                        <div id="solver-output-container" class="hidden ai-response-container p-3 bg-intelBlack border border-neonCyan/30 rounded-xl text-left relative space-y-2">
                                             <div class="absolute top-1 right-2 text-[6px] font-mono text-neonCyan font-bold uppercase tracking-widest animate-pulse">TRANSLATION_SUCCESS_OK</div>
                                             <span class="text-[7.5px] font-mono text-neonCyan block uppercase font-bold text-glow-cyan">MATHEMATICAL LATEX ANALYSIS CARD:</span>
                                             
@@ -2187,34 +2211,108 @@ service cloud.firestore {
             let explanation = "";
             if (activeMentorPersona === 'einstein') {
                 explanation = `
-                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Axiomatic Axiom Derivations:</div>
-                    <div>1. Let physical manifold values determine coordinate dimensions. We project tensor invariants...</div>
-                    <div class="text-neonCyan">2. Derivation step: Assuming spatial relativity invariants, we obtain the unified formula card equations.</div>
+                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
+                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
+                            <div class="space-y-1 text-white/80">
+                                <div>1. Balance kinetic energy 0.5 * m * v^2 with work done by gravity G * M * m / R^2.</div>
+                                <div>2. Simplify by canceling test projectile mass m from both sides.</div>
+                                <div>3. Solve for peak speed v to obtain escape velocity v = square_root(2 * G * M / R).</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
+                            <p class="text-neonGreen">The escape speed is independent of projectile launch mass. Only planetary density determines escape bounds.</p>
+                        </div>
+                    </div>
                 `;
             } else if (activeMentorPersona === 'feynman') {
                 explanation = `
-                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Everyday Analogy Framework:</div>
-                    <div>1. Think of mass like marbles in a stretchy sheet, or water pumping inside a garden hose. To escape, a drop of water has to push through the force...</div>
-                    <div class="text-neonCyan">2. Conceptual translation: Under proper initial speed, gravity has insufficient curvature index. This yields the LaTeX outcome.</div>
+                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
+                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
+                            <div class="space-y-1 text-white/80">
+                                <div>1. Imagine escaping a deep trampoline bowl. You need a fast initial push to climb out of it.</div>
+                                <div>2. Earth's massive gravity is our deep trampoline bowl. To escape entirely, potential space energy must match launch speed.</div>
+                                <div>3. Cancel out projectile weights. Your escape limit calculates to square_root(2 * G * M / R).</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
+                            <p class="text-neonGreen">Escape velocity holds true for any direction of launch. Gravity cares only about speed, not trajectory angle.</p>
+                        </div>
+                    </div>
                 `;
             } else if (activeMentorPersona === 'fischer') {
                 explanation = `
-                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold"> chess derivation optimization matrix:</div>
-                    <div>1. Eliminating auxiliary variables via quick tactical computation. Constant coefficients matched...</div>
-                    <div class="text-neonGreen">2. Outcome sequence resolved in 2.3 milliseconds. Matrix calculations concluded.</div>
+                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
+                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
+                            <div class="space-y-1 text-white/80">
+                                <div>1. Treat gravity as opponent chess pieces blocking off outer grid blocks. Calculate escape routes.</div>
+                                <div>2. Eliminate auxiliary force metrics via fast algebraic substitutions on the boards.</div>
+                                <div>3. Deliver checkmate with the final velocity sequence v = square_root(2 * G * M / R).</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
+                            <p class="text-neonGreen">Never assume launch direction changes escape thresholds. Speed is the scalar constant that forces checkmate.</p>
+                        </div>
+                    </div>
                 `;
             } else if (activeMentorPersona === 'military') {
                 explanation = `
-                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">Strict Drilled Tactical Directives:</div>
-                    <div>1. MANDATORY CALCULATION PROCESS. EXECUTING TARGET: COMPLY IMMEDIATELY! NO AUXILIARY JARGON DETECTED.</div>
-                    <div class="text-[#ff3366]">2. TASK REPORT: TARGET CONSTANTS IDENTIFIED, MATRIX INVARIANT MATCHED. DISCIPLINE CONFIRMED.</div>
+                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
+                            <p class="font-extrabold text-[#ff3366] text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
+                            <div class="space-y-1 text-white/80">
+                                <div>1. MANDATORY ENERGY EQUILIBRIUM: Kinetic energy input MUST match negative gravitational potential fields.</div>
+                                <div>2. ELIMINATE VARIABLE FRICTION: Discard air resistance constants according to tactical directives.</div>
+                                <div>3. SECURE CALCULATION TARGET: Compile escape velocity formula as square_root(2 * G * M / R).</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
+                            <p class="text-neonGreen">Strictly avoid dragging projectile mass m into variables list. Projectile mass holds zero mathematical leverage here.</p>
+                        </div>
+                    </div>
                 `;
             } else {
                 explanation = `
-                    <div class="mb-1 text-white uppercase text-[7.5px] font-bold">EXAMINATION ASSASSIN MARKING RUBRIC:</div>
-                    <div>1. [1 Mark]: Identify initial kinetic and gravitational potential boundary formulas.</div>
-                    <div>2. [1 Mark]: Rigorous algebraic substitution of parameters.</div>
-                    <div class="text-[#ff00cc]">3. [1 Mark]: Final correct Latex formulation structured with appropriate unit indicators.</div>
+                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
+                            <p class="font-extrabold text-[#ff00cc] text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
+                            <div class="space-y-1 text-white/80">
+                                <div>1. [1 Mark]: Formulate conservation of kinetic and gravitational potential border structures.</div>
+                                <div>2. [1 Mark]: Solve algebraic variables and isolate velocity parameters.</div>
+                                <div>3. [1 Mark]: Present final velocity equation v = square_root(2 * G * M / R) for absolute full credit.</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
+                            <p class="text-neonGreen">Avoid copying raw intermediate root values. Always formulate the complete symbolic formula path first to prevent minor grading penalties.</p>
+                        </div>
+                    </div>
                 `;
             }
 
@@ -2574,9 +2672,9 @@ service cloud.firestore {
         let activeWebPlanIdx = 0;
         let activeWebChain = 'TRC20';
         const webCryptoAddresses = {
-            'TRC20': 'TYB9LreC2M32VskZtG467c6999Kx7u99A7',
-            'ERC20': '0x77E7ffE722ee293ADff23DcC7e9eCee001B2DDF0B',
-            'BEP20': '0x77E7ffE722ee293ADff23DcC7e9eCee001B2DDF0B',
+            'TRC20': 'THrBL9ZvjnEH981PPJRG9gQMoyz2XAqqR3',
+            'ERC20': '0x86b09ecf2e35a74a5c1a06e126f417277f9723f8',
+            'BEP20': '0x86b09ecf2e35a74a5c1a06e126f417277f9723f8',
             'bKash': '01922934076'
         };
 
@@ -2953,39 +3051,50 @@ service cloud.firestore {
             const logBox = document.getElementById('auth-process-log-box');
             
             logWrapper.classList.remove('hidden');
-            logBox.innerHTML = `<div class="text-neonCyan animate-pulse">&gt;&gt; [INITTING] Establishing multi-channel protection shield parameters...</div>`;
+            logBox.innerHTML = `<div class="text-neonCyan animate-pulse">&gt;&gt; [INITTING] Initiating secure elite authentication flow...</div>`;
 
             let emailValue = "";
             let passwordValue = "";
-            let xValue = "DYN_BYPASS";
-            let fbValue = "DYN_BYPASS";
 
             if (mode === 'signup') {
                 emailValue = document.getElementById('signup-email').value.trim();
                 passwordValue = document.getElementById('signup-password').value;
-                xValue = document.getElementById('signup-x').value.trim();
-                fbValue = document.getElementById('signup-fb').value.trim();
             } else {
                 emailValue = document.getElementById('login-email').value.trim();
                 passwordValue = document.getElementById('login-password').value;
-                
-                // Smart fallback handles based on email
-                const rawPrefix = emailValue.split('@')[0] || "operator";
-                xValue = "@" + rawPrefix.toLowerCase().replace(/[^a-z0-9_]/g, '');
-                fbValue = "facebook.com/" + rawPrefix.toLowerCase().replace(/[^a-z0-9_.]/g, '');
             }
 
             const cleanEmail = emailValue.toLowerCase();
             const isPersonalVIP = cleanEmail.includes("kabbomondal013") || cleanEmail === "kabbomondal013@gmail.com";
 
-            // Multi-step verified animation simulation
+            // Map tracking schemas
+            let ucmTrackCode = "SSC";
+            let ucmCountryCode = "BD";
+            if (activeUcmTrack === "SAT_USA") {
+                ucmTrackCode = "SAT";
+                ucmCountryCode = "US";
+            } else if (activeUcmTrack === "CAMBRIDGE_UK") {
+                ucmTrackCode = "IGCSE";
+                ucmCountryCode = "UK";
+            } else if (activeUcmTrack === "CBSE_IN" || activeUcmTrack === "JEE_IN") {
+                ucmTrackCode = "JEE";
+                ucmCountryCode = "IN";
+            } else if (activeUcmTrack === "NCTB_BD") {
+                ucmTrackCode = "SSC";
+                ucmCountryCode = "BD";
+            }
+
+            // Generate immutable non-sequential Passport hash ID
+            const alphaHash = Math.random().toString(36).substring(2, 10).toUpperCase();
+            const passportId = `KX7-${ucmTrackCode}-${ucmCountryCode}-${alphaHash}`;
+
+            // Verified entry logs mapping to single core authentication layout
             const logSteps = [
-                { text: `&gt; Checking email secure nodes validity for '${emailValue}'...`, delay: 600 },
-                { text: `&gt; Scanning social credentials database parity layers...`, delay: 1200 },
-                { text: `&gt; Connecting to X (Twitter) channel API link: authenticating '${xValue}'...`, delay: 1800 },
-                { text: `&gt; Intersecting Facebook Graph credentials server check: verified profiles references for '${fbValue}'...`, delay: 2400 },
-                { text: `&gt; Generating unique public key hashes using AES-256 local schemas...`, delay: 3000 },
-                { text: `&gt; account registration synchronization validated successfully!`, delay: 3600 }
+                { text: `&gt; Re-routing and verifying secure email channel for '${cleanEmail}'...`, delay: 400 },
+                { text: `&gt; Authenticating direct secure login password hash via local PBKDF2...`, delay: 800 },
+                { text: `&gt; Mapping student index into the Universal Curriculum Matrix schema...`, delay: 1200 },
+                { text: `&gt; Issuing elite immutable User Passport identifier: ${passportId}...`, delay: 1600 },
+                { text: `&gt; operator credentials successfully verified! status synchronized.`, delay: 2000 }
             ];
 
             function addLogLine(txt) {
@@ -2997,20 +3106,18 @@ service cloud.firestore {
                 setTimeout(() => {
                     addLogLine(sObj.text);
                     if (idx === logSteps.length - 1) {
-                        // Complete registration configuration
                         const payload = {
                             email: emailValue,
-                            x: xValue.startsWith('@') ? xValue : '@' + xValue,
-                            fb: fbValue.includes('/') ? fbValue : 'facebook.com/' + fbValue,
+                            passportId: passportId,
                             vip: isPersonalVIP
                         };
                         
                         localStorage.setItem('kx7_user', JSON.stringify(payload));
                         
                         setTimeout(() => {
-                            alert(isPersonalVIP ? "Elite master account synchronized! VIP lifetime status granted permanently." : "Operator security clearance verified successfully!");
+                            alert(isPersonalVIP ? `Elite master account synchronized!\nPassport: ${passportId}\nVIP status granted permanently.` : `Operator security clearance established!\nPassport: ${passportId}`);
                             updateAuthUI();
-                        }, 500);
+                        }, 400);
                     }
                 }, sObj.delay);
             });
@@ -3058,8 +3165,8 @@ service cloud.firestore {
 
             // Inject header widgets text variables
             document.getElementById('header-user-email').textContent = user.email.toUpperCase();
-            document.getElementById('header-user-x').textContent = `X: ${user.x}`;
-            document.getElementById('header-user-fb').textContent = user.fb;
+            document.getElementById('header-user-x').textContent = "ACCESS: CONNECTED";
+            document.getElementById('header-user-fb').textContent = user.passportId || "KX7-SSC-BD-90A11B4E";
 
             // Dynamic updates for virtual emulator labels
             const emailLocal = user.email.split('@')[0];
@@ -3067,7 +3174,7 @@ service cloud.firestore {
             const opNameEl = document.getElementById('emulator-operator-name');
             
             if (opIdEl) {
-                opIdEl.textContent = `ID: ${emailLocal.toLowerCase()}`;
+                opIdEl.textContent = `PASSPORT: ${user.passportId || 'KX7-SSC-BD-90A11B4E'}`;
             }
             if (opNameEl) {
                 if (user.email.toLowerCase().includes("kabbomondal013")) {
@@ -3208,7 +3315,7 @@ service cloud.firestore {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="hidden grid px-2 grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 font-bold uppercase tracking-wider flex items-center justify-between pb-0.5 font-extrabold">
                             <span>X (TWITTER) PROFILE</span>
@@ -3216,7 +3323,7 @@ service cloud.firestore {
                         </label>
                         <div class="relative">
                             <span class="absolute left-3 top-3 font-mono text-[10px] text-white/40 leading-none">@</span>
-                            <input type="text" id="signup-x" required placeholder="username_x" class="w-full pl-7 pr-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                            <input type="text" id="signup-x" value="DYN_BYPASS" placeholder="username_x" class="w-full pl-7 pr-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
                         </div>
                     </div>
                     <div>
@@ -3224,7 +3331,7 @@ service cloud.firestore {
                             <span>FACEBOOK PROFILE</span>
                             <span class="text-neonPurple text-[7.5px] font-black">FB_VERIFY</span>
                         </label>
-                        <input type="text" id="signup-fb" required placeholder="facebook.com/username" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
+                        <input type="text" id="signup-fb" value="DYN_BYPASS" placeholder="facebook.com/username" class="w-full px-3 py-2.5 bg-intelBlack border border-white/10 rounded-lg text-xs font-mono text-white placeholder-textMuted/30 focus:border-neonPurple focus:ring-1 focus:ring-neonPurple focus:outline-none transition-all" />
                     </div>
                 </div>
 

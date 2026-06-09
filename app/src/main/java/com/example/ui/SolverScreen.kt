@@ -48,7 +48,7 @@ fun SolverScreen(
 
     var activeInputText by remember { mutableStateOf("") }
     var selectedSubject by remember { mutableStateOf("Physics") }
-    val subjects = listOf("Physics", "Chemistry", "Mathematics", "Biology", "English")
+    val subjects = listOf("Physics", "Chemistry", "Higher Mathematics", "Biology", "English")
 
     var selectedTrack by remember { mutableStateOf(profile.curriculumTrack) }
     val tracks = listOf("NCTB_BD", "SAT_USA", "CAMBRIDGE_UK", "JEE_IN")

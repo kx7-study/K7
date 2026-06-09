@@ -82,54 +82,50 @@ object GeminiClient {
         if (apiKey.isEmpty() || apiKey == "MY_GEMINI_API_KEY") {
             if (subject == "Universal AI") {
                 return """
-                    [SYSTEM WARNING] API key is not configured or is the default placeholder.
+                    ### 🎯 Core Answer
+                    **[SIMULATED UNIVERSAL AI STAGE]** Active logic flow decoded successfully. I am fully configured to perform multi-subject general reasoning, translation, and code compilation.
                     
-                    Please insert a valid GEMINI_API_KEY into the SECRETS panel.
+                    ### 🔍 Step-by-Step Breakdown
+                    1. **Secure Sandbox Verification**: The local KX7-STUDY enterprise layer verified incoming request structure: "$prompt".
+                    2. **Hardware Check**: Checked for configured live credentials in the platform's SECRETS panel on the sidebar.
+                    3. **Simulated Synapse Output**: To experience live real-time ChatGPT/Gemini level intelligence, make sure to add the valid key.
                     
-                    ---- Simulated Gemini Universal AI Solver Response ----
-                    
-                    I am ready to answer any general type of school, coding, or lifestyle question. Since the actual live API key is currently mapped to default placeholders, here is my simulated answer structure:
-                    
-                    Your Query: "$prompt"
-                    
-                    Here is what I can do when configured with a real Gemini key:
-                    1. Code Synthesis: Writing clean, modern algorithms with detailed comments.
-                    2. Strategic Brainstorming: Creating frameworks, blueprints, and analytical plans.
-                    3. Ultimate Homework Assistance: Step-by-step guidance on math, logic, translation, or literature.
-                    
-                    Please configure your live credentials via the Secrets Panel to proceed with true real-world AI reasoning!
+                    ### ⚡ 1% Mastery Key
+                    Configure your live GEMINI_API_KEY via the Secrets Panel to bypass simulation limits and instantly unlock the full power of real-world AI logic synthesis!
                 """.trimIndent()
             }
             return """
-                [SYSTEM WARNING] API key is not configured or is the default placeholder.
-                
-                Please insert a valid GEMINI_API_KEY into the SECRETS panel.
-                
-                Simulated response for:
-                Subject: $subject (Track: $curriculumTrack)
-                AI Mentor: $persona Mode
-                Language: $language
-                
-                ---- Academic Mastery Solved Step-by-Step ----
-                Known variables extracted:
-                - Target system velocity parameter: v = 4.2 × 10⁶ m/s
-                - Dynamic kinetic field constant: k = 8.85 × 10⁻¹² F/m
-                
-                Step 1: Apply formulation matching curriculum standards ($curriculumTrack)
-                Step 2: Solve with $persona cognitive style. Applying first principles:
-                F = q (E + v × B)
-                Step 3: Dimensional analysis yields [Newton] units checks out.
-                
-                Conclusion:
-                Value verified mathematically to be 1.602 × 10⁻¹⁹ Joules per event.
+                ### 🎯 Core Answer
+                **The simulated academic result is 1.602 x 10^-19 Joules per event.** This represents the dynamic energy threshold of physical states.
+
+                ### 🔍 Step-by-Step Breakdown
+                1. **Extract Variables under $curriculumTrack rules**: Current subject target parameter set to $subject ($language mode). Dynamic kinetic constant k = 8.85 x 10^-12 F/m, and system velocity v = 4.2 x 10^6 m/s.
+                2. **Apply Persona Logic ($persona mode)**: We analyze system forces utilizing first-principles where Force Equation becomes net force: F = q * (E + v x B).
+                3. **Dimensional Consistency Review**: Checked calculation parameters against localized board exam standards. Every coefficient is confirmed mathematically.
+
+                ### ⚡ 1% Mastery Key
+                Always verify your electrostatic dimensional units first. Examiners frequently mismatch voltage ratios to trip up 99% of students!
             """.trimIndent()
         }
 
         val systemPrompt = if (subject == "Universal AI") {
             """
                 You are Gemini, the world's most advanced and highly general-purpose AI model running inside the KX7-STUDY ecosystem.
-                You are designed to assist the user on any question they have, including writing code, creative writing, answering math/science equations, translations, brainstorming ideas, summarizing articles, or explaining complex concepts.
-                Be extremely helpful, direct, articulate, and smart. Give clear, detailed responses with rich code blocks, bullet points, or list structures where appropriate.
+                You assist students by explaining technical, coding, or lifestyle ideas clearly.
+                
+                You MUST strictly follow these formatting rules:
+                1. STRICT NO-LATEX POLICY: Never print raw backend LaTeX mathematical notation blocks like \[ ... \] or \frac{}{}. Instead, write all equations in clean, bold, highly legible plain text characters (for example, write "v^2 = u^2 + 2as" or "E = mc^2").
+                2. TYPOGRAPHIC SCANNABILITY: Break dense knowledge blocks down into bite-sized paragraphs with a maximum of 2 sentences per line. 
+                3. MANDATORY RESPONSE SEQUENCE: Every output must follow this absolute structure with zero variations:
+
+                ### 🎯 Core Answer
+                [Bold, high-visibility, definitive response or numerical calculation value first].
+
+                ### 🔍 Step-by-Step Breakdown
+                [Clean, numbered logical execution steps explaining the exact path to the solution].
+
+                ### ⚡ 1% Mastery Key
+                [A single-sentence tactical trick, formula shortcut, or common board exam trap to avoid].
             """.trimIndent()
         } else {
             """
@@ -146,11 +142,19 @@ object GeminiClient {
                   * 'Military Mode': strict discipline, tough love, high-intensity accountability, zero excuses.
                   * 'Exam Assassin': hyper-tactical mark-scheme optimization, direct examiner advice.
 
-                Response Rules:
-                1. Provide a beautiful Step-by-Step Problem Breakdown.
-                2. First list **Knowns & Unknowns** and check the units.
-                3. Write formulas using beautiful LaTeX-like mathematical formatting (e.g. \( E = m c^2 \)).
-                4. Make your response feel premium, elite, and highly intellectual. No generic fluff!
+                You MUST strictly follow these formatting rules:
+                1. STRICT NO-LATEX POLICY: Never print raw backend LaTeX mathematical notation blocks like \[ ... \] or \frac{}{}. Instead, write all equations in clean, bold, highly legible plain text characters (for example, write "v^2 = u^2 + 2as" or "E = mc^2").
+                2. TYPOGRAPHIC SCANNABILITY: Break dense knowledge blocks down into bite-sized paragraphs with a maximum of 2 sentences per line. 
+                3. MANDATORY RESPONSE SEQUENCE: Every output must follow this absolute structure with zero variations:
+
+                ### 🎯 Core Answer
+                [Bold, high-visibility, definitive response or numerical calculation value first].
+
+                ### 🔍 Step-by-Step Breakdown
+                [Clean, numbered logical execution steps explaining the exact path to the solution].
+
+                ### ⚡ 1% Mastery Key
+                [A single-sentence tactical trick, formula shortcut, or common board exam trap to avoid].
             """.trimIndent()
         }
 
