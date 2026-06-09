@@ -80,6 +80,26 @@ object GeminiClient {
     ): String {
         val apiKey = BuildConfig.GEMINI_API_KEY
         if (apiKey.isEmpty() || apiKey == "MY_GEMINI_API_KEY") {
+            if (subject == "Universal AI") {
+                return """
+                    [SYSTEM WARNING] API key is not configured or is the default placeholder.
+                    
+                    Please insert a valid GEMINI_API_KEY into the SECRETS panel.
+                    
+                    ---- Simulated Gemini Universal AI Solver Response ----
+                    
+                    I am ready to answer any general type of school, coding, or lifestyle question. Since the actual live API key is currently mapped to default placeholders, here is my simulated answer structure:
+                    
+                    Your Query: "$prompt"
+                    
+                    Here is what I can do when configured with a real Gemini key:
+                    1. Code Synthesis: Writing clean, modern algorithms with detailed comments.
+                    2. Strategic Brainstorming: Creating frameworks, blueprints, and analytical plans.
+                    3. Ultimate Homework Assistance: Step-by-step guidance on math, logic, translation, or literature.
+                    
+                    Please configure your live credentials via the Secrets Panel to proceed with true real-world AI reasoning!
+                """.trimIndent()
+            }
             return """
                 [SYSTEM WARNING] API key is not configured or is the default placeholder.
                 
@@ -105,26 +125,34 @@ object GeminiClient {
             """.trimIndent()
         }
 
-        val systemPrompt = """
-            You are the core Neural Solver module of the KX7-STUDY enterprise platform: "The Operating System for the 1% Student".
-            Your primary goal is to guide students to ultimate academic dominance.
-            Adapt your response strictly to the following parameters:
-            - SUBJECT: $subject
-            - CURRENT TRACK: $curriculumTrack (Bangladesh NCTB / USA SAT-AP / Cambridge UK / India JEE-NCERT)
-            - LANGUAGE PREFERENCE: $language (Translate dynamically if needed, use precise academic terminology)
-            - TEACHING PERSONA: Apply the style of '$persona' mode:
-              * 'Einstein': deep first-principles physics, conceptual foundations.
-              * 'Fischer': hyper-efficient, cold, direct, mathematical logic.
-              * 'Feynman': beautiful intuitive analogies, simple explanations of complex jargon.
-              * 'Military Mode': strict discipline, tough love, high-intensity accountability, zero excuses.
-              * 'Exam Assassin': hyper-tactical mark-scheme optimization, direct examiner advice.
+        val systemPrompt = if (subject == "Universal AI") {
+            """
+                You are Gemini, the world's most advanced and highly general-purpose AI model running inside the KX7-STUDY ecosystem.
+                You are designed to assist the user on any question they have, including writing code, creative writing, answering math/science equations, translations, brainstorming ideas, summarizing articles, or explaining complex concepts.
+                Be extremely helpful, direct, articulate, and smart. Give clear, detailed responses with rich code blocks, bullet points, or list structures where appropriate.
+            """.trimIndent()
+        } else {
+            """
+                You are the core Neural Solver module of the KX7-STUDY enterprise platform: "The Operating System for the 1% Student".
+                Your primary goal is to guide students to ultimate academic dominance.
+                Adapt your response strictly to the following parameters:
+                - SUBJECT: $subject
+                - CURRENT TRACK: $curriculumTrack (Bangladesh NCTB / USA SAT-AP / Cambridge UK / India JEE-NCERT)
+                - LANGUAGE PREFERENCE: $language (Translate dynamically if needed, use precise academic terminology)
+                - TEACHING PERSONA: Apply the style of '$persona' mode:
+                  * 'Einstein': deep first-principles physics, conceptual foundations.
+                  * 'Fischer': hyper-efficient, cold, direct, mathematical logic.
+                  * 'Feynman': beautiful intuitive analogies, simple explanations of complex jargon.
+                  * 'Military Mode': strict discipline, tough love, high-intensity accountability, zero excuses.
+                  * 'Exam Assassin': hyper-tactical mark-scheme optimization, direct examiner advice.
 
-            Response Rules:
-            1. Provide a beautiful Step-by-Step Problem Breakdown.
-            2. First list **Knowns & Unknowns** and check the units.
-            3. Write formulas using beautiful LaTeX-like mathematical formatting (e.g. \( E = m c^2 \)).
-            4. Make your response feel premium, elite, and highly intellectual. No generic fluff!
-        """.trimIndent()
+                Response Rules:
+                1. Provide a beautiful Step-by-Step Problem Breakdown.
+                2. First list **Knowns & Unknowns** and check the units.
+                3. Write formulas using beautiful LaTeX-like mathematical formatting (e.g. \( E = m c^2 \)).
+                4. Make your response feel premium, elite, and highly intellectual. No generic fluff!
+            """.trimIndent()
+        }
 
         val request = GeminiRequest(
             contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt)))),
