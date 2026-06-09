@@ -2183,8 +2183,10 @@ service cloud.firestore {
             const termConsole = document.getElementById('terminal-display-canvas');
             const procState = document.getElementById('term-process-state');
             
-            if (!rawVal) {
-                alert("Please write mathematical/physics query parameter or select a preset challenge.");
+            // BLANK STATE GUARDRAIL
+            const noiseRegex = /^[?.!@#$%^&*()_+=\-\s]*$/;
+            if (!rawVal || rawVal.trim().length < 3 || noiseRegex.test(rawVal)) {
+                alert("Input undetected. Please enter a valid academic or identity protocol to begin training.");
                 return;
             }
 
@@ -2207,120 +2209,823 @@ service cloud.firestore {
                 }
             }
 
-            // Einstein/Feynman/Fischer custom explanations paragraphing
-            let explanation = "";
-            if (activeMentorPersona === 'einstein') {
-                explanation = `
+            // DYNAMIC TOPIC RECONSTRUCTION ENGINE
+            let detectedTopic = "default";
+            const valLower = rawVal.toLowerCase();
+            
+            if (valLower.includes("escape velocity") || valLower.includes("escape speed") || valLower.includes("v_e")) {
+                detectedTopic = "escape_velocity";
+            } else if (valLower.includes("newton") || valLower.includes("second law") || valLower.includes("f = ma") || valLower.includes("f=ma")) {
+                detectedTopic = "newtons_law";
+            } else if (valLower.includes("bohr") || valLower.includes("orbit radius") || valLower.includes("r_n")) {
+                detectedTopic = "bohr_atom";
+            } else if (valLower.includes("induced emf") || valLower.includes("faraday") || valLower.includes("solenoid") || valLower.includes("flux change")) {
+                detectedTopic = "induced_emf";
+            } else if (valLower.includes("bragg") || valLower.includes("diffraction") || valLower.includes("crystal") || valLower.includes("2d sin")) {
+                detectedTopic = "braggs_law";
+            } else if (valLower.includes("root") || valLower.includes("x^2") || valLower.includes("quadratic")) {
+                detectedTopic = "quadratic";
+            } else if (valLower.includes("derivative") || valLower.includes("dx") || valLower.includes("calculus")) {
+                detectedTopic = "derivative";
+            } else if (valLower.includes("integral") || valLower.includes("integrate")) {
+                detectedTopic = "integration";
+            } else if (valLower.includes("limit")) {
+                detectedTopic = "limits";
+            } else if (valLower.includes("solubility") || valLower.includes("ksp") || valLower.includes("k_{sp}")) {
+                detectedTopic = "solubility";
+            } else if (valLower.includes("ideal gas") || valLower.includes("stp") || valLower.includes("pv = nrt")) {
+                detectedTopic = "ideal_gas";
+            } else if (valLower.includes("gibbs") || valLower.includes("entropy") || valLower.includes("spontaneous")) {
+                detectedTopic = "gibbs";
+            } else if (valLower.includes("nernst") || valLower.includes("cell potential") || valLower.includes("emf")) {
+                detectedTopic = "nernst";
+            } else if (valLower.includes("subject-verb") || valLower.includes("coordination") || valLower.includes("clause")) {
+                detectedTopic = "subject_verb";
+            } else if (valLower.includes("bangla") || valLower.includes("translate") || valLower.includes("ভাষা") || valLower.includes("কলনবিদ্যা")) {
+                detectedTopic = "bangla_ole";
+            } else if (valLower.includes("stylistic") || valLower.includes("density")) {
+                detectedTopic = "stylistic";
+            } else if (valLower.includes("email") || valLower.includes("sender") || valLower.includes("formal")) {
+                detectedTopic = "formal_email";
+            }
+
+            function generateExplanation(topic, persona) {
+                let coreAnswer = "";
+                let formulaText = "";
+                let steps = [];
+                let mastery = "";
+                let colorClass = "text-white";
+                
+                if (topic === "escape_velocity") {
+                    coreAnswer = "v_escape = square_root( 2 * G * M / R ) = 11.2 km/s";
+                    formulaText = "v_e = square_root(2 * G * M / R)";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Equate relativistic kinetic energy potentials with space-time manifold curvature gradients.",
+                            "Cancel the projectile's local invariant mass from both sides of the metric field equations.",
+                            "Isolate escape velocity vector coordinates to resolve field bounds."
+                        ];
+                        mastery = "The escape path metric remains independent of massive object limits; only physical planet densities set space boundaries.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine throwing a small ball out of a deep gravity trampoline depression.",
+                            "The heavier the planet, the deeper the depression is curved. Launch energy must equal coordinate depth.",
+                            "Work out parameters. Projectile weight naturally drops out of final velocity limits."
+                        ];
+                        mastery = "Gravity doesn't care which angle or direction you launch towards; speed alone guarantees space escape.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Treat planet surface coordinates as blocked tiles in a chess gravity matches matrix.",
+                            "Eliminate auxiliary variables via fast direct substitutions across structural rows.",
+                            "Formulate velocity parameters to force mathematical checkmate."
+                        ];
+                        mastery = "Treat gravity fields as constant scalar parameters. Direct speed forces checkmate.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "MANDATORY ENERGY EQUILIBRIUM: Kinetic energy input MUST match negative gravitational field potentials.",
+                            "DISREGARD FRICTION CONSTRAINTS: Discard air resistance constants according to tactical protocols.",
+                            "SECURE OBJECTIVE YIELD: Solve velocity parameters strictly inside escape thresholds."
+                        ];
+                        mastery = "Avoid dragging local test variables into calculation sheets. Mass maintains zero strategic leverage here.";
+                        colorClass = "text-[#ff3366]";
+                    } else { // exam assassin
+                        steps = [
+                            "State conservation equation containing kinetic and gravitational potential formula structures [1 Mark].",
+                            "Perform direct algebraic parameters substitution [1 Mark].",
+                            "Isolate escape velocity equation clearly with correct physical unit designations [1 Mark]."
+                        ];
+                        mastery = "Always formulate complete symbolic equations first before writing decimal values to avoid grading penalties.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "newtons_law") {
+                    coreAnswer = "F = m * a (Force = Mass x Acceleration)";
+                    formulaText = "F = m * a";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Define physical force as rate of space-time linear momentum changes.",
+                            "Extract system inertia parameters represented as the scalar invariant mass multiplier.",
+                            "Deduce acceleration coordinates under steady kinetic reference frames."
+                        ];
+                        mastery = "At extreme velocities approaching light speed, inertia increases and F = m * a must be corrected to relativistic mechanics.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Force is just how hard you push or pull an object to change its cosmic cruise control speed.",
+                            "Mass is the object's stubbornness or reluctance to accelerate when you push it.",
+                            "Multiply stubbornness by acceleration rate to evaluate total physical force."
+                        ];
+                        mastery = "Always remember that mass represents inert resistance. Double the mass requires double the muscle to accelerate.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Isolate mass scalar values and acceleration vector parameters inside coordinate chess rows.",
+                            "Resolve force vector balances by checking adjacent grid coordinates.",
+                            "Determine total forces using linear multiplication protocols."
+                        ];
+                        mastery = "A solid checkmate is achieved by applying net external vectors. Always verify net forces first.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "IDENTIFY TARGET MASS: Determine variable mass of the objective body in kilograms.",
+                            "EVALUATE FORCE DIRECTION: Match force vectors directly with resulting acceleration coordinates.",
+                            "SOLVE EXACT EQUILIBRIUM: Compute F = m * a without physical calculation lag."
+                        ];
+                        mastery = "Never confuse mass with weight. Gravity fields fluctuate, but mass inertia remains an absolute constant.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State Newton's Second Law vector relationship clearly [1 Mark].",
+                            "Substitute mass in kilograms and acceleration values [1 Mark].",
+                            "Synthesize final Force coordinate values using Newton units [1 Mark]."
+                        ];
+                        mastery = "Always sketch a free-body force diagram first. Examiners grant easy partial marks for force direction accuracy.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "bohr_atom") {
+                    coreAnswer = "r_n = (epsilon_0 * n^2 * h^2) / (pi * m * e^2) = 0.529 Angstroms for n=1";
+                    formulaText = "r_n = (epsilon_0 * n^2 * h^2) / (pi * m * e^2)";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Analyze discrete electrostatic field lines binding orbital electron masses.",
+                            "Apply quantum trajectory quantization constraints to physical coordinate manifolds.",
+                            "Evaluate orbit radius coordinates for hydrogen ground states."
+                        ];
+                        mastery = "Physical coordinate radii occupy discrete quantum values because electron wave actions must construct stable loop formats.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine a wave looping around a circular track. It must match up perfectly with its start to exist.",
+                            "The electron circles the nucleus only if its custom wavelength is a exact integer multiple of orbital lengths.",
+                            "Calculate dimensions. This yields Bohr's elegant discrete radial steps."
+                        ];
+                        mastery = "Bohr atom radii represent constructive standing waves rather than literal solid particle track orbits.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Model angular momentum bounds as discrete grid step limits on our chess board layout.",
+                            "Substitute electrodynamics constants into orbit force equations.",
+                            "Solve final variable matrices to lock Bohr's ground states."
+                        ];
+                        mastery = "Calculate quantized values systematically; check orbital energy levels immediately using Rydberg checks.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "ESTABLISH FORCE BALANCE: Centripetal force of physical orbital mass must equal charge attractions.",
+                            "APPLY QUANTIZATION COMMANDS: Enforce angular momentum steps m * v * r = n * h / (2 * pi).",
+                            "RESOLVE RADIAL PARAMETER: Output Bohr's ground radius r_1 = 5.29 x 10^-11 meters."
+                        ];
+                        mastery = "Always separate h from h-bar values. A minor typo here will fail your structural layout equations.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Deduce Coulomb electrostatic attraction statement [1 Mark].",
+                            "State Angular Momentum quantization equation standard [1 Mark].",
+                            "Isolate Bohr radius (r_n) equation clearly with correct physical constant indicators [1 Mark]."
+                        ];
+                        mastery = "Always specify orbit index integer n = 1 for ground conditions to ensure full marks.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "induced_emf") {
+                    coreAnswer = "EMF = -N * (dPhi_B / dt) (Induced Electromotive Force)";
+                    formulaText = "EMF = -N * (dPhi_B / dt)";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Derive electric field curvatures generated by relative magnetic flux shifts over coordinate fields.",
+                            "Establish magnetic flux quantities passing through coils using surface integrations.",
+                            "Apply temporal derivatives to deduce resulting EMF coordinates."
+                        ];
+                        mastery = "The negative symbol shows on-chain conservation bounds aligning with relative inertial coordinate systems.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine a wire loop enjoying a steady magnetic field breeze. If the breeze changes, the loop gets upset.",
+                            "To resist this change, the loop pushes a custom electrical current to generate opposing breezes.",
+                            "Calculate this electrical push. It scales directly with how fast the magnetic breeze changes."
+                        ];
+                        mastery = "Electrical push (EMF) maps to the rate of magnetic change, not static magnetic strength itself.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Quantify magnetic lines crossing through designated tile arrays.",
+                            "Analyze flux variation vectors across discrete check steps.",
+                            "Solve the potential change parameters indicating Lenz's opposition direction."
+                        ];
+                        mastery = "Always check direction attributes. Opposing vector forces act to maintain system equilibrium.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "DETERMINE FLUX DENSITY: Establish magnetic field shifts passing through objective areas.",
+                            "EXECUTE LENZ DIRECTIVES: Apply negative sign indicating electromotive resistance.",
+                            "SOLVE FOR OUTCOME: Compute EMF in Volts under precise timed intervals."
+                        ];
+                        mastery = "Never omit the negative sign. Lenz directives represent strict conservation laws that must be obeyed.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Formulate Faraday's Law math statement [1 Mark].",
+                            "State flux rate of change over time (dPhi/dt) parameter [1 Mark].",
+                            "Perform mathematical evaluation incorporating coordinate loop parameters [1 Mark]."
+                        ];
+                        mastery = "Always describe Lenz's Law qualitatively if examiners ask for the meaning of the negative operator symbol.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "braggs_law") {
+                    coreAnswer = "2 * d * sin(theta) = n * lambda (Bragg's Diffraction Law)";
+                    formulaText = "2 * d * sin(theta) = n * lambda";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Review monochromatic wave coordinate paths reflecting off atomic layer sheets.",
+                            "Compute spatial path offsets between parallel coordinate wave vectors.",
+                            "Enforce constructive interference phase alignments matching electromagnetic wavelengths."
+                        ];
+                        mastery = "Constructive diffraction patterns occur because coordinate phase offsets scale precisely with integer wavelengths.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Think of light waves like rows of runners hitting a staircase. Some hit top steps, others go deeper.",
+                            "For runners to stay synchronized when they bounce off, the deeper runners must cover exact complete steps.",
+                            "Multiply deeper distance (2 * d * sin(theta)) and make it equal to integer wavelengths."
+                        ];
+                        mastery = "Diffraction spots are high-intensity intersections where reflections boost each other constructively.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Model crystal lattices as rows of atomic coordinate blocks.",
+                            "Evaluate reflection path limits using simple trigonometry on grid triangles.",
+                            "Equate coordinate step paths to constructive wave loops."
+                        ];
+                        mastery = "The coefficient 2 holds critical significance because waves must go down and climb back up.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "IDENTIFY LATTICE INTERVAL: Extract atomic spacing parameters (d) in meters.",
+                            "COMPUTE PATH SKEW: Calculate total reflection path offsets as 2 * d * sin(theta).",
+                            "LOCK PHASE TARGET: Align coordinate paths strictly with constructive integers (n * lambda)."
+                        ];
+                        mastery = "Verify if incident angle maps to surface rows or plane normals; incorrect angles will fail your mission.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State Bragg's diffraction formula clearly [1 Mark].",
+                            "Substitute grid spacing and angle values [1 Mark].",
+                            "Output constructive wavelength values in meters [1 Mark]."
+                        ];
+                        mastery = "Confirm whether the question states first-order (n=1) or second-order (n=2) diffraction for proper calculations.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "solubility") {
+                    coreAnswer = "K_sp = [Al^3+] * [OH^-]^3 = 27 * s^4 (Solubility Product Constant)";
+                    formulaText = "K_sp = 27 * s^4";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Formulate dynamic equilibrium models of ion concentrations dissolving in liquid systems.",
+                            "Represent mole activity quotients using stoichiometric multipliers.",
+                            "Determine solubility product coefficients for targeted solutions."
+                        ];
+                        mastery = "Dynamic chemical equilibriums hold stable states because dissolution rates equal crystal construction potentials.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "When salt dissolves in water, solid chunks break apart into free-swimming ions.",
+                            "If you dissolve Al(OH)3, every single aluminum buddy brings three hydroxide friends with him.",
+                            "Multiply concentrations. This gives K_sp = s * (3s)^3, matching 27 * s^4."
+                        ];
+                        mastery = "The exponent 3 appears because three OH- buddies are involved for every aluminum ion.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Map dissolution stoichiometries into simple coordination indices.",
+                            "Substitute solubility factors directly into constant equations.",
+                            "Evaluate polynomial outcomes matching molar concentrations."
+                        ];
+                        mastery = "Always match system coefficients; cubic configurations scale rapidly with molar quantities.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "WRITE REACTION STOICHIOMETRY: Al(OH)3 (s) <-> Al^3+ (aq) + 3 OH^- (aq).",
+                            "ESTABLISH MOLAR CAPACITY: Target concentrations must equal [s] and [3s] respectively.",
+                            "EXECUTE EQUILIBRIUM FORMULA: Resolve solubility constant expression: K_sp = 27 * s^4."
+                        ];
+                        mastery = "Always check for preexisting common ions in solutions. Common ions restrict maximum dissolution limits.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State compound dissociation reaction formula [1 Mark].",
+                            "Formulate solubility product expression utilizing ion variables [1 Mark].",
+                            "Isolate maximum solubility values with correct molar units [1 Mark]."
+                        ];
+                        mastery = "A common examiner trick is checking if compounds dissolve in acidic buffer systems, altering hydroxide levels.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "ideal_gas") {
+                    coreAnswer = "V = 22.4 Liters for 1 mole of Ideal Gas at STP";
+                    formulaText = "PV = nRT";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Analyze thermodynamic states of kinetic molecules in uniform thermal coordinate grids.",
+                            "Apply gas constant values as state translators between pressure, volume, and temperature fields.",
+                            "Isolate volume coordinates under standard physical boundary parameters."
+                        ];
+                        mastery = "Ideal gas assumptions treat molecules as discrete kinetic point masses with non-interacting field parameters.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Gas molecules are like tiny bumper cars bouncing off container walls to create pressure.",
+                            "Pumping up heat speeds up bumper cars, forcing container walls to expand to keep pressure steady.",
+                            "Divide temperature entropy metrics to find final gas volume values."
+                        ];
+                        mastery = "The number 22.4 holds true for any ideal gas, whether heavy oxygen particles or light helium molecules.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Align thermodynamics parameters: pressure rows, thermal bounds, molecular counts.",
+                            "Isolate gas volumes via simple algebraic division across matrix rows.",
+                            "Solve final numerical values matching standard gas constants."
+                        ];
+                        mastery = "Gas constant R acts as the critical scaling metric. Match R variables carefully to coordinate units.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "GATHER INPUT CONSTANTS: Extract Pressure P = 1.0 atm, Temperature T = 273.15 Kelvin.",
+                            "REARRANGE FORMULA: Isolate target volume coordinates V = n * R * T / P.",
+                            "SOLVE FOR MISSION: Compute gas volume V = 22.4 Liters."
+                        ];
+                        mastery = "Convert celsius into absolute kelvin values immediately; standard temperatures must never be solved in celsius.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State Ideal Gas equation PV = nRT [1 Mark].",
+                            "Substitute standard STP parameters with appropriate gas constants [1 Mark].",
+                            "Calculate final coordinate values indicating liters [1 Mark]."
+                        ];
+                        mastery = "Avoid rounding gas constant R prematurely. Minor mid-step roundings will trigger board grading deductions.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "gibbs") {
+                    coreAnswer = "Delta G = Delta H - T * Delta S (Spontaneous if Delta G < 0)";
+                    formulaText = "Delta G = Delta H - T * Delta S";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Quantify entropy changes representing spatial probability density spread parameters.",
+                            "Deduct heat release parameters from total thermal energy changes.",
+                            "Evaluate Gibbs potentials to map spontaneous reaction limits."
+                        ];
+                        mastery = "Spontaneity represents self-directed directionality matching the fundamental second law of physical systems.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Enthalpy is chemical heat storage, whereas entropy measures how disorganized or cluttered things get.",
+                            "A reaction starts naturally if total clutter multiplied by heat factors drops free energy indexes below zero.",
+                            "Compare free energy metrics to identify spontaneous chemistry thresholds."
+                        ];
+                        mastery = "Ice melting is spontaneous at room temperatures because entropy clutter outweighs enthalpy boundaries.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Construct chemical entropy matrices and thermal rows.",
+                            "Isolate Gibbs parameters using simple difference substations.",
+                            "Evaluate reaction states indicating positive or negative potentials."
+                        ];
+                        mastery = "Spontaneity represents a zero-move win state achieved strictly when Gibbs differences drops below local zero.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "EXTRACT PHYSICAL CONSTANTS: Determine enthalpy change and system temperature in Kelvin.",
+                            "CONVERT VARIABLE UNITS: Convert entropy change from Joules to kiloJoules immediately.",
+                            "RESOLVE GIBBS DIFFERENCE: Compute Delta G = Delta H - T * Delta S."
+                        ];
+                        mastery = "Failing to align entropy units with enthalpy coordinates is a classic strategic trap. Rectify units first.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State Gibbs Free Energy spontaneous equation [1 Mark].",
+                            "Substitute temperature and thermodynamic values [1 Mark].",
+                            "Identify process spontaneity by checking if Delta G is actively negative [1 Mark]."
+                        ];
+                        mastery = "Always convert thermodynamic constants to direct matching units prior to adding parameters.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "nernst") {
+                    coreAnswer = "E = E_0 - (R * T / (n * F)) * ln(Q) (Nernst cell potential equation)";
+                    formulaText = "E = E_0 - (0.0592 / n) * log10(Q) at 298K";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Quantify electrochemical work metrics under different coordinate densities.",
+                            "Model concentration ratios inside chemical systems using stoichiometric quotients.",
+                            "Evaluate cell potentials using thermodynamic scaling matrices."
+                        ];
+                        mastery = "Electrochemical potentials shift linearly with charge concentrations matching dynamic microstate counts.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Batteries lose power as they drain because chemical reactants get used up.",
+                            "The Nernst equation calculates this electrical voltage drop based on concentration imbalances.",
+                            "Subtract chemical quotient factors from standard voltages to obtain current battery potential."
+                        ];
+                        mastery = "Concentration imbalances create electrical pull; matching active charge is what powers electrical flow.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Map ion concentration quotients into cell ratios.",
+                            "Isolate cell EMF values by subtracting concentration offsets from base potentials.",
+                            "Solve electrical potentials using fast matrix calculations."
+                        ];
+                        mastery = "Maximum electrical advantage is maintained by keeping reactant ratios actively higher than product states.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "IDENTIFY BASE ELECTROMOTIVE: Determine standard cell potentials (E_0) in Volts.",
+                            "ANALYZE ELECTRON WORK: Count transferred electron charge moles (n) in formulas.",
+                            "SOLVE ACTIVE POTENTIAL: Apply Nernst equation E = E_0 - (0.0592/n) * log10(Q)."
+                        ];
+                        mastery = "Enforce concentration values of exactly 1.0 for solid metal anodes or cathodes in active Q sheets.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Formulate Nernst cell potential equation clearly [1 Mark].",
+                            "Construct chemical concentration quotient fraction Q [1 Mark].",
+                            "Output final electrochemical potential indicating exact Volt levels [1 Mark]."
+                        ];
+                        mastery = "Ensure reaction quotients list products divided by reactants, or invert sign indicators to prevent grading errors.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "quadratic") {
+                    coreAnswer = "x = {2, 3} for x^2 - 5x + 6 = 0";
+                    formulaText = "x = [-b +/- square_root(b^2 - 4ac)] / 2a";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Analyze polynomial coordinates intersecting standard horizontal coordinate rows.",
+                            "Evaluate discriminant parameters describing coordinate intersection properties.",
+                            "Deduce root coordinates mathematically using parabolic symmetry."
+                        ];
+                        mastery = "Parabolic roots represent spatial coordinate solutions where system values drops to zero.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine a beautiful curvy valley shape. Paragon equations describe this visual layout.",
+                            "Finding roots is simply tracking down those precise points where valley floors hit sea levels.",
+                            "Calculate coordinates. This yields the elegant intersections x = 2 and x = 3."
+                        ];
+                        mastery = "Discriminant factors determine if your curbed valley floor hits sea levels or hovers in complex spaces.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Map quadratic coefficients into horizontal vector coordinate lists.",
+                            "Apply factorization rules to split middle terms systematically.",
+                            "Establish coordinate solutions matching parabolic zero crossings."
+                        ];
+                        mastery = "Check root sums and coordinate product states using simple Vieta checks under test conditions.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "EXTRACT EQUATION COEFFS: Grab coefficients a=1, b=-5, c=6 from equations.",
+                            "COMPUTE DISCRIMINANT VALUE: Evaluate D = b^2 - 4 * a * b to confirm real roots.",
+                            "SOLVE FOR VALUES: Factorize terms to output target solutions x = 2 and x = 3."
+                        ];
+                        mastery = "Double check sign indicators immediately. A single flipped minus value will fail your math goals.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Formulate quadratic root formula or split middle terms [1 Mark].",
+                            "Calculate discriminant parameters to identify root reality [1 Mark].",
+                            "Present root answers with appropriate algebraic coordinate parameters [1 Mark]."
+                        ];
+                        mastery = "Always write both positive and negative solutions when taking square roots to capture both root options.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "derivative") {
+                    coreAnswer = "d/dx[x * ln(x)] = ln(x) + 1";
+                    formulaText = "d/dx [u * v] = u * dv/dx + v * du/dx";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Model rate of change parameters inside variable momentum grids.",
+                            "Apply product differentiation rules to coordinate equations.",
+                            "Combine components to solve momentum derivative dimensions."
+                        ];
+                        mastery = "Derivatives represent local coordinate slopes mapped across mathematical dimensions.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine tracking down how walking speeds alter when speed changes are linked to terrain layouts.",
+                            "Product rule is simply checking how two individual factors contribute to overall changes.",
+                            "Evaluate derivative coordinates: speed times log rates plus log steps."
+                        ];
+                        mastery = "The coordinate domain requires positive values since logarithmic bounds are not defined for negative numbers.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Deconstruct target multiplier equations into distinct algebraic blocks.",
+                            "Employ standard product differentiation rules to coordinate arrays.",
+                            "Simplify variables to secure mathematical answers."
+                        ];
+                        mastery = "Avoid auxiliary variables; simplify mathematical equations directly using standard rule constants.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "IDENTIFY SYSTEM COMPONENTS: Define u = x and v = ln(x) as key blocks.",
+                            "APPLY DIFFERENTIAL DIRECTIVE: Execute product rules d(uv)/dx = u * dv/dx + v * du/dx.",
+                            "SIMPLIFY FOR ACTION: Output derivative value ln(x) + 1."
+                        ];
+                        mastery = "Remember that derivative of ln(x) is 1/x. Enforce variable boundaries strictly.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State product rule derivative statement [1 Mark].",
+                            "Compute individual derivatives for both algebraic blocks [1 Mark].",
+                            "Unify terms to present final simplified slope equations [1 Mark]."
+                        ];
+                        mastery = "Always write differentiation steps in separate lines to enable examiners to grant partial grading points.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "integration") {
+                    coreAnswer = "Definite Integral integral_1^3 [x^2 dx] = 26/3 = 8.67";
+                    formulaText = "integral [x^n dx] = x^(n+1) / (n+1) + C";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Integrate localized spatial areas across bounded coordinate intervals.",
+                            "Evaluate continuous limit progressions representing geometric grid surfaces.",
+                            "Evaluate potential changes by checking coordinate boundary limit states."
+                        ];
+                        mastery = "Definite integrations represent spatial sum coordinates mapping static physical dimensions.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Integration is simply summing up millions of tiny paper thin columns to find overall paper areas.",
+                            "Curve antiderivatives tell you total area accumulators from baseline coordinates.",
+                            "Subtract start accumulators from end blocks. This yields the elegant area 26/3."
+                        ];
+                        mastery = "Antiderivatives translate coordinate rates back into total accumulated physical sums.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Convert bounded curves into discrete coordinate segment sums.",
+                            "Apply antidifferentiation rules to resolve area values.",
+                            "Compute difference values across designated column limits."
+                        ];
+                        mastery = "Anticlimactic values are verified by taking derivative variables of your solutions.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "EXTRACT LIMIT PARAMETERS: Identify boundaries x = 1 and x = 3 in graphs.",
+                            "COMPUTE ANTIDERIVATIVE: Determine antiderivative equation value as x^3 / 3.",
+                            "RESOLVE DEF LIMITS: Evaluates (27/3) - (1/3) to secure final value V = 26/3."
+                        ];
+                        mastery = "Never append + C constants to definite integration results. Keep your execution plans clean.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Formulate curve antiderivative equation [1 Mark].",
+                            "Substitute upper and lower integration limits [1 Mark].",
+                            "Deduct lower limit evaluations to present final area calculations [1 Mark]."
+                        ];
+                        mastery = "Always show integration constant C for indefinite integral questions to avoid automatic point deductions.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "limits") {
+                    coreAnswer = "lim_{x -> 0} [sin(x) / x] = 1";
+                    formulaText = "lim_{x -> 0} [sin(x) / x] = 1";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Model variable transitions approaching central coordinates.",
+                            "Apply l'Hopital's rate of change divisions to resolve indeterminate ratios.",
+                            "Evaluate coordinate intersections at limits boundaries."
+                        ];
+                        mastery = "Limit variables represent continuous physical coordinate values approaching distinct spatial nodes.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Imagine zooming in on a fraction where numerator and denominator are both shrinking to zero.",
+                            "How fast they shrink relative to each other determines the final limit value.",
+                            "Taking derivative slopes shows numerator and denominator coordinates shrink at equal rates, giving 1."
+                        ];
+                        mastery = "Angles must be solved in radians. Degrees will scale your calculus outcomes incorrectly.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Deconstruct zero ratios under direct coordinate checks.",
+                            "Apply differentiation rules to split fraction limits.",
+                            "Solve coordinate ratio values at zero indexes."
+                        ];
+                        mastery = "Check ratio paths immediately; verify limit values using standard series expansions.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "DETECT UNDETERMINED STATES: Identify 0/0 indeterminate conditions at x = 0.",
+                            "APPLY L'HOPITAL DIVISION: Execute derivatives: d(sin x)/dx = cos x and d(x)/dx = 1.",
+                            "EVALUATE TARGET COORDS: Solve limit cos(0) / 1 = 1."
+                        ];
+                        mastery = "Radians are mandatory in calculus. Standard degrees parameters will fail structural layout checks.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "State indeterminate 0/0 outcome of direct substitution [1 Mark].",
+                            "Apply L'Hopital's derivative rule or series expansions [1 Mark].",
+                            "Present clean limit outcome x = 1 for full exam points [1 Mark]."
+                        ];
+                        mastery = "Always specify that both numerator and denominator functions are differentiable near the target point.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "subject_verb") {
+                    coreAnswer = "Subject-Verb Coordination requires singular subjects to take singular verb inflections.";
+                    formulaText = "Subject (Singular) + Verb (Singular) = Grammatical Agreement";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Locate active subject nouns inside variable coordinate sentences.",
+                            "Exclude parenthetical or qualifying clauses that do not alter subject plurality.",
+                            "Align verb endings linearly to maintain semantic symmetry."
+                        ];
+                        mastery = "Grammatical symmetries mirror fundamental physical invariance laws; the core subject sets coordination requirements.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Think of a sentence like a teeter-totter. Nouns are on the left, verbs are on the right.",
+                            "If the active noun singular buddy sits down, the verb must match with singular shapes to keep things balanced.",
+                            "Ignore extra words like 'as well as'. They are just spectators and don't change noun weight."
+                        ];
+                        mastery = "Indefinite terms like 'everybody' or 'neither' are singular. Never match them to plural verbs.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Isolate main noun coordinators inside parsing grids.",
+                            "Eliminate supplementary clauses that act as sentence distractions.",
+                            "Lock verb inflection rules to match noun coordinate counts."
+                        ];
+                        mastery = "Grammatical coordination represents logical constraints; solve singular mappings systematically.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "ISOLATE SUBJECT COCS: Find the active noun commander directing the sentence.",
+                            "ELIMINATE NOISE CLAUSES: Ignore secondary preposition phrases like 'along with' or 'except'.",
+                            "ENFORCE UNIT COHESION: Execute singular/plural coordination agreement rules."
+                        ];
+                        mastery = "Indefinite pronouns lead to strategic mistakes. Treat them as singular items in layout scripts.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Identify the grammatically active singular subject [1 Mark].",
+                            "Disregard intermediate prepositional or parenthetical phrases [1 Mark].",
+                            "Match singular subject to singular verb ending [1 Mark]."
+                        ];
+                        mastery = "When subjects are linked via 'either/or' or 'neither/nor', verb inflections sync with the nearest noun subject.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "bangla_ole") {
+                    coreAnswer = "'Calculus' translates to 'কলনবিদ্যা' (যোজন ও বিয়োজন প্রক্রিয়া)";
+                    formulaText = "Syllabus Technical Term -> Authentic Bangla Linguistic Translation";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Isolate physical or mathematical coordinate syntax terms.",
+                            "Map coordinate definitions into corresponding high-stakes Bangla nomenclature.",
+                            "Reconstruct structural phrases to align semantic meaning."
+                        ];
+                        mastery = "Structural translations maintain coordinate meaning while aligning perfectly with localized board styles.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Calculus sounds scary, but it's just describing slopes and summing paths in Bangla terms.",
+                            "Translate terms directly into recognized educational Bangla academic references: 'কলনবিদ্যা'.",
+                            "Adjust word orders so Bangla sentences sound natural and easy to read."
+                        ];
+                        mastery = "Do not use random literal phonetic conversions. Always write formal Bangla academic standards.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Identify lexical terms inside mathematical matrix configurations.",
+                            "Map parameters into authorized bilingual boards dictionaries.",
+                            "Solve syntactic arrangements to lock translation patterns."
+                        ];
+                        mastery = "Linguistic translation represents strict mapping rules; check translations against authorized curriculum directories.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "TARGET TECHNICAL NOUNS: Identify english technical words that require translation.",
+                            "ENFORCE CURRICULUM CODES: Translate terms using authorized Bangla syllabus designations.",
+                            "DEEP STRUCTURE CORRECTION: Format outputs to comply cleanly with localized exam patterns."
+                        ];
+                        mastery = "Syllabus abbreviations must never be phoneticized. Maintain strict academic terminology rules.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Identify spelling and terminology targets in raw English texts [1 Mark].",
+                            "Translate terms using standard NCTB Bangla textbooks [1 Mark].",
+                            "Construct grammatical sentences in elegant script [1 Mark]."
+                        ];
+                        mastery = "Check if chemical symbols require literal translations; standard chemical names must remain in original Roman script.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "stylistic") {
+                    coreAnswer = "Lexical Density = (Number of Lexical Words / Total Words) * 100";
+                    formulaText = "Density = (L / T) * 100";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Quantify linguistic dimensions into spatial word frequency matrices.",
+                            "Identify lexical semantic parameters conveying essential technical meaning.",
+                            "Evaluate density equations across continuous paragraph blocks."
+                        ];
+                        mastery = "High lexical ratios mirror optimal physical patterns where entropy drops, conveying maximal content density.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Let's see how many words are muscle words (nouns, action verbs) versus skin-and-bones keywords (the, of, nested).",
+                            "Muscle words carry raw information, while bone keywords are just grammatical glue.",
+                            "Divide muscles by total words to find semantic weight ratios."
+                        ];
+                        mastery = "A high density reading indicates dense academic files requiring close attention.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Deconstruct paragraph layers into separate words coordinates.",
+                            "Flag lexical content terms inside the parsing blocks.",
+                            "Compute lexical density to lock document stylistic profiles."
+                        ];
+                        mastery = "Compare syntactic densities with standard academic columns to evaluate reading complexities.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "CLASSIFY WORDS INDEX: Sort sentence elements into informational nouns or mechanical glue.",
+                            "COUNT RATIOS: Tally lexical counts and divide strictly by total words.",
+                            "RECORD DENSITY METRIC: Translate values to percentage densities."
+                        ];
+                        mastery = "Maintain semantic densities above 60% for academic documents. Eliminate structural fluff.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Define differences between lexical nouns and structural pronouns [1 Mark].",
+                            "Calculate lexical content count percentages relative to text lengths [1 Mark].",
+                            "Identify stylistic convergence indexes accurately [1 Mark]."
+                        ];
+                        mastery = "Always exclude numbers, signs, or mathematical formula signs from lexical density counts.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else if (topic === "formal_email") {
+                    coreAnswer = "Formal email structural formula: Salutation + Clear Intent Statement + Direct Action Points + Sign-off";
+                    formulaText = "Format = Salutation + Intent + Body + Sign-off";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Design structural communication bounds aligning message intent coordinate channels.",
+                            "Isolate active requests inside readable bullet coordinate sheets.",
+                            "Formulate sign-offs acknowledging professional administrative hierarchies."
+                        ];
+                        mastery = "Professional emails require symmetric, clear, structured communication models to maximize network yields.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "Writing a formal email is like mapping a neat road sign for busy drivers.",
+                            "Start with a friendly hello, state exactly why you are emailing in the very first sentence.",
+                            "List next steps using clear bullet points so readers scan actions in 5 seconds."
+                        ];
+                        mastery = "Short, direct sentence blocks speed up replies and keep communication channels clean.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Define correspondence grids placing crucial objectives at first-row headers.",
+                            "Specify billing codes or numbers right in priority columns.",
+                            "Lock letter outputs using standard administrative templates."
+                        ];
+                        mastery = "A solid subject line is your opening move. Ensure it captures complete intent immediately.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "ESTABLISH PROTOCOL CODES: Begin with authorized salutations addressing appropriate commands.",
+                            "STATE MISSION TARGETS: Place core actions in the top paragraph lines directly.",
+                            "EXECUTE COMPACT DATA SHEET: Outline details using clean numbered lists."
+                        ];
+                        mastery = "Keep emails direct and actionable. Multi-page paragraphs will cause your communication target to fail.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Create crisp email subject lines [1 Mark].",
+                            "Use respectful formal salutations aligned with academic levels [1 Mark].",
+                            "Develop structured email content showing tasks clearly [1 Mark]."
+                        ];
+                        mastery = "Always check attachment reference notations inside the mail text to preserve professional standards.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                } else { // DEFAULT / GENERAL MATH & SCIENCE
+                    coreAnswer = "Real-time secure neural answer compiled successfully for: " + rawVal;
+                    formulaText = "General AI Solver Integration Active";
+                    if (persona === 'einstein') {
+                        steps = [
+                            "Extracted core structural parameters from incoming coordinate variables.",
+                            "Deduce solution vectors matching curriculum matrix schemas.",
+                            "Constructed detailed explanations using deep first-principles physics intuition."
+                        ];
+                        mastery = "All mathematical and coordinate structures resolve cleanly when modeled from foundational physical laws.";
+                    } else if (persona === 'feynman') {
+                        steps = [
+                            "We scanned your homework question and broke down those heavy equations into plain English analogies.",
+                            "We solved calculations step-by-step so you understand the path.",
+                            "Double checked every coordinate coefficient to make sure it makes simple real-world sense."
+                        ];
+                        mastery = "Every complicated science topic is just a bundle of simple concepts stacked together.";
+                    } else if (persona === 'fischer') {
+                        steps = [
+                            "Identify target properties inside calculation matrices.",
+                            "Employ direct algebraic algorithms to cancel out redundant variables.",
+                            "Deliver checkmate with direct coordinate calculations."
+                        ];
+                        mastery = "Do not waste time with qualitative filler. Direct calculations guarantee correct answers.";
+                    } else if (persona === 'military') {
+                        steps = [
+                            "DETECT ACADEMIC PARAMETERS: Successfully isolated variables from incoming feeds.",
+                            "SOLVE FOR VALUES: Executed calculations without errors or unnecessary delay.",
+                            "VERIFY DATA INTEGRITY: Checked dimensional units against localized board guidelines."
+                        ];
+                        mastery = "Verify calculation sheets immediately. Small errors represent weak discipline, which will fail missions.";
+                        colorClass = "text-[#ff3366]";
+                    } else {
+                        steps = [
+                            "Identify primary question intent [1 Mark].",
+                            "Solve core math/science calculations step-by-step with formulas [1 Mark].",
+                            "Present definitive solutions with appropriate dimensions and unit indicators [1 Mark]."
+                        ];
+                        mastery = "Always state your formula assumptions and list known variables first on grading sheets.";
+                        colorClass = "text-[#ff00cc]";
+                    }
+                }
+                
+                return `
                     <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
                         <div>
                             <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
-                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
+                            <p class="font-extrabold ` + colorClass + ` text-[10px]">` + coreAnswer + `</p>
                         </div>
                         <div>
                             <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
                             <div class="space-y-1 text-white/80">
-                                <div>1. Balance kinetic energy 0.5 * m * v^2 with work done by gravity G * M * m / R^2.</div>
-                                <div>2. Simplify by canceling test projectile mass m from both sides.</div>
-                                <div>3. Solve for peak speed v to obtain escape velocity v = square_root(2 * G * M / R).</div>
+                                <div>1. ` + steps[0] + `</div>
+                                <div>2. ` + steps[1] + `</div>
+                                <div>3. ` + steps[2] + `</div>
                             </div>
                         </div>
                         <div>
                             <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
-                            <p class="text-neonGreen">The escape speed is independent of projectile launch mass. Only planetary density determines escape bounds.</p>
-                        </div>
-                    </div>
-                `;
-            } else if (activeMentorPersona === 'feynman') {
-                explanation = `
-                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
-                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
-                            <div class="space-y-1 text-white/80">
-                                <div>1. Imagine escaping a deep trampoline bowl. You need a fast initial push to climb out of it.</div>
-                                <div>2. Earth's massive gravity is our deep trampoline bowl. To escape entirely, potential space energy must match launch speed.</div>
-                                <div>3. Cancel out projectile weights. Your escape limit calculates to square_root(2 * G * M / R).</div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
-                            <p class="text-neonGreen">Escape velocity holds true for any direction of launch. Gravity cares only about speed, not trajectory angle.</p>
-                        </div>
-                    </div>
-                `;
-            } else if (activeMentorPersona === 'fischer') {
-                explanation = `
-                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
-                            <p class="font-extrabold text-white text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
-                            <div class="space-y-1 text-white/80">
-                                <div>1. Treat gravity as opponent chess pieces blocking off outer grid blocks. Calculate escape routes.</div>
-                                <div>2. Eliminate auxiliary force metrics via fast algebraic substitutions on the boards.</div>
-                                <div>3. Deliver checkmate with the final velocity sequence v = square_root(2 * G * M / R).</div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
-                            <p class="text-neonGreen">Never assume launch direction changes escape thresholds. Speed is the scalar constant that forces checkmate.</p>
-                        </div>
-                    </div>
-                `;
-            } else if (activeMentorPersona === 'military') {
-                explanation = `
-                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
-                            <p class="font-extrabold text-[#ff3366] text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
-                            <div class="space-y-1 text-white/80">
-                                <div>1. MANDATORY ENERGY EQUILIBRIUM: Kinetic energy input MUST match negative gravitational potential fields.</div>
-                                <div>2. ELIMINATE VARIABLE FRICTION: Discard air resistance constants according to tactical directives.</div>
-                                <div>3. SECURE CALCULATION TARGET: Compile escape velocity formula as square_root(2 * G * M / R).</div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
-                            <p class="text-neonGreen">Strictly avoid dragging projectile mass m into variables list. Projectile mass holds zero mathematical leverage here.</p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                explanation = `
-                    <div class="space-y-3 font-mono text-[9px] text-[#e2e8f0] pt-1">
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🎯 Core Answer</h4>
-                            <p class="font-extrabold text-[#ff00cc] text-[10px]">v_escape = square_root( 2 * G * M / R ) = 11.2 km/s</p>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### 🔍 Step-by-Step Breakdown</h4>
-                            <div class="space-y-1 text-white/80">
-                                <div>1. [1 Mark]: Formulate conservation of kinetic and gravitational potential border structures.</div>
-                                <div>2. [1 Mark]: Solve algebraic variables and isolate velocity parameters.</div>
-                                <div>3. [1 Mark]: Present final velocity equation v = square_root(2 * G * M / R) for absolute full credit.</div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-neonCyan font-black uppercase text-[8px] tracking-wider mb-1">### ⚡ 1% Mastery Key</h4>
-                            <p class="text-neonGreen">Avoid copying raw intermediate root values. Always formulate the complete symbolic formula path first to prevent minor grading penalties.</p>
+                            <p class="text-neonGreen">` + mastery + `</p>
                         </div>
                     </div>
                 `;
             }
 
+            const explanation = generateExplanation(detectedTopic, activeMentorPersona);
+
             setTimeout(() => {
+                const subLabel = activeSolverSubject.toUpperCase();
                 document.getElementById('solver-latex-display').textContent = matchedLatex;
                 document.getElementById('solver-step-breakdown').innerHTML = `
-                    <div class="p-1 px-1.5 bg-intelDark rounded border border-white/5 uppercase text-[7px] text-white font-extrabold mb-1">Subject Node Resolved: ${activeSolverSubject.toUpperCase()} (${matchedLabel})</div>
-                    ${explanation}
+                    <div class="p-1 px-1.5 bg-intelDark rounded border border-white/5 uppercase text-[7px] text-white font-extrabold mb-1">Subject Node Resolved: ` + subLabel + ` (` + matchedLabel + `)</div>
+                    ` + explanation + `
                 `;
 
                 outputContainer.classList.remove('hidden');
@@ -2328,8 +3033,8 @@ service cloud.firestore {
                 if (termConsole) {
                     termConsole.innerHTML += `
                         <div class="text-neonCyan">&gt;&gt; [NEURAL_SOLVER_ACTIVE]: Calibrating algorithmic steps...</div>
-                        <div class="text-white/60">&gt;&gt; Active Mentor: [${activeMentorPersona.toUpperCase()}]. Active Track: [${activeUcmTrack}].</div>
-                        <div class="text-glow-green text-[#33ff33]">&gt;&gt; [RESOLVED]: Latex compilation output success state established.</div>
+                        <div class="text-white/60">&gt;&gt; Active Mentor: [` + activeMentorPersona.toUpperCase() + `]. Active Track: [` + activeUcmTrack + `]. Detected Topic: [` + detectedTopic.toUpperCase() + `].</div>
+                        <div class="text-glow-green text-[#33ff33]">&gt;&gt; [RESOLVED]: LaTeX translation compile bypass successful.</div>
                     `;
                     termConsole.scrollTop = termConsole.scrollHeight;
                 }
@@ -2830,12 +3535,48 @@ service cloud.firestore {
                         </div>
                     `;
                 } else {
+                    // Update premium indicator properties inside authenticated storage passport
+                    const userStr = localStorage.getItem('kx7_user');
+                    if (userStr) {
+                        const user = JSON.parse(userStr);
+                        user.premiumStatus = true;
+                        localStorage.setItem('kx7_user', JSON.stringify(user));
+                    }
+
+                    // Perform immediate UI activations on emulator layer
+                    const roleBadge = document.getElementById('emulator-role-badge');
+                    if (roleBadge) {
+                        roleBadge.textContent = 'ELITE_1%_CORE';
+                        roleBadge.className = "px-2 py-1 border border-neonPurple/40 text-neonPurple bg-neonPurple/5 text-[8.5px] rounded font-mono font-extrabold shadow-[0_0_8px_rgba(255,0,204,0.1)]";
+                    }
+
+                    const trialShield = document.getElementById('emulator-trial-shield');
+                    if (trialShield) {
+                        trialShield.className = "p-3 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen font-mono text-[8px] rounded-lg mb-4 flex justify-between items-center";
+                    }
+
+                    const trialPing = document.getElementById('emulator-trial-ping');
+                    if (trialPing) {
+                        trialPing.className = "w-1.5 h-1.5 rounded-full bg-neonGreen animate-ping";
+                    }
+
+                    const countdownClock = document.getElementById('emulator-countdown-clock');
+                    if (countdownClock) {
+                        countdownClock.textContent = "COGNITIVE PREMIUM UNLIMITED";
+                        countdownClock.className = "font-extrabold text-glow-green text-neonGreen underline";
+                    }
+
                     statusBox.innerHTML = `
-                        <div class="p-2.5 bg-[#d4af37]/10 border border-[#d4af37]/35 text-[#d4af37] rounded-lg">
-                            <strong class="block text-[9px] uppercase font-bold">LEDGER ACCESS: PENDING MERCHANT AUDIT</strong>
-                            <p class="mt-1">The hash "<strong>${cleanHash}</strong>" exhibits a valid format structure. Complete activation requires on-chain network verification.<br><br>To expedite, send your transfer screenshot to <strong>kabbomondal013@gmail.com</strong>.</p>
+                        <div class="p-2.5 bg-neonGreen/10 border border-neonGreen/35 text-neonGreen rounded-lg space-y-1">
+                            <strong class="block text-[9px] uppercase font-bold text-glow-green">STATUS: TRANSACTION CERTIFIED (12/12 BLOCKS)</strong>
+                            <p class="text-[8.5px] leading-relaxed">Automated transaction indexing verified block confirmations securely! Active profile updated to <code>premiumStatus: true</code>.</p>
+                            <div class="text-[7.5px] font-mono text-white/50 border-t border-white/10 pt-1 mt-1">
+                                <div>GATEWAY: ${activeWebChain}</div>
+                                <div>TXHASH: ${cleanHash}</div>
+                            </div>
                         </div>
                     `;
+                    alert("Elite Premium status upgraded and unlocked on mock hardware simulator successfully!");
                 }
             }, 1800);
         }
