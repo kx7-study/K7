@@ -782,77 +782,79 @@
 
                                 <!-- ================= SCREEN 2: SOLVER DESKTOP ================= -->
                                 <div id="screen-solver-desk" class="phone-screen-content">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">CRYPTOGRAPHIC SOLVER</h5>
-                                            <p class="text-[8px] font-mono text-neonPurple uppercase">neural translation matrix</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">CRYPTOGRAPHIC SOLVER</h5>
+                                            <p class="text-[7.5px] font-mono text-neonPurple uppercase">matrix translation engine</p>
                                         </div>
                                     </div>
 
                                     <!-- Interactive Custom Parameter Controls -->
-                                    <div class="space-y-3.5">
+                                    <div class="space-y-2.5">
                                         <div>
-                                            <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 uppercase font-bold">Target Intellectual Subject</label>
-                                            <select class="w-full p-2.5 border border-white/10 bg-intelDark rounded-lg text-xs font-mono text-white focus:border-neonCyan outline-none">
-                                                <option>Mathematics // Elliptic Cryptography</option>
-                                                <option>Applied Physics // Quantum Telemetry</option>
-                                                <option>Neural Net // Vector Database Indices</option>
+                                            <label class="text-[8px] font-mono text-textMuted block mb-1 uppercase font-bold text-glow-cyan">ALGORITHM MODULE</label>
+                                            <select id="solver-algo-select" class="w-full p-2 border border-white/10 bg-intelDark rounded-lg text-[10.5px] font-mono text-white focus:border-neonCyan outline-none">
+                                                <option value="base64-encode">Base64 Text Encoder</option>
+                                                <option value="base64-decode">Base64 Text Decoder</option>
+                                                <option value="rot13">ROT13 Caesar Cipher</option>
+                                                <option value="hex-encode">String to Hexadecimal</option>
+                                                <option value="hex-decode">Hexadecimal to String</option>
                                             </select>
                                         </div>
 
                                         <div>
-                                            <label class="text-[8.5px] font-mono text-textMuted block mb-1.5 uppercase font-bold">Output Desired Translation Language</label>
-                                            <select class="w-full p-2.5 border border-white/10 bg-intelDark rounded-lg text-xs font-mono text-white focus:border-neonCyan outline-none">
-                                                <option>English // Secure Binary Sandbox</option>
-                                                <option>Spanish // Translation Matrix 02</option>
-                                                <option>Japanese // Vector Node Core 03</option>
-                                            </select>
+                                            <label class="text-[8px] font-mono text-textMuted block mb-1 uppercase font-extrabold text-glow-purple">RAW INPUT PAYLOAD</label>
+                                            <textarea id="solver-raw-input" class="w-full h-11 bg-intelBlack border border-white/10 p-2 rounded-lg text-xs font-mono text-white focus:border-neonCyan focus:outline-none placeholder-textMuted/45 resize-none" placeholder=">> Type standard text payload to translate..."></textarea>
+                                        </div>
+
+                                        <!-- Real Decrypted Output Display Container -->
+                                        <div id="solver-output-container" class="hidden p-2 bg-[#00ffcc]/5 border border-[#00ffcc]/30 rounded-lg text-left relative">
+                                            <div class="absolute top-1 right-2 text-[6px] font-mono text-neonCyan font-bold uppercase tracking-widest animate-pulse">OUTPUT_STREAM_OK</div>
+                                            <span class="text-[7px] font-mono text-neonCyan block uppercase font-bold mb-0.5">TRANSLATED METRICS:</span>
+                                            <p id="solver-output-text" class="text-[10px] font-mono text-white break-all bg-intelDark/50 p-1 rounded select-all font-semibold max-h-12 overflow-y-auto"></p>
                                         </div>
 
                                         <!-- Vocal Dictation Active Panel -->
-                                        <div class="p-4 border border-dashed border-neonCyan/20 bg-intelBlack rounded-xl text-center mt-3 relative">
-                                            <span class="text-[9px] font-mono text-textMuted uppercase block mb-2 font-bold">Vocal Decoding Node Waveform</span>
-                                            
-                                            <!-- Dynamic simulated voice wave streams -->
-                                            <div id="voice-waves-container" class="flex justify-center items-center gap-1.5 my-3 h-8">
-                                                <span class="vocal-node h-2" style="animation: animWave 0.8s ease-in-out infinite alternate;"></span>
-                                                <span class="vocal-node h-6" style="animation: animWave 0.5s ease-in-out infinite alternate; animation-delay: 0.2s;"></span>
-                                                <span class="vocal-node h-3" style="animation: animWave 0.9s ease-in-out infinite alternate; animation-delay: 0.1s;"></span>
-                                                <span class="vocal-node h-7" style="animation: animWave 0.4s ease-in-out infinite alternate; animation-delay: 0.4s;"></span>
-                                                <span class="vocal-node h-2" style="animation: animWave 0.7s ease-in-out infinite alternate; animation-delay: 0.3s;"></span>
+                                        <div class="p-2 border border-dashed border-neonCyan/20 bg-intelBlack rounded-lg text-center relative">
+                                            <span class="text-[7.5px] font-mono text-textMuted uppercase block mb-1 font-bold">Vocal Spectrogram Wave</span>
+                                            <div id="voice-waves-container" class="flex justify-center items-center gap-1 my-1 h-5">
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.8s ease-in-out infinite alternate;"></span>
+                                                <span class="vocal-node h-2.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.5s ease-in-out infinite alternate; animation-delay: 0.2s;"></span>
+                                                <span class="vocal-node h-1.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.9s ease-in-out infinite alternate; animation-delay: 0.1s;"></span>
+                                                <span class="vocal-node h-3.5 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.4s ease-in-out infinite alternate; animation-delay: 0.4s;"></span>
+                                                <span class="vocal-node h-1 w-1 bg-neonCyan rounded-full transition-all duration-150" style="animation: animWave 0.7s ease-in-out infinite alternate; animation-delay: 0.3s;"></span>
                                             </div>
                                             <style>
                                                 @keyframes animWave {
-                                                    0% { height: 4px; }
-                                                    100% { height: 28px; }
+                                                    0% { height: 2px; }
+                                                    100% { height: 18px; }
                                                 }
                                             </style>
-
-                                            <button onclick="toggleVoiceDictationSimulation()" id="voice-matrix-btn" class="px-4 py-2 bg-neonCyan/10 border border-neonCyan/30 text-neonCyan font-mono text-[9px] tracking-wider rounded font-extrabold hover:bg-neonCyan hover:text-black transition-all">
+                                            <button onclick="toggleVoiceDictationSimulation()" id="voice-matrix-btn" class="px-2.5 py-1 bg-neonCyan/15 border border-neonCyan/30 text-neonCyan font-mono text-[8px] tracking-wider rounded font-extrabold hover:bg-neonCyan hover:text-black transition-all">
                                                 ENGAGE VOICE TRANSLATION
                                             </button>
                                         </div>
 
-                                        <button onclick="simulateSolverCalculation()" class="w-full py-3 bg-neonCyan text-black font-mono font-black text-xs uppercase rounded-lg tracking-widest shadow-[0_0_20px_rgba(0,255,204,0.35)] hover:bg-white duration-300 transition-all">
-                                            LAUNCH INTELLECT SOLVER
+                                        <button onclick="simulateSolverCalculation()" class="w-full py-2 bg-neonCyan text-black font-mono font-black text-[10px] uppercase rounded-lg tracking-widest shadow-[0_0_10px_rgba(0,255,204,0.2)] hover:bg-white duration-300 transition-all">
+                                            LAUNCH INTELLECT SOLVER()
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- ================= SCREEN 3: SMART RECALL ================= -->
                                 <div id="screen-smart-recall" class="phone-screen-content">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-sm font-mono font-extrabold text-neonCyan">INTELLIGENT RECALL AGENT</h5>
-                                            <p class="text-[8px] font-mono text-[#33ff33] uppercase">Summarizer system compiled</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-neonCyan uppercase tracking-widest">RECALL ENVELOPE</h5>
+                                            <p class="text-[7.5px] font-mono text-[#33ff33] uppercase">Summarizer system compiled</p>
                                         </div>
                                     </div>
 
                                     <!-- Interactive 3D Card Simulator -->
-                                    <div class="mb-4">
-                                        <div class="flex justify-between items-center mb-2">
-                                            <span class="text-[9px] font-mono text-textMuted uppercase font-bold">DECK CORE // SECURE SEC_01</span>
-                                            <span class="text-[9px] font-mono text-neonPurple uppercase font-bold">42 CARDS READY</span>
+                                    <div class="mb-2">
+                                        <div class="flex justify-between items-center mb-1.5 text-[8.5px] font-mono">
+                                            <span class="text-textMuted uppercase font-bold">DECK CORE // MEMS</span>
+                                            <span id="card-count-badge" class="text-neonPurple uppercase font-bold">4 CARDS READY</span>
                                         </div>
                                         
                                         <!-- Flip Mechanics Card -->
@@ -860,79 +862,117 @@
                                             <div class="card-inner-3d relative w-full h-full text-center transition-transform duration-500 transform border rounded-xl border-neonPurple/30 bg-intelDark/70 hover:border-neonPurple duration-300">
                                                 
                                                 <!-- Question Front -->
-                                                <div class="card-front absolute inset-0 p-4.5 flex flex-col justify-between backface-hidden">
-                                                    <div class="text-[8px] font-mono text-textMuted uppercase flex justify-between font-bold">
+                                                <div class="card-front absolute inset-0 p-4 flex flex-col justify-between backface-hidden">
+                                                    <div class="text-[7.5px] font-mono text-textMuted uppercase flex justify-between font-bold">
                                                         <span>Quantum cryptography deck</span>
-                                                        <span class="text-neonPurple animate-pulse">TAP TO FLIP KEYS</span>
+                                                        <span class="text-neonPurple animate-pulse">TAP TO REVEAL KEY</span>
                                                     </div>
-                                                    <p class="text-xs font-sans font-bold italic text-white my-auto px-2">
+                                                    <p id="card-question-text" class="text-[11.5px] font-sans font-bold italic text-white my-auto px-1.5 leading-snug">
                                                         "What mathematical method secures state vectors in qubit logic arrays?"
                                                     </p>
-                                                    <span class="text-[9.5px] text-neonPurple font-bold font-mono tracking-widest uppercase text-glow-purple">CORE QUESTION</span>
+                                                    <span id="card-index-label" class="text-[9px] text-neonPurple font-bold font-mono tracking-wider uppercase text-glow-purple">CARD 1 OF 4</span>
                                                 </div>
 
                                                 <!-- Answer Back -->
-                                                <div class="card-back absolute inset-0 p-4.5 flex flex-col justify-between backface-hidden bg-purple-950/25 rounded-xl">
-                                                    <div class="text-[8px] font-mono text-textMuted uppercase flex justify-between font-bold">
-                                                        <span>VECTOR RESOLUTION CODE</span>
-                                                        <span class="text-neonGreen">DECRYPTED OK</span>
+                                                <div class="card-back absolute inset-0 p-4 flex flex-col justify-between backface-hidden bg-purple-950/25 rounded-xl">
+                                                    <div class="text-[7.5px] font-mono text-textMuted uppercase flex justify-between font-bold">
+                                                        <span>DECRYPTION RESULT CODES</span>
+                                                        <span class="text-neonGreen">VERIFIED_SECURE</span>
                                                     </div>
-                                                    <p class="text-[11.5px] font-mono font-medium text-neonGreen leading-relaxed my-auto">
+                                                    <p id="card-answer-text" class="text-[11px] font-mono font-medium text-neonGreen leading-relaxed my-auto px-1">
                                                         &gt;&gt; Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors.
                                                     </p>
-                                                    <span class="text-[9.5px] text-neonGreen font-bold font-mono tracking-widest uppercase text-glow-green">DECRYPTED EXPLANATION</span>
+                                                    <span class="text-[9px] text-neonGreen font-bold font-mono tracking-wider uppercase text-glow-green">DECRYPTED VECTOR</span>
                                                 </div>
 
                                             </div>
                                         </div>
+
+                                        <!-- Flip Controls Pager grid -->
+                                        <div class="flex gap-2 mt-2">
+                                            <button onclick="navigateRecallCard(-1)" type="button" class="grow py-1 bg-intelDark border border-white/5 hover:border-neonPurple/40 text-[9px] font-code font-bold text-textMuted hover:text-white rounded transition-all">
+                                                ◀ PREV Node
+                                            </button>
+                                            <button onclick="navigateRecallCard(1)" type="button" class="grow py-1 bg-intelDark border border-white/5 hover:border-neonPurple/40 text-[9px] font-code font-bold text-textMuted hover:text-white rounded transition-all">
+                                                Next Node ▶
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- PDF summaries custom textbox simulation -->
-                                    <div class="space-y-2 mt-4 pt-3.5 border-t border-white/[0.05]">
-                                        <label class="text-[8.5px] font-mono text-textMuted block font-bold uppercase">Manual Document Lines Parser</label>
-                                        <textarea id="mock-recall-textarea" class="w-full h-16 bg-intelBlack border border-white/10 p-2.5 rounded-lg text-xs font-mono text-white focus:border-neonPurple focus:outline-none placeholder-textMuted/40" placeholder=">> Input raw custom academic document lines to compile into memory deck..."></textarea>
-                                        <button onclick="simulateDocumentDeckGeneration()" class="w-full py-2.5 bg-neonPurple text-white font-mono font-bold text-[9.5px] tracking-widest uppercase rounded-lg hover:bg-white hover:text-black duration-300 transition-all">
-                                            COMPILE NEW SMART CARDS
+                                    <div class="space-y-1.5 mt-2.5 pt-2.5 border-t border-white/[0.05]">
+                                        <label class="text-[8px] font-mono text-textMuted block font-bold uppercase tracking-wider">Manual Document Text compiler</label>
+                                        <textarea id="mock-recall-textarea" class="w-full h-11 bg-intelBlack border border-white/10 p-1.5 rounded-lg text-xs font-mono text-white focus:border-neonPurple focus:outline-none placeholder-textMuted/40 resize-none" placeholder="Format: Question // Answer OR paste standard text notes..."></textarea>
+                                        <button onclick="simulateDocumentDeckGeneration()" class="w-full py-1.5 bg-neonPurple text-white font-mono font-bold text-[9px] tracking-widest uppercase rounded-lg hover:bg-white hover:text-black duration-300 transition-all">
+                                            COMPILE NEW SMART CARDS()
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- ================= SCREEN 4: BATTLE ARENA ================= -->
                                 <div id="screen-battle-arena" class="phone-screen-content">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-2.5 mb-4">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
                                         <div>
-                                            <h5 class="text-sm font-mono font-extrabold text-[#ff00cc]">THE LEADERBORD ARENA</h5>
-                                            <p class="text-[8px] font-mono text-textMuted uppercase">division level: diamond ex v</p>
+                                            <h5 class="text-xs font-mono font-extrabold text-[#ff00cc] uppercase tracking-widest">LEADERBOARD ARENA</h5>
+                                            <p class="text-[7.5px] font-mono text-textMuted uppercase">division level: diamond ex v</p>
                                         </div>
                                     </div>
 
-                                    <!-- Adaptive Rival Velocity forecast box -->
-                                    <div class="p-3 bg-neonCyan/5 border border-neonCyan/20 rounded-xl mb-4 text-[9.5px] font-mono leading-relaxed text-neonCyan">
-                                        <span class="font-bold text-white block uppercase mb-1 text-glow-cyan">🔥 SYSTEM FORECASTING:</span>
-                                        Cognitive data vectors forecast operator elevation to Diamond Rank Level III within 32 hours. insulate active streaks to accelerate rating.
-                                    </div>
-
                                     <!-- Live Leader ranking score boards -->
-                                    <div>
-                                        <span class="text-[9px] font-mono text-textMuted uppercase block mb-2 font-bold">COMPETITOR INDEX LEVEL</span>
-                                        
-                                        <div class="space-y-1.5 text-[10.5px] font-mono">
-                                            <div class="p-2.5 bg-intelDark rounded-lg flex justify-between items-center border-l-2 border-neonCyan font-bold relative overflow-hidden">
+                                    <div class="space-y-1">
+                                        <div class="space-y-1 text-[9.5px] font-mono">
+                                            <div class="p-1.5 bg-intelDark rounded-lg flex justify-between items-center border-l-2 border-neonCyan font-bold relative overflow-hidden">
                                                 <span>01 // Kabbo Mondal (You)</span>
-                                                <span class="text-neonCyan text-glow-cyan font-black">94,800 PTS</span>
+                                                <span class="text-neonCyan text-glow-cyan font-black" id="player-score-pts">94,800 PTS</span>
                                             </div>
-                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                            <div class="p-1.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
                                                 <span>02 // Alpha_Sec_K7</span>
                                                 <span>89,120 PTS</span>
                                             </div>
-                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
+                                            <div class="p-1.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
                                                 <span>03 // Matrix_Zero_N</span>
                                                 <span>84,330 PTS</span>
                                             </div>
-                                            <div class="p-2.5 bg-intelDark/30 rounded-lg flex justify-between items-center opacity-65 border-l-2 border-transparent">
-                                                <span>04 // Quantum_Rival</span>
-                                                <span>78,210 PTS</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interactive Reflex Battle Area Game Panel -->
+                                    <div class="mt-2.5 p-2 bg-intelBlack border border-neonPurple/20 rounded-lg">
+                                        <div class="flex justify-between items-center border-b border-white/5 pb-1 mb-1.5">
+                                            <span class="text-[7px] font-mono text-neonPurple uppercase font-bold tracking-widest">COGNITIVE TRAINING COMBAT</span>
+                                            <span class="inline-block w-1 h-1 rounded-full bg-neonPurple animate-pulse animate-ping"></span>
+                                        </div>
+
+                                        <!-- Challenge menu -->
+                                        <div id="arena-game-menu" class="text-center py-1 space-y-1.5">
+                                            <p class="text-[8px] font-mono text-textMuted/95 uppercase leading-snug">Solve formula puzzles under a strict 15s cyber timer to maximize rating.</p>
+                                            <button onclick="startArenaChallenge()" class="w-full py-1.5 bg-gradient-to-r from-neonPurple to-warningCrimson text-white font-mono font-black text-[8px] tracking-widest uppercase rounded hover:shadow-[0_0_10px_rgba(255,0,204,0.25)] transition-all">
+                                                ⚔️ DEPLOY REFLEX TRIAL
+                                            </button>
+                                        </div>
+
+                                        <!-- Challenge active gameplay -->
+                                        <div id="arena-game-active" class="hidden space-y-2 font-mono">
+                                            <div class="flex justify-between items-center text-[8px]">
+                                                <span class="text-[#ff00cc] font-extrabold">SOLVED: <span id="game-score">0</span></span>
+                                                <span class="text-neonCyan font-extrabold">TIMELOCK: <span id="game-timer">15</span>S</span>
                                             </div>
+                                            <div class="p-2 bg-intelDark border border-white/10 rounded text-center">
+                                                <span class="text-[7px] block text-textMuted uppercase tracking-wider mb-0.5">RESOLVE MODULE</span>
+                                                <span class="text-xs font-bold text-white tracking-wider" id="game-question">...</span>
+                                            </div>
+                                            <!-- Option grids dynamically loaded -->
+                                            <div class="grid grid-cols-2 gap-1 text-center text-[9px]" id="game-options-grid"></div>
+                                        </div>
+
+                                        <!-- Challenge completions outcome -->
+                                        <div id="arena-game-result" class="hidden text-center py-1.5 space-y-1.5 font-mono">
+                                            <div class="text-[8px] text-neonCyan font-extrabold uppercase animate-pulse">✓ TRIAL TERMINAL RESOLVED</div>
+                                            <p class="text-[9.5px] text-textMuted/90 leading-snug">Cracked <span id="res-correct" class="text-neonGreen font-bold">0</span>. Score: <span id="res-points" class="text-neonCyan font-bold">0</span> PTS</p>
+                                            <div class="text-[7.5px] text-white bg-neonPurple/15 px-1.5 py-0.5 inline-block border border-neonPurple/40 rounded uppercase font-bold" id="res-highscore-label">NEW LOCAL HIGHSCORE ALIGNED!</div>
+                                            <button onclick="resetArenaGame()" class="w-full py-1 bg-intelDark border border-white/5 text-white font-mono text-[8px] font-bold uppercase rounded hover:bg-neutral-800 transition-all">
+                                                RE-DEPLOY TRIAL()
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1323,50 +1363,331 @@
             }
         }
 
-        // Simulate Solver Calculation Output
+        // --- REAL INTERACTIVE STATE AND UTILITIES ---
+        let currentCardIdx = 0;
+        let recallDecks = [
+            {
+                q: "What mathematical method secures state vectors in qubit logic arrays?",
+                a: "Use Unitary Orthogonal Matrix transformations over Bloch spherical vectors."
+            },
+            {
+                q: "Explain AES-256 key schedule expansion limit.",
+                a: "Expands 256-bit seed into 15 round keys using Rijndael S-box byte substitution."
+            },
+            {
+                q: "What is the key advantage of elliptic curve cryptography?",
+                a: "Equivalent security to RSA with significantly smaller key sizes (e.g. 256-bit EC = 3072-bit RSA)."
+            },
+            {
+                q: "What prevents replay attacks in cryptographic protocols?",
+                a: "Utilizing dynamic cryptographic nonces and high-resolution server-side millisecond timestamp verification."
+            }
+        ];
+
+        function updateCardUI() {
+            const indexLabel = document.getElementById('card-index-label');
+            const qText = document.getElementById('card-question-text');
+            const aText = document.getElementById('card-answer-text');
+            const countBadge = document.getElementById('card-count-badge');
+            
+            // Unflip card to avoid visual glitch when cycling
+            const card = document.getElementById('emulator-3d-card');
+            if (card) {
+                card.classList.remove('flipped');
+            }
+
+            if (recallDecks.length === 0) {
+                if (indexLabel) indexLabel.textContent = "0 CARDS";
+                if (qText) qText.textContent = "No cards compiled. Paste custom lines below.";
+                if (aText) aText.textContent = "No cards compiled. Paste custom lines below.";
+                if (countBadge) countBadge.textContent = "0 CARDS READY";
+                return;
+            }
+
+            if (currentCardIdx >= recallDecks.length) currentCardIdx = 0;
+            if (currentCardIdx < 0) currentCardIdx = recallDecks.length - 1;
+
+            const cardObj = recallDecks[currentCardIdx];
+            if (indexLabel) indexLabel.textContent = `CARD ${currentCardIdx + 1} OF ${recallDecks.length}`;
+            if (qText) qText.textContent = `"${cardObj.q}"`;
+            if (aText) aText.textContent = `>> ${cardObj.a}`;
+            if (countBadge) countBadge.textContent = `${recallDecks.length} CARDS READY`;
+        }
+
+        function navigateRecallCard(direction) {
+            currentCardIdx += direction;
+            updateCardUI();
+        }
+
+        // --- REAL CRYPTO TOOL TRANSLATOR ENGINE ---
         function simulateSolverCalculation() {
+            const rawVal = document.getElementById('solver-raw-input').value.trim();
+            const algo = document.getElementById('solver-algo-select').value;
+            const outputText = document.getElementById('solver-output-text');
+            const outputContainer = document.getElementById('solver-output-container');
+            
             const termConsole = document.getElementById('terminal-display-canvas');
             const procState = document.getElementById('term-process-state');
             
+            if (!rawVal) {
+                alert("Please enter a raw input string payload in the solver first.");
+                return;
+            }
+
             procState.textContent = 'RUNNING_COGNITIVE_SOLVER';
-            procState.classList.add('text-neonCyan');
+            procState.classList.add('text-[#00ffcc]');
 
-            termConsole.innerHTML = `
+            let result = "";
+            let algoName = "";
+
+            try {
+                if (algo === 'base64-encode') {
+                    algoName = "Base64 Encoder Node";
+                    result = btoa(unescape(encodeURIComponent(rawVal)));
+                } else if (algo === 'base64-decode') {
+                    algoName = "Base64 Decoder Node";
+                    result = decodeURIComponent(escape(atob(rawVal)));
+                } else if (algo === 'rot13') {
+                    algoName = "ROT13 Caesar Cipher";
+                    result = rawVal.replace(/[a-zA-Z]/g, function(c) {
+                        return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+                    });
+                } else if (algo === 'hex-encode') {
+                    algoName = "String to Hexadecimal";
+                    let arr = [];
+                    for (let i = 0; i < rawVal.length; i++) {
+                        arr.push(rawVal.charCodeAt(i).toString(16).padStart(2, '0'));
+                    }
+                    result = "0x" + arr.join('').toUpperCase();
+                } else if (algo === 'hex-decode') {
+                    algoName = "Hexadecimal to String";
+                    let cleanHex = rawVal.toUpperCase().replace(/^0X/, '').replace(/[^A-F0-9]/g, '');
+                    let str = '';
+                    for (let i = 0; i < cleanHex.length; i += 2) {
+                        str += String.fromCharCode(parseInt(cleanHex.substr(i, 2), 16));
+                    }
+                    result = str || "[Decryption outcome empty - invalid hexadecimal character stream]";
+                }
+            } catch(err) {
+                result = "[ERROR] Decrypt schema failed to parse payload structure: " + err.message;
+            }
+
+            // Write into phone UI output card
+            outputText.textContent = result;
+            outputContainer.classList.remove('hidden');
+
+            termConsole.innerHTML += `
                 <div class="text-neonCyan">&gt;&gt; [LAUNCH] Booting core cryptographic solver calculations...</div>
-                <div class="text-white/60">&gt;&gt; parsing current operator subject payload: Mathematics // Cryptography</div>
-                <div class="text-white/60">&gt;&gt; generating delta states for secure mathematical vectors...</div>
-                <div class="text-neonGreen">&gt;&gt; [COMPILING] resolving elliptic parity equations in 12ms...</div>
-                <span class="text-glow-green text-[#33ff33]">&gt;&gt; [DIAG] Parity resolved. Answer dispatched to internal local database cache nodes successfully.</span>
+                <div class="text-white/60">&gt;&gt; parsing current operator subject payload on algorithms: ${algoName}</div>
+                <div class="text-white/60">&gt;&gt; input payload size: ${rawVal.length} characters processed</div>
+                <div class="text-neonGreen text-glow-green">&gt;&gt; [SUCCESS] Resolved: "${result.substring(0, 45)}${result.length > 45 ? '...' : ''}"</div>
             `;
+            termConsole.scrollTop = termConsole.scrollHeight;
 
-            // Prompt success alerts within simulator
             setTimeout(() => {
-                alert("Intellect solver calculation completed successfully! Output lines written into sandbox database schemas.");
                 procState.textContent = 'SOLVER_COMPLETE_IDLE';
-                procState.classList.remove('text-neonCyan');
-            }, 500);
+                procState.classList.remove('text-[#00ffcc]');
+            }, 300);
         }
 
-        // Simulate Document decks compilation sequences
+        // Dynamic Document decks compilation sequences
         function simulateDocumentDeckGeneration() {
-            const rawInValue = document.getElementById('mock-recall-textarea').value;
+            const rawInValue = document.getElementById('mock-recall-textarea').value.trim();
             const termConsole = document.getElementById('terminal-display-canvas');
             const procState = document.getElementById('term-process-state');
 
+            if (!rawInValue) {
+                alert("Please input custom documents or flashcards (Question // Answer) first!");
+                return;
+            }
+
             procState.textContent = 'COMPILING_DOCUMENT_DECK';
 
-            termConsole.innerHTML = `
+            // Split into lines
+            let lines = rawInValue.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            let addedCards = [];
+
+            lines.forEach(line => {
+                if (line.includes('//')) {
+                    const parts = line.split('//');
+                    addedCards.push({ q: parts[0].trim(), a: parts[1].trim() });
+                } else if (line.includes('?')) {
+                    const parts = line.split('?');
+                    addedCards.push({ q: parts[0].trim() + '?', a: parts[1].trim() || 'Decrypt core documentation details.' });
+                } else {
+                    if (line.length > 20) {
+                        addedCards.push({ q: line.substring(0, 40) + "...", a: line });
+                    } else {
+                        addedCards.push({ q: "Concept Definition", a: line });
+                    }
+                }
+            });
+
+            if (addedCards.length === 0) {
+                addedCards.push({ q: "Decompiled custom notes", a: rawInValue });
+            }
+
+            recallDecks = [...recallDecks, ...addedCards];
+            currentCardIdx = recallDecks.length - addedCards.length; // Focus on first newly added card
+            updateCardUI();
+
+            termConsole.innerHTML += `
                 <div class="text-neonPurple">&gt;&gt; [RECALL] Initiating Raw Document Compilation Sequence...</div>
-                <div class="text-white/50">&gt;&gt; parsing custom user text inputs: "${rawInValue || 'Default Null Sequence lines'}"</div>
-                <div class="text-white/60">&gt;&gt; launching NLP tokenizers for key-value extraction...</div>
-                <div class="text-white/60">&gt;&gt; writing new card matrices into SQLite database schema...</div>
-                <div class="text-glow-purple text-[#ff00cc]">&gt;&gt; [SUCCESS] Compiled 42 study nodes based on document lines parameters.</div>
+                <div class="text-white/50">&gt;&gt; customized key-value extraction completed successfully.</div>
+                <div class="text-glow-purple text-[#ff00cc]">&gt;&gt; [SUCCESS] Compiled ${addedCards.length} study nodes inside memory matrix.</div>
             `;
+            termConsole.scrollTop = termConsole.scrollHeight;
 
             setTimeout(() => {
-                alert("Smart Recall summarizing engine completed card compilations! Checkout updated decks inside phone screen selectors.");
+                alert(`Smart Recall summarizing compiler successfully synchronized ${addedCards.length} custom cards. Checkout details in the card screen!`);
                 procState.textContent = 'COMPILER_COMPLETE_IDLE';
-            }, 600);
+                document.getElementById('mock-recall-textarea').value = "";
+            }, 300);
+        }
+
+        // --- PLAYABLE REFLEX GAME CHANNELS ---
+        let gameScore = 0;
+        let gameTimer = 15;
+        let gameInterval = null;
+        let gameCorrectAnswer = 0;
+        let currentRecordScore = 94800;
+
+        function startArenaChallenge() {
+            const menu = document.getElementById('arena-game-menu');
+            const result = document.getElementById('arena-game-result');
+            const active = document.getElementById('arena-game-active');
+
+            if (menu) menu.classList.add('hidden');
+            if (result) result.classList.add('hidden');
+            if (active) active.classList.remove('hidden');
+
+            gameScore = 0;
+            gameTimer = 15;
+            document.getElementById('game-score').textContent = gameScore;
+            document.getElementById('game-timer').textContent = gameTimer;
+
+            generateGameQuestion();
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                gameTimer--;
+                document.getElementById('game-timer').textContent = gameTimer;
+
+                if (gameTimer <= 0) {
+                    endArenaChallenge();
+                }
+            }, 1000);
+        }
+
+        function generateGameQuestion() {
+            const num1 = Math.floor(Math.random() * 20) + 4;
+            const num2 = Math.floor(Math.random() * 20) + 4;
+            const signType = Math.random() > 0.5 ? '+' : '-';
+            
+            let problem = `${num1} ${signType} ${num2}`;
+            let correctAns = signType === '+' ? num1 + num2 : num1 - num2;
+            gameCorrectAnswer = correctAns;
+
+            document.getElementById('game-question').textContent = problem + " = ?";
+
+            // Draw four random option choices
+            let choices = [correctAns];
+            while (choices.length < 4) {
+                let off = Math.floor(Math.random() * 11) - 5;
+                let optionVal = correctAns + off;
+                if (optionVal !== correctAns && !choices.includes(optionVal)) {
+                    choices.push(optionVal);
+                }
+            }
+
+            // Shuffle array
+            choices.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('game-options-grid');
+            if (grid) {
+                grid.innerHTML = "";
+                choices.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.type = "button";
+                    btn.className = "py-1 px-1 bg-intelDark border border-white/10 hover:border-neonPurple hover:bg-neonPurple/5 text-white font-mono rounded text-center transition-all text-[9.5px]";
+                    btn.textContent = opt;
+                    btn.onclick = () => submitGameAnswer(opt);
+                    grid.appendChild(btn);
+                });
+            }
+        }
+
+        function submitGameAnswer(selectedOption) {
+            if (selectedOption === gameCorrectAnswer) {
+                gameScore += 100;
+                document.getElementById('game-score').textContent = gameScore;
+                
+                const termConsole = document.getElementById('terminal-display-canvas');
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-[#33ff33]/70 font-mono text-[9px]">&gt;&gt; [COMTAC] Decrypted Cobalt sector successfully! score added: +100pts</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+
+                generateGameQuestion();
+            } else {
+                gameTimer = Math.max(1, gameTimer - 2);
+                document.getElementById('game-timer').textContent = gameTimer;
+                
+                const termConsole = document.getElementById('terminal-display-canvas');
+                if (termConsole) {
+                    termConsole.innerHTML += `<div class="text-warningCrimson/70 font-mono text-[9px]">&gt;&gt; [EXCEPTION] Cryptographic formula mismatch! time buffer penalized.</div>`;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+
+                generateGameQuestion();
+            }
+        }
+
+        function endArenaChallenge() {
+            clearInterval(gameInterval);
+            gameInterval = null;
+
+            const active = document.getElementById('arena-game-active');
+            const result = document.getElementById('arena-game-result');
+
+            if (active) active.classList.add('hidden');
+            if (result) result.classList.remove('hidden');
+
+            document.getElementById('res-correct').textContent = gameScore / 100;
+            document.getElementById('res-points').textContent = gameScore;
+
+            const highscoreLabel = document.getElementById('res-highscore-label');
+
+            if (gameScore > 0) {
+                currentRecordScore += gameScore;
+                document.getElementById('player-score-pts').textContent = currentRecordScore.toLocaleString() + " PTS";
+                if (highscoreLabel) {
+                    highscoreLabel.textContent = `DYNAMIC RATING UPGRADED TO: ${currentRecordScore.toLocaleString()}!`;
+                    highscoreLabel.className = "text-[7.5px] text-[#33ff33] bg-[#33ff33]/10 px-1.5 py-0.5 inline-block border border-[#33ff33]/40 rounded uppercase font-bold animate-pulse";
+                }
+                
+                const termConsole = document.getElementById('terminal-display-canvas');
+                if (termConsole) {
+                    termConsole.innerHTML += `
+                        <div class="text-neonCyan">&gt;&gt; [ARENA] Training trials concluded successfully!</div>
+                        <div class="text-[#33ff33] text-glow-green">&gt;&gt; Operator stats synced: overall rating score elevated to ${currentRecordScore.toLocaleString()} PTS.</div>
+                    `;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            } else {
+                if (highscoreLabel) {
+                    highscoreLabel.textContent = "COGNITIVE STREAK SUSTAINED";
+                    highscoreLabel.className = "text-[7.5px] text-textMuted bg-white/5 px-2 py-1 inline-block border border-white/10 rounded uppercase font-bold";
+                }
+            }
+        }
+
+        function resetArenaGame() {
+            const result = document.getElementById('arena-game-result');
+            const menu = document.getElementById('arena-game-menu');
+
+            if (result) result.classList.add('hidden');
+            if (menu) menu.classList.remove('hidden');
         }
 
         // Execute central terminal log actions
