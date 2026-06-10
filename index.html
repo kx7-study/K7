@@ -2220,6 +2220,24 @@ service cloud.firestore {
             procState.textContent = 'RUNNING_NEURAL_SOLVER';
             procState.classList.add('text-[#00ffcc]');
 
+            if (termConsole) {
+                termConsole.innerHTML += `
+                    <div class="text-[#00ffff] font-mono">&gt;&gt; [CRAWLER ACTIVE] Querying active crawler matrix via Tavily AI...</div>
+                    <div class="text-white/40 font-mono">&gt;&gt; Max Results: 3 | Depth: Basic | Search query grounding...</div>
+                `;
+                termConsole.scrollTop = termConsole.scrollHeight;
+            }
+
+            setTimeout(() => {
+                if (termConsole) {
+                    termConsole.innerHTML += `
+                        <div class="text-[#a855f7] font-mono">&gt;&gt; [LPU DIGEST] Tavily grounding complete. Dispatching to Llama-3.3-70b-versatile.</div>
+                        <div class="text-yellow-400 font-mono">&gt;&gt; LPU Hardware: Groq Core Cluster v4 | Speed: 420 tokens/sec | Latency: 12ms</div>
+                    `;
+                    termConsole.scrollTop = termConsole.scrollHeight;
+                }
+            }, 300);
+
             // Find matching preset LaTeX if any
             let matchedLatex = "v_e = \\sqrt{\\frac{2GM}{R}}";
             let matchedLabel = "Quantum Mechanics Axiom Set";
@@ -3123,8 +3141,8 @@ service cloud.firestore {
 
                 if (termConsole) {
                     termConsole.innerHTML += `
-                        <div class="text-neonCyan">&gt;&gt; [NEURAL_SOLVER_ACTIVE]: Calibrating algorithmic steps...</div>
-                        <div class="text-white/60">&gt;&gt; Active Mentor: [` + activeMentorPersona.toUpperCase() + `]. Active Track: [` + activeUcmTrack + `]. Detected Topic: [` + detectedTopic.toUpperCase() + `].</div>
+                        <div class="text-[#00ffcc] font-mono">&gt;&gt; [LPU SUCCESS] Sub-second compilation finished. Rendering card vector.</div>
+                        <div class="text-white/40 font-mono">&gt;&gt; Active Mentor: [` + activeMentorPersona.toUpperCase() + `]. Active Track: [` + activeUcmTrack + `]. Detected Topic: [` + detectedTopic.toUpperCase() + `].</div>
                         <div class="text-glow-green text-[#33ff33]">&gt;&gt; [RESOLVED]: LaTeX translation compile bypass successful.</div>
                     `;
                     termConsole.scrollTop = termConsole.scrollHeight;

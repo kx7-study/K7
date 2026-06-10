@@ -585,22 +585,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun callNeuralSolver(prompt: String, subject: String) {
         viewModelScope.launch {
             _solveLoading.value = true
-            _solveResult.value = null
+            _solveResult.value = ""
             val profile = dao.getUserProfileSynchronous() ?: UserProfile()
-            val result = withContext(Dispatchers.IO) {
-                GeminiClient.solveAcademicProblem(
-                    prompt = prompt,
+            
+            try {
+                var accumulated = ""
+                com.example.data.MasterpieceSolverClient.solveMasterpieceStream(
+                    question = prompt,
                     subject = subject,
                     curriculumTrack = profile.curriculumTrack,
-                    language = profile.languagePreference,
+                    langPreference = profile.languagePreference,
                     persona = profile.activeMentorPersona
-                )
+                ).collect { chunk ->
+                    if (_solveLoading.value) {
+                        _solveLoading.value = false // Turn off spinner instantly once streaming starts
+                    }
+                    accumulated += chunk
+                    _solveResult.value = accumulated
+                }
+            } catch (e: Exception) {
+                _solveResult.value = "Neural Engine communication failure: ${e.localizedMessage}"
+            } finally {
+                _solveLoading.value = false
             }
-            _solveResult.value = result
-            _solveLoading.value = false
 
             // Save this question to mistakes log randomly to build user profile error banks
-            if (prompt.length > 5 && result.contains("Conclusion")) {
+            val finalResult = _solveResult.value ?: ""
+            if (prompt.length > 5 && finalResult.contains("🎯")) {
                 withContext(Dispatchers.IO) {
                     dao.insertHistoricalMistake(
                         HistoricalMistake(

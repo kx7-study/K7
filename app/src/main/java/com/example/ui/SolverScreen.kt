@@ -360,12 +360,19 @@ fun SolverScreen(
                             onValueChange = { activeInputText = it },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(110.dp)
+                                .height(140.dp)
                                 .testTag("solver_input_field"),
+                            textStyle = androidx.compose.ui.text.TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                fontFamily = FontFamily.SansSerif
+                            ),
                             placeholder = {
                                 Text(
-                                    "Type or dictate academic challenge questions (e.g. 'A stone thrown vertically upwards under board gravity NCTB...')",
-                                    fontSize = 12.sp,
+                                    "Ask anything (Maths, Physics, Biology, Live Events)...",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Medium,
                                     color = TextMutedGrey
                                 )
                             },
@@ -375,7 +382,7 @@ fun SolverScreen(
                                 focusedContainerColor = CyberBlack,
                                 unfocusedContainerColor = CyberBlack
                             ),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(12.dp)
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -498,8 +505,12 @@ fun SolverScreen(
                             } else {
                                 val resultText = solveResult ?: ""
                                 Text(
-                                    text = resultText,
-                                    style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
+                                    text = buildAnnotatedMasterpieceString(resultText),
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontFamily = FontFamily.Monospace,
+                                        fontSize = 16.sp,
+                                        lineHeight = 24.sp
+                                    ),
                                     color = TextWhite,
                                     modifier = Modifier.testTag("solver_result_text")
                                 )
@@ -844,6 +855,74 @@ fun SolverScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun buildAnnotatedMasterpieceString(text: String): androidx.compose.ui.text.AnnotatedString {
+    return androidx.compose.ui.text.buildAnnotatedString {
+        val lines = text.split("\n")
+        lines.forEachIndexed { index, line ->
+            when {
+                line.startsWith("🔍") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonCyan, fontWeight = FontWeight.Bold))
+                    append(line)
+                    pop()
+                }
+                line.startsWith("✅") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonGreen, fontWeight = FontWeight.Bold))
+                    append(line)
+                    pop()
+                }
+                line.startsWith("⚡") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonPurple, fontWeight = FontWeight.Bold))
+                    append(line)
+                    pop()
+                }
+                line.startsWith("⚠️") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = Color(255, 170, 0), fontWeight = FontWeight.Bold))
+                    append(line)
+                    pop()
+                }
+                line.startsWith("📊") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = Color.Yellow, fontWeight = FontWeight.SemiBold))
+                    append(line)
+                    pop()
+                }
+                line.contains("### 🎯 Core Answer") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonCyan, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp))
+                    append(line)
+                    pop()
+                }
+                line.contains("### 🔍 Step-by-Step Breakdown") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonPurple, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp))
+                    append(line)
+                    pop()
+                }
+                line.contains("### ⚡ 1% Mastery Key") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonGreen, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp))
+                    append(line)
+                    pop()
+                }
+                line.startsWith("**") && line.endsWith("**") -> {
+                    pushStyle(androidx.compose.ui.text.SpanStyle(color = Color.White, fontWeight = FontWeight.Bold))
+                    append(line)
+                    pop()
+                }
+                else -> {
+                    if (line.startsWith("###")) {
+                        pushStyle(androidx.compose.ui.text.SpanStyle(color = NeonCyan, fontWeight = FontWeight.Bold, fontSize = 18.sp))
+                        append(line)
+                        pop()
+                    } else {
+                        append(line)
+                    }
+                }
+            }
+            if (index < lines.size - 1) {
+                append("\n")
             }
         }
     }
