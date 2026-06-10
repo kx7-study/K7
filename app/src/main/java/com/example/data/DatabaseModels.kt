@@ -10,12 +10,16 @@ import com.squareup.moshi.JsonClass
 data class UserProfile(
     @PrimaryKey val uid: String = "local_user",
     val displayName: String = "Competitor Alpha",
-    val curriculumTrack: String = "SAT_USA", // "NCTB_BD" | "SAT_USA" | "CAMBRIDGE_UK" | "JEE_IN"
+    val curriculumTrack: String = "SAT_USA", // Backward compatibility
+    val selectedCountryCode: String = "USA", // e.g., "USA", "GBR", "IND", "BGD"
+    val selectedBoardId: String = "SAT", // e.g., "SAT", "A_LEVELS", "CBSE", "NCTB"
     val languagePreference: String = "en", // "en" | "bn" | "es" | "hi"
     val auraPoints: Int = 1200,
     val leagueTier: String = "Bronze", // Bronze -> Gold -> Platinum -> Diamond -> Elite 1%
     val currentStreak: Int = 3,
     val isPremium: Boolean = false,
+    val subscriptionType: String = "FREE", // "FREE", "1_MONTH", "3_MONTHS", "1_YEAR"
+    val subscriptionExpiresTimestamp: Long = 0L,
     // Cognitive Twin Metrics
     val lsi: Float = 0.65f, // Learning Speed Index
     val peakStudyStartHour: Int = 8,

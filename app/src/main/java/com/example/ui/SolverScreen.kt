@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,26 +16,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.data.GlobalLocalizationConfig
 import com.example.data.UserProfile
 import com.example.ui.theme.*
 import com.example.viewmodel.MainViewModel
-import java.util.Locale
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
-
-data class ChatMessage(
-    val sender: String, // "user" or "gemini"
-    val message: String,
-    val isPending: Boolean = false,
-    val timestamp: Long = System.currentTimeMillis()
-)
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,813 +48,1217 @@ fun SolverScreen(
 
     var activeInputText by remember { mutableStateOf("") }
     var selectedSubject by remember { mutableStateOf("Physics") }
-    val subjects = listOf("Physics", "Chemistry", "Higher Mathematics", "Biology", "English")
+    val subjects = listOf("Physics", "Chemistry", "Higher Mathematics", "Biology", "English", "General AI")
 
-    var selectedTrack by remember { mutableStateOf(profile.curriculumTrack) }
-    val tracks = listOf("NCTB_BD", "SAT_USA", "CAMBRIDGE_UK", "JEE_IN")
+    // Dynamic localization values
+    val currentCountryCode = profile.selectedCountryCode
+    val currentBoardId = profile.selectedBoardId
+    val currentCountry = GlobalLocalizationConfig.getCountryByCode(currentCountryCode) ?: GlobalLocalizationConfig.countries[0]
+    val currentBoard = currentCountry.boards.find { it.id == currentBoardId } ?: currentCountry.boards[0]
 
-    var selectedLang by remember { mutableStateOf(profile.languagePreference) }
-    val languages = mapOf("en" to "English", "bn" to "Bangla", "es" to "Spanish", "hi" to "Hindi")
+    // Dialog state controllers
+    var showCountryDialog by remember { mutableStateOf(false) }
+    var showPaywallDialog by remember { mutableStateOf(false) }
+    var showCheckoutDialog by remember { mutableStateOf(false) }
+    var selectedCheckoutTier by remember { mutableStateOf("1_MONTH") }
 
-    val personas = listOf("Feynman", "Einstein", "Fischer", "Military", "Exam Assassin")
-    val selectedPersona = profile.activeMentorPersona
-
-    // Dropdown expanded states
-    var subjectExpanded by remember { mutableStateOf(false) }
-    var trackExpanded by remember { mutableStateOf(false) }
-    var langExpanded by remember { mutableStateOf(false) }
-
-    // Dual solver system mode: 0 = Curriculum Matrix, 1 = Universal Gemini Chat
-    var activeSolverMode by remember { mutableStateOf(0) }
-    val chatMessages = remember { mutableStateListOf<ChatMessage>() }
-    var chatInputFieldText by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
+    val clipboardManager = LocalClipboardManager.current
 
-    LazyColumn(
+    // Aesthetic clean background
+    val neutralBackground = CyberBlack // #030305 dark sleek canvas
+    val surfaceContainer = DeepSpaceSlate // #0C0C12 minimalist container
+
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(CyberBlack)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .background(neutralBackground)
     ) {
-        // --- Header Section ---
-        item {
-            Column {
-                Text(
-                    text = "NEURAL SOLVER DESK",
-                    style = MaterialTheme.typography.displayLarge,
-                    color = NeonCyan,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Text(
-                    text = "Double model injection layers aligning with Universal Curriculum Matrix schemas.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextMutedGrey
-                )
-            }
-        }
-
-        // --- Tactical Mode Selector Toggles ---
-        item {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // ================== MINIMALIST TOP BAR ==================
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag("solver_mode_tabs")
-                    .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp))
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(DeepSpaceSlate),
-                horizontalArrangement = Arrangement.SpaceAround
+                    .background(surfaceContainer)
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Leg 0: Curriculum Solver
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { activeSolverMode = 0 }
-                        .background(if (activeSolverMode == 0) NeonCyan.copy(alpha = 0.15f) else Color.Transparent)
-                        .testTag("tab_mode_curriculum")
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
+                // Product Title
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Curriculum matrix tracker",
-                            tint = if (activeSolverMode == 0) NeonCyan else TextMutedGrey,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = "MATRIX SOLVES",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (activeSolverMode == 0) NeonCyan else TextWhite
-                        )
-                    }
-                }
-
-                // Leg 1: Universal Gemini Chat Solver
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { activeSolverMode = 1 }
-                        .background(if (activeSolverMode == 1) NeonPurple.copy(alpha = 0.15f) else Color.Transparent)
-                        .testTag("tab_mode_universal")
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Universal Gemini solver",
-                            tint = if (activeSolverMode == 1) NeonPurple else TextMutedGrey,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = "GEMINI SOLVER",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (activeSolverMode == 1) NeonPurple else TextWhite
-                        )
-                    }
-                }
-            }
-        }
-
-        // Render sections based on selected solver tab mode
-        if (activeSolverMode == 0) {
-            // ================== MODE 0: ACADEMIC CURRICULUM SOLVER ==================
-            
-            // --- 1. Tactical Setup Configurations ---
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
-                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text(
-                            text = "curriculum configuration matrix".uppercase(Locale.getDefault()),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = NeonCyan
-                        )
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            // Subject Dropdown
-                            Box(modifier = Modifier.weight(1f)) {
-                                OutlinedButton(
-                                    onClick = { subjectExpanded = true },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    Text(selectedSubject, color = Color.White)
-                                    Icon(Icons.Default.MoreVert, contentDescription = "Expand", tint = NeonCyan)
-                                }
-                                DropdownMenu(
-                                    expanded = subjectExpanded,
-                                    onDismissRequest = { subjectExpanded = false }
-                                ) {
-                                    subjects.forEach { sub ->
-                                        DropdownMenuItem(
-                                            text = { Text(sub) },
-                                            onClick = {
-                                                selectedSubject = sub
-                                                subjectExpanded = false
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-
-                            // Track Dropdown
-                            Box(modifier = Modifier.weight(1f)) {
-                                OutlinedButton(
-                                    onClick = { trackExpanded = true },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    Text(selectedTrack, color = Color.White)
-                                    Icon(Icons.Default.MoreVert, contentDescription = "Expand", tint = NeonCyan)
-                                }
-                                DropdownMenu(
-                                    expanded = trackExpanded,
-                                    onDismissRequest = { trackExpanded = false }
-                                ) {
-                                    tracks.forEach { tr ->
-                                        DropdownMenuItem(
-                                            text = { Text(tr) },
-                                            onClick = {
-                                                selectedTrack = tr
-                                                viewModel.updateProfileSettings(tr, selectedLang, profile.displayName, profile.missionTarget)
-                                                trackExpanded = false
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-                        // Language Selector
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            OutlinedButton(
-                                onClick = { langExpanded = true },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Text("Language Output: ${languages[selectedLang] ?: "English"}", color = Color.White)
-                                Icon(Icons.Default.MoreVert, contentDescription = "Expand", tint = NeonCyan)
-                            }
-                            DropdownMenu(
-                                expanded = langExpanded,
-                                onDismissRequest = { langExpanded = false }
-                            ) {
-                                languages.forEach { (code, name) ->
-                                    DropdownMenuItem(
-                                        text = { Text(name) },
-                                        onClick = {
-                                            selectedLang = code
-                                            viewModel.updateProfileSettings(selectedTrack, code, profile.displayName, profile.missionTarget)
-                                            langExpanded = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // --- 2. AI Pedagogical Mentor Persona Toggles ---
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
-                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "neural mentor pedagogical tone overlays".uppercase(Locale.getDefault()),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = NeonPurple
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(1.dp, BorderCyberDark, RoundedCornerShape(8.dp))
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(CyberBlack),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            personas.forEach { per ->
-                                val isSelected = selectedPersona == per
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clickable { viewModel.updateMentorPersona(per) }
-                                        .background(if (isSelected) NeonPurple.copy(alpha = 0.2f) else Color.Transparent)
-                                        .border(if (isSelected) 1.dp else 0.dp, NeonPurple)
-                                        .padding(vertical = 8.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = per,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = if (isSelected) NeonCyan else TextMutedGrey
-                                    )
-                                }
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        // Brief description of selected AI pedagogy
-                        val desc = when (selectedPersona) {
-                            "Einstein" -> "Einstein Mode: Prioritizes deep conceptual boundaries, space-time manifolds, and first-principles physics intuition."
-                            "Fischer" -> "Fischer Mode: Ruthless, hyper-direct mathematical derivation. Cold, clock-driven logical deductions."
-                            "Military" -> "Military Mode: Zero excuses, extreme discipline. Tells you precisely where your effort is failing. Strict tone."
-                            "Exam Assassin" -> "Exam Assassin Mode: Purely tactical. Direct alignment with global marking schemes to maximize board percentages."
-                            else -> "Feynman Mode: Translates complex high-level mathematical jargon into ultra-clear real-world analogies."
-                        }
-
-                        Text(
-                            text = desc,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = NeonGreen,
-                            fontSize = 11.sp
-                        )
-                    }
-                }
-            }
-
-            // --- 3. Dynamic Problem Input panel ---
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
-                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "academic problem query parameters".uppercase(Locale.getDefault()),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = NeonCyan
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = activeInputText,
-                            onValueChange = { activeInputText = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(140.dp)
-                                .testTag("solver_input_field"),
-                            textStyle = androidx.compose.ui.text.TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontFamily = FontFamily.SansSerif
-                            ),
-                            placeholder = {
-                                Text(
-                                    "Ask anything (Maths, Physics, Biology, Live Events)...",
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    color = TextMutedGrey
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = NeonCyan,
-                                unfocusedBorderColor = BorderCyberDark,
-                                focusedContainerColor = CyberBlack,
-                                unfocusedContainerColor = CyberBlack
-                            ),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Auxiliary simulated inputs: Scan & Dictate
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Scan-to-Solve emulation
-                            Button(
-                                onClick = {
-                                    activeInputText = "[SCANNED FORMULA] Integral of cot(x) csc(x) dx under boundary conditions."
-                                },
-                                modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = SurfaceCardLight),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Icon(Icons.Default.Check, contentDescription = "Scan", tint = NeonCyan, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("SCAN MATRIX", fontSize = 10.sp, color = Color.White)
-                            }
-
-                            // Voice-to-Command Matrix emulation
-                            Button(
-                                onClick = {
-                                    activeInputText = "A projectile is launched from coordinates (0,0) at velocity 40 meters per second. Solve maximum flight duration."
-                                },
-                                modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = SurfaceCardLight),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Icon(Icons.Default.List, contentDescription = "Dictate", tint = NeonCyan, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("VOICE MATRIX", fontSize = 10.sp, color = Color.White)
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        // Solve submission trigger button
-                        Button(
-                            onClick = {
-                                if (activeInputText.isNotEmpty()) {
-                                    viewModel.callNeuralSolver(activeInputText, selectedSubject)
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .testTag("neural_solve_trigger"),
-                            colors = ButtonDefaults.buttonColors(containerColor = NeonCyan),
-                            shape = RoundedCornerShape(8.dp),
-                            enabled = activeInputText.isNotEmpty() && !solveLoading
-                        ) {
-                            if (solveLoading) {
-                                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.Black)
-                            } else {
-                                Text("DISPATCH NEURAL SOLVER", color = Color.Black, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                    }
-                }
-            }
-
-            // --- 4. Answer Console Output readout ---
-            item {
-                AnimatedVisibility(
-                    visible = solveResult != null || solveLoading,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically()
-                ) {
-                    Card(
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, NeonCyan, RoundedCornerShape(12.dp)),
-                        colors = CardDefaults.cardColors(containerColor = CyberBlack)
+                            .size(32.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "neural engine response stream".uppercase(Locale.getDefault()),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = NeonGreen
-                                )
-
-                                // Clear output option to reset console
-                                Icon(
-                                    imageVector = Icons.Default.Build,
-                                    contentDescription = "Clear",
-                                    tint = TextMutedGrey,
-                                    modifier = Modifier
-                                        .size(18.dp)
-                                        .clickable { viewModel.clearSolverResult() }
-                                )
-                            }
-
-                            Divider(modifier = Modifier.padding(vertical = 10.dp), color = BorderCyberDark)
-
-                            if (solveLoading) {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(24.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    CircularProgressIndicator(color = NeonCyan)
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Text(
-                                        text = "Analyzing dynamic bounds. Aligning known vectors...",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = TextMutedGrey,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            } else {
-                                val resultText = solveResult ?: ""
-                                Text(
-                                    text = buildAnnotatedMasterpieceString(resultText),
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontSize = 16.sp,
-                                        lineHeight = 24.sp
-                                    ),
-                                    color = TextWhite,
-                                    modifier = Modifier.testTag("solver_result_text")
-                                )
-
-                                Spacer(modifier = Modifier.height(12.dp))
-
-                                // Action button to save this generated solution to Second Brain notes
-                                Button(
-                                    onClick = {
-                                        viewModel.addBrainNote(
-                                            title = "Solver: $selectedSubject Vector Reference",
-                                            content = resultText.take(500) + "\n\n[Full Solution Stream Cached]",
-                                            subject = selectedSubject
-                                        )
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = ButtonDefaults.buttonColors(containerColor = NeonPurple),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    Icon(Icons.Default.Add, contentDescription = "Vault Note", tint = Color.White)
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Text("MIGRATE SOLUTION TO BRAIN VAULT", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                }
-                            }
-                        }
+                        Text(
+                            text = "K7",
+                            color = Color.Black,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 16.sp
+                        )
                     }
-                }
-            }
-        } else {
-            // ================== MODE 1: UNIVERSAL GEMINI CHAT CLIENT ==================
-            // Standard scrollable message history log
-            
-            if (chatMessages.isEmpty()) {
-                item {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, NeonPurple.copy(alpha = 0.5f), RoundedCornerShape(16.dp)),
-                        colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(20.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(54.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(NeonPurple.copy(alpha = 0.15f)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Share,
-                                    contentDescription = "Gemini",
-                                    tint = NeonPurple,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                            
-                            Spacer(modifier = Modifier.height(16.dp))
-                            
-                            Text(
-                                text = "UNIVERSAL GEMINI CLIENT",
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = NeonPurple
-                            )
-                            
-                            Spacer(modifier = Modifier.height(8.dp))
-                            
-                            Text(
-                                text = "Ask absolutely any type of question, write complex microservice code, solve math proofs, translate documents, or brainstorm strategic study plans. Powered directly by Gemini.",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = TextMutedGrey,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                    Column {
+                        Text(
+                            text = "KX7-STUDY",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextWhite
+                        )
+                        Text(
+                            text = "Academic Neural Solver",
+                            fontSize = 10.sp,
+                            color = TextMutedGrey
+                        )
                     }
                 }
 
-                item {
+                // Dynamic Country/Curriculum Selector Dropdown Button
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .clickable { showCountryDialog = true }
+                        .background(BorderCyberDark)
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .testTag("country_curr_selector"),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(text = currentCountry.flag)
                     Text(
-                        text = "SUGGESTED PROMPT TRANSACTORS",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = NeonCyan,
-                        modifier = Modifier.padding(horizontal = 4.dp)
+                        text = "${currentBoard.name} (${currentCountry.code})",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = NeonCyan
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Select Curriculum",
+                        tint = NeonCyan,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+
+            // ================== DOMINANT CENTER UTILITY CONTAINER ==================
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item { Spacer(modifier = Modifier.height(8.dp)) }
+
+                // Premium Conversion Promo Banner
+                item {
+                    PromoBanner(
+                        isPremium = profile.isPremium,
+                        subscriptionType = profile.subscriptionType,
+                        expiresTimestamp = profile.subscriptionExpiresTimestamp,
+                        onUpgradeClick = {
+                            selectedCheckoutTier = "1_MONTH"
+                            showPaywallDialog = true
+                        }
                     )
                 }
 
-                // Interactive suggestion nodes (tapping them fires query immediately)
-                val suggestions = listOf(
-                    "💡 Brainstorm creative software startup ideas for tech-savvy students." to "Brainstorm 3 unique, high-yield software application ideas matching current AI tech trends for university students.",
-                    "💻 Write a clean Kotlin Coroutines StateFlow pattern snippet." to "Write a clean, functional Kotlin code snippet using Coroutines, StateFlow, and ViewModel standard architecture mapping flow emissions.",
-                    "✍️ Translate: 'আমি তোমাকে জয় করতে সাহায্য করব' and explain." to "Translate this sentence to English and explain its morphological parameters clearly with grammar rules: 'আমি তোমাকে জয় করতে সাহায্য করব'",
-                    "🧩 Explain Quantum Computing to a absolute 10-year old." to "Explain Quantum Computing, qubits, and superposition using clear, straightforward analogies appropriate for a 10-year old child."
-                )
+                // Subject Selection Strip (Material 3 Filter Chips)
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(
+                            text = "Select Academic Domain:",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextMutedGrey
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            subjects.take(4).forEach { sub ->
+                                val isSelected = selectedSubject == sub
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .clickable { selectedSubject = sub }
+                                        .background(if (isSelected) NeonCyan.copy(alpha = 0.15f) else surfaceContainer)
+                                        .border(
+                                            width = 1.dp,
+                                            color = if (isSelected) NeonCyan else Color.Transparent,
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(vertical = 10.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = sub.replace("Mathematics", "Math"),
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (isSelected) NeonCyan else TextWhite
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
 
-                suggestions.forEach { (label, rawVal) ->
+                // Distraction-free Primary Problem input Card
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, BorderCyberDark, RoundedCornerShape(16.dp)),
+                        colors = CardDefaults.cardColors(containerColor = surfaceContainer)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Text(
+                                text = "Problem Solving Desk".uppercase(),
+                                fontSize = 11.sp,
+                                letterSpacing = 1.2.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = NeonPurple
+                            )
+
+                            // The wide, high-contrast, distraction-free input field
+                            OutlinedTextField(
+                                value = activeInputText,
+                                onValueChange = { activeInputText = it },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(140.dp)
+                                    .testTag("solver_input_field"),
+                                textStyle = androidx.compose.ui.text.TextStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = Color.White,
+                                    fontFamily = FontFamily.SansSerif
+                                ),
+                                placeholder = {
+                                    Text(
+                                        "Type or copy-paste your academic problem here (e.g. 'Solve the definite integral of x^3 from 1 to 5', or ask physical derivations)...",
+                                        fontSize = 13.sp,
+                                        color = TextMutedGrey
+                                    )
+                                },
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = NeonCyan,
+                                    unfocusedBorderColor = BorderCyberDark,
+                                    focusedContainerColor = CyberBlack,
+                                    unfocusedContainerColor = CyberBlack
+                                ),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            // Scan & Speak Quick Templates (Bypasses hardcoded topic dropdown bottlenecks)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                // Scan formula mock button
+                                OutlinedButton(
+                                    onClick = {
+                                        activeInputText = "A projectile is launched with velocity 40 m/s at an angle of 30 degrees. Calculate maximum orbit height and flight duration."
+                                        selectedSubject = "Physics"
+                                    },
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.weight(1f).height(40.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = TextWhite),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderCyberDark)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Scan icon", modifier = Modifier.size(16.dp), tint = NeonCyan)
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("Mock Camera Scan", fontSize = 11.sp)
+                                }
+
+                                // Speak voice mock button
+                                OutlinedButton(
+                                    onClick = {
+                                        activeInputText = "Verify if the centromere dissolves and chromatid count changes during mitotic anaphase."
+                                        selectedSubject = "Biology"
+                                    },
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.weight(1f).height(40.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = TextWhite),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderCyberDark)
+                                ) {
+                                    Icon(Icons.Default.PlayArrow, contentDescription = "Voice icon", modifier = Modifier.size(16.dp), tint = NeonPurple)
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("Mock Voice Dictate", fontSize = 11.sp)
+                                }
+                            }
+
+                            // Clean, obvious Solve Submit button (Touch targets >= 48dp)
+                            Button(
+                                onClick = {
+                                    if (activeInputText.trim().isNotEmpty()) {
+                                        viewModel.callNeuralSolver(activeInputText, selectedSubject)
+                                    }
+                                },
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp)
+                                    .testTag("neural_solve_trigger"),
+                                colors = ButtonDefaults.buttonColors(containerColor = NeonCyan),
+                                enabled = activeInputText.trim().isNotEmpty() && !solveLoading
+                            ) {
+                                if (solveLoading) {
+                                    CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.Black, strokeWidth = 2.dp)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Syncing live context indices...", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                } else {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        Icon(Icons.Default.Check, contentDescription = "Solve Icon", tint = Color.Black, modifier = Modifier.size(18.dp))
+                                        Text("DISPATCH ACADEMIC SOLVER", color = Color.Black, fontWeight = FontWeight.Black, fontSize = 13.sp)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // ================== STREAMING SOLUTION VIEWPORT ==================
+                if (solveLoading || solveResult != null) {
                     item {
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
-                                    chatInputFieldText = ""
-                                    chatMessages.add(ChatMessage(sender = "user", message = rawVal))
-                                    chatMessages.add(ChatMessage(sender = "gemini", message = "", isPending = true))
-                                    coroutineScope.launch {
-                                        val ans = withContext(Dispatchers.IO) {
-                                            com.example.data.GeminiClient.solveAcademicProblem(
-                                                prompt = rawVal,
-                                                subject = "Universal AI",
-                                                curriculumTrack = "General AI",
-                                                language = "en",
-                                                persona = "Universal"
-                                            )
-                                        }
-                                        if (chatMessages.isNotEmpty() && chatMessages.last().isPending) {
-                                            chatMessages.removeAt(chatMessages.size - 1)
-                                        }
-                                        chatMessages.add(ChatMessage(sender = "gemini", message = ans))
-                                    }
-                                }
-                                .border(1.dp, BorderCyberDark, RoundedCornerShape(8.dp)),
+                                .border(1.dp, if (solveLoading) BorderCyberDark else NeonCyan, RoundedCornerShape(16.dp)),
                             colors = CardDefaults.cardColors(containerColor = CyberBlack)
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(14.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                Text(
-                                    text = label,
-                                    fontSize = 12.sp,
-                                    color = TextWhite,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier.weight(0.9f)
-                                )
-                                Icon(
-                                    imageVector = Icons.Default.Send,
-                                    contentDescription = "Trigger suggestion",
-                                    tint = NeonPurple,
-                                    modifier = Modifier.size(16.dp).weight(0.1f)
-                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    ) {
+                                        Icon(Icons.Default.Info, contentDescription = "Status", tint = if (solveLoading) TextMutedGrey else NeonGreen, modifier = Modifier.size(16.dp))
+                                        Text(
+                                            text = if (solveLoading) "SOLVER PROCESSING..." else "VERIFIED SOLUTION BREAKDOWN",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = if (solveLoading) TextMutedGrey else NeonGreen
+                                        )
+                                    }
+
+                                    // Clear Solution Console Action
+                                    IconButton(
+                                        onClick = { viewModel.clearSolverResult() },
+                                        modifier = Modifier.size(32.dp)
+                                    ) {
+                                        Icon(Icons.Default.Refresh, contentDescription = "Clear", tint = WarningCrimson, modifier = Modifier.size(18.dp))
+                                    }
+                                }
+
+                                Divider(color = BorderCyberDark)
+
+                                if (solveLoading && (solveResult == null || solveResult!!.trim().isEmpty())) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(24.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                                    ) {
+                                        CircularProgressIndicator(color = NeonCyan, modifier = Modifier.size(36.dp))
+                                        Text(
+                                            text = "Aggregating indices against ${currentBoard.name} grading rubrics...",
+                                            fontSize = 12.sp,
+                                            color = TextMutedGrey,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                } else {
+                                    val resultText = solveResult ?: ""
+                                    
+                                    // Elegant standard system typography vertical rendering
+                                    Text(
+                                        text = buildAnnotatedMasterpieceString(resultText),
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                            fontFamily = FontFamily.SansSerif,
+                                            fontSize = 15.sp,
+                                            lineHeight = 22.sp
+                                        ),
+                                        color = TextWhite,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .testTag("solver_result_text")
+                                    )
+
+                                    Divider(color = BorderCyberDark, modifier = Modifier.padding(vertical = 4.dp))
+
+                                    // Real Action CTAs for the solution
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        // Save to Second Brain
+                                        Button(
+                                            onClick = {
+                                                viewModel.addBrainNote(
+                                                    title = "$selectedSubject: Root Proof",
+                                                    content = resultText,
+                                                    subject = selectedSubject,
+                                                    type = "notes"
+                                                )
+                                            },
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = RoundedCornerShape(8.dp),
+                                            colors = ButtonDefaults.buttonColors(containerColor = NeonPurple)
+                                        ) {
+                                            Icon(Icons.Default.Add, contentDescription = "Add to brain", tint = Color.White, modifier = Modifier.size(16.dp))
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("Save to Vault", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        }
+
+                                        // Copy solution text
+                                        OutlinedButton(
+                                            onClick = {
+                                                clipboardManager.setText(AnnotatedString(resultText))
+                                            },
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = RoundedCornerShape(8.dp),
+                                            colors = ButtonDefaults.outlinedButtonColors(contentColor = TextWhite),
+                                            border = androidx.compose.foundation.BorderStroke(1.dp, BorderCyberDark)
+                                        ) {
+                                            Icon(Icons.Default.Share, contentDescription = "Copy text", tint = NeonCyan, modifier = Modifier.size(16.dp))
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("Copy Text", fontSize = 12.sp)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            } else {
-                // Render list of active chat messages
-                chatMessages.forEach { chatMsg ->
-                    item {
-                        val isUser = chatMsg.sender == "user"
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
-                        ) {
+
+                item { Spacer(modifier = Modifier.height(24.dp)) }
+            }
+        }
+
+        // ================== COUNTRY & CURRICULUM SELECTOR DIALOG ==================
+        if (showCountryDialog) {
+            AlertDialog(
+                onDismissRequest = { showCountryDialog = false },
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(Icons.Default.List, contentDescription = "Globes", tint = NeonCyan)
+                        Text(
+                            text = "Global Syllabus Matrix",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = TextWhite
+                        )
+                    }
+                },
+                text = {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 400.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        item {
                             Text(
-                                text = if (isUser) "YOU" else "GEMINI CORES",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isUser) NeonCyan else NeonPurple,
-                                modifier = Modifier.padding(bottom = 4.dp, start = 4.dp, end = 4.dp)
+                                text = "Choose your country and educational board. Every answer will be specifically structured to matches your region's syllabus and grading schemes.",
+                                fontSize = 12.sp,
+                                color = TextMutedGrey,
+                                modifier = Modifier.padding(bottom = 8.dp)
                             )
-                            
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.92f)
-                                    .border(
-                                        width = 1.dp,
-                                        color = if (isUser) NeonCyan.copy(alpha = 0.5f) else NeonPurple.copy(alpha = 0.4f),
-                                        shape = RoundedCornerShape(12.dp)
-                                    ),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = if (isUser) DeepSpaceSlate else CyberBlack
-                                )
-                            ) {
-                                Column(modifier = Modifier.padding(14.dp)) {
-                                    if (chatMsg.isPending) {
+                        }
+
+                        GlobalLocalizationConfig.countries.forEach { country ->
+                            item {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(surfaceContainer)
+                                        .padding(10.dp)
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    ) {
+                                        Text(text = country.flag, fontSize = 16.sp)
+                                        Text(
+                                            text = country.name,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            fontSize = 14.sp,
+                                            color = TextWhite
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(6.dp))
+
+                                    // Display boards
+                                    country.boards.forEach { board ->
+                                        val isCurrent = currentCountryCode == country.code && currentBoardId == board.id
                                         Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable {
+                                                    viewModel.updateLocalization(country.code, board.id)
+                                                    showCountryDialog = false
+                                                }
+                                                .padding(vertical = 6.dp, horizontal = 4.dp),
                                             verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
-                                            CircularProgressIndicator(
-                                                modifier = Modifier.size(16.dp),
-                                                color = NeonPurple,
-                                                strokeWidth = 2.dp
+                                            Column(modifier = Modifier.weight(0.85f)) {
+                                                Text(
+                                                    text = board.name,
+                                                    fontSize = 12.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = if (isCurrent) NeonCyan else TextWhite
+                                                )
+                                                Text(
+                                                    text = board.description,
+                                                    fontSize = 10.sp,
+                                                    color = TextMutedGrey
+                                                )
+                                            }
+                                            if (isCurrent) {
+                                                Icon(
+                                                    imageVector = Icons.Default.CheckCircle,
+                                                    contentDescription = "Selected",
+                                                    tint = NeonGreen,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                            } else {
+                                                Icon(
+                                                    imageVector = Icons.Default.KeyboardArrowRight,
+                                                    contentDescription = "Select",
+                                                    tint = TextMutedGrey,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                            }
+                                        }
+                                        Divider(color = BorderCyberDark.copy(alpha = 0.5f))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showCountryDialog = false }) {
+                        Text("CLOSE", color = NeonCyan, fontWeight = FontWeight.Bold)
+                    }
+                },
+                containerColor = DeepSpaceSlate
+            )
+        }
+
+        // ================== PREMIUM PAYWALL MODAL (3-TIERS) ==================
+        if (showPaywallDialog) {
+            AlertDialog(
+                onDismissRequest = { showPaywallDialog = false },
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(NeonPurple.copy(alpha = 0.2f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Star, contentDescription = "Pro VIP", tint = NeonPurple, modifier = Modifier.size(30.dp))
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "PREMIUM SOLVER ENGINE",
+                            fontWeight = FontWeight.Black,
+                            fontSize = 20.sp,
+                            color = NeonPurple,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                },
+                text = {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        item {
+                            Text(
+                                text = "Bypass free tier bottlenecks. Access ultra-fast Groq LPU computing clusters, real-time web crawlers, and subjective step solutions.",
+                                fontSize = 12.sp,
+                                color = TextMutedGrey,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        }
+
+                        // Plan Option 1: 1 Month
+                        item {
+                            PaywallTierCard(
+                                title = "1 Month Access Plan",
+                                cryptoPrice = "27 USDT",
+                                fiatPrice = currentCountry.alternativeFiatPrice,
+                                durationLabel = "30 Days Full Access",
+                                badgeText = null,
+                                onClick = {
+                                    selectedCheckoutTier = "1_MONTH"
+                                    showPaywallDialog = false
+                                    showCheckoutDialog = true
+                                }
+                            )
+                        }
+
+                        // Plan Option 2: 3 Months
+                        item {
+                            PaywallTierCard(
+                                title = "3 Months Access Plan",
+                                cryptoPrice = "77 USDT",
+                                fiatPrice = "77 USD",
+                                durationLabel = "90 Days Full Access + Growth Metrics",
+                                badgeText = "POPULAR CHOICE",
+                                onClick = {
+                                    selectedCheckoutTier = "3_MONTHS"
+                                    showPaywallDialog = false
+                                    showCheckoutDialog = true
+                                }
+                            )
+                        }
+
+                        // Plan Option 3: 1 Year
+                        item {
+                            PaywallTierCard(
+                                title = "1 Year Access Plan",
+                                cryptoPrice = "277 USDT",
+                                fiatPrice = "277 USD",
+                                durationLabel = "365 Days Elite Access + Priority LPUs",
+                                badgeText = "BEST VALUE SAVINGS",
+                                onClick = {
+                                    selectedCheckoutTier = "1_YEAR"
+                                    showPaywallDialog = false
+                                    showCheckoutDialog = true
+                                }
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showPaywallDialog = false }) {
+                        Text("CANCEL", color = WarningCrimson, fontWeight = FontWeight.Bold)
+                    }
+                },
+                containerColor = DeepSpaceSlate
+            )
+        }
+
+        // ================== PAYMENT GATEWAY SECURE INTEGRATION DIALOG ==================
+        if (showCheckoutDialog) {
+            var selectedPaymentMethod by remember { mutableStateOf("CRYPTO") } // "CRYPTO" | "FIAT"
+            var walletNetwork by remember { mutableStateOf("TRC-20") } // TRC-20, ERC-20, BEP-20
+            var txHashInput by remember { mutableStateOf("") }
+            
+            // Fiat state management
+            var creditCardNumber by remember { mutableStateOf("") }
+            var cardExpiry by remember { mutableStateOf("") }
+            var cardCvv by remember { mutableStateOf("") }
+            var bkashMobileNumber by remember { mutableStateOf("") }
+
+            var isProcessingState by remember { mutableStateOf(false) }
+            var processingMessage by remember { mutableStateOf("") }
+            var paymentCompletedSuccessfully by remember { mutableStateOf(false) }
+
+            val tierPriceString = when (selectedCheckoutTier) {
+                "1_MONTH" -> "27 USDT / ${currentCountry.alternativeFiatPrice}"
+                "3_MONTHS" -> "77 USDT / USD"
+                else -> "277 USDT / USD"
+            }
+
+            AlertDialog(
+                onDismissRequest = { if (!isProcessingState) showCheckoutDialog = false },
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.Lock, contentDescription = "Secure Checkout", tint = NeonGreen)
+                        Text(
+                            text = "Secured Gateway Checkout",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextWhite
+                        )
+                    }
+                },
+                text = {
+                    if (paymentCompletedSuccessfully) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(12.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(RoundedCornerShape(30.dp))
+                                    .background(NeonGreen.copy(alpha = 0.2f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(Icons.Default.Check, contentDescription = "Active", tint = NeonGreen, modifier = Modifier.size(36.dp))
+                            }
+                            Text(
+                                text = "PAYMENT VERIFIED SECURELY!",
+                                fontWeight = FontWeight.Black,
+                                fontSize = 16.sp,
+                                color = NeonGreen
+                            )
+                            Text(
+                                text = "Your profile has been upgraded to Premium Status on the KX7 network. Unlimited Groq LPU computing clusters and Tavily search routing are now unlocked.",
+                                fontSize = 12.sp,
+                                color = TextWhite,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else if (isProcessingState) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            CircularProgressIndicator(color = NeonPurple, modifier = Modifier.size(44.dp))
+                            Text(
+                                text = processingMessage,
+                                fontSize = 13.sp,
+                                color = TextWhite,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                            Text(
+                                text = "Establishing secure TLS links & matching blockchain hash registers. Do not close this panel.",
+                                fontSize = 11.sp,
+                                color = TextMutedGrey,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(BorderCyberDark)
+                                        .padding(10.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(text = "Selected Term:", fontSize = 11.sp, color = TextMutedGrey)
+                                        Text(text = selectedCheckoutTier.replace("_", " "), fontSize = 11.sp, color = NeonCyan, fontWeight = FontWeight.Bold)
+                                    }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(text = "Price Matrix:", fontSize = 11.sp, color = TextMutedGrey)
+                                        Text(text = tierPriceString, fontSize = 11.sp, color = NeonGreen, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+
+                            // Payment Mode Tab selections
+                            item {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(CyberBlack)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clickable { selectedPaymentMethod = "CRYPTO" }
+                                            .background(if (selectedPaymentMethod == "CRYPTO") NeonCyan.copy(alpha = 0.15f) else Color.Transparent)
+                                            .padding(vertical = 10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = "USDT (Crypto)",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = if (selectedPaymentMethod == "CRYPTO") NeonCyan else TextMutedGrey
+                                        )
+                                    }
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clickable { selectedPaymentMethod = "FIAT" }
+                                            .background(if (selectedPaymentMethod == "FIAT") NeonPurple.copy(alpha = 0.15f) else Color.Transparent)
+                                            .padding(vertical = 10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = "Fiat / Credit Card",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = if (selectedPaymentMethod == "FIAT") NeonPurple else TextMutedGrey
+                                        )
+                                    }
+                                }
+                            }
+
+                            if (selectedPaymentMethod == "CRYPTO") {
+                                // USDT Secure checkout info
+                                item {
+                                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Text(
+                                            text = "1. Select Blockchain Settlement Network:",
+                                            fontSize = 11.sp,
+                                            color = TextWhite,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            listOf("TRC-20", "ERC-20", "BEP-20").forEach { net ->
+                                                val isSelected = walletNetwork == net
+                                                Box(
+                                                    modifier = Modifier
+                                                        .weight(1f)
+                                                        .clip(RoundedCornerShape(6.dp))
+                                                        .clickable { walletNetwork = net }
+                                                        .background(if (isSelected) NeonCyan.copy(alpha = 0.2f) else CyberBlack)
+                                                        .border(1.dp, if (isSelected) NeonCyan else BorderCyberDark, RoundedCornerShape(6.dp))
+                                                        .padding(vertical = 8.dp),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Text(text = net, fontSize = 10.sp, fontWeight = FontWeight.Bold, color = if (isSelected) NeonCyan else TextWhite)
+                                                }
+                                            }
+                                        }
+
+                                        Spacer(modifier = Modifier.height(4.dp))
+
+                                        Text(
+                                            text = "2. Copy Secure Deposit Wallet Address:",
+                                            fontSize = 11.sp,
+                                            color = TextWhite,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clip(RoundedCornerShape(8.dp))
+                                                .background(CyberBlack)
+                                                .border(1.dp, BorderCyberDark, RoundedCornerShape(8.dp))
+                                                .padding(horizontal = 10.dp, vertical = 8.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Text(
+                                                text = "0x7b5FE2012aD9e6C18E949b29cb2d3e9EF88Bea02",
+                                                fontFamily = FontFamily.Monospace,
+                                                fontSize = 10.sp,
+                                                color = NeonGreen,
+                                                modifier = Modifier.weight(0.85f)
+                                            )
+                                            IconButton(
+                                                onClick = { clipboardManager.setText(AnnotatedString("0x7b5FE2012aD9e6C18E949b29cb2d3e9EF88Bea02")) },
+                                                modifier = Modifier.size(24.dp).weight(0.15f)
+                                            ) {
+                                                Icon(Icons.Default.Share, contentDescription = "Copy Wallet", tint = NeonCyan, modifier = Modifier.size(14.dp))
+                                            }
+                                        }
+
+                                        Spacer(modifier = Modifier.height(4.dp))
+
+                                        Text(
+                                            text = "3. Confirm Deposit on Blockchain. Submit TxHash / Transaction ID:",
+                                            fontSize = 11.sp,
+                                            color = TextWhite,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        OutlinedTextField(
+                                            value = txHashInput,
+                                            onValueChange = { txHashInput = it },
+                                            modifier = Modifier.fillMaxWidth().testTag("txhash_input_checkout"),
+                                            placeholder = { Text("Enter 32-character Transaction Hash...", fontSize = 11.sp, color = TextMutedGrey) },
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                focusedBorderColor = NeonCyan,
+                                                unfocusedBorderColor = BorderCyberDark,
+                                                focusedContainerColor = CyberBlack,
+                                                unfocusedContainerColor = CyberBlack
+                                            ),
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                    }
+                                }
+                            } else {
+                                // FIAT secure checkout options
+                                item {
+                                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        if (currentCountryCode == "BGD") {
+                                            // Bangladesh local bkash processing Mock
+                                            Text(
+                                                text = "Secure local bKash Checkout (SSLCommerz settlement):",
+                                                fontSize = 11.sp,
+                                                color = TextWhite,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            OutlinedTextField(
+                                                value = bkashMobileNumber,
+                                                onValueChange = { bkashMobileNumber = it },
+                                                modifier = Modifier.fillMaxWidth().testTag("bkash_mobile"),
+                                                placeholder = { Text("Enter 11-digit bKash Mobile Number...", fontSize = 11.sp, color = TextMutedGrey) },
+                                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                colors = OutlinedTextFieldDefaults.colors(
+                                                    focusedBorderColor = NeonPurple,
+                                                    unfocusedBorderColor = BorderCyberDark,
+                                                    focusedContainerColor = CyberBlack,
+                                                    unfocusedContainerColor = CyberBlack
+                                                ),
+                                                shape = RoundedCornerShape(8.dp)
                                             )
                                             Text(
-                                                text = "Connecting synapses... compiling logic...",
-                                                color = TextMutedGrey,
-                                                fontSize = 12.sp,
-                                                fontFamily = FontFamily.Monospace
+                                                text = "A secured bKash API simulation payment trigger will authenticate instantly.",
+                                                fontSize = 9.sp,
+                                                color = TextMutedGrey
                                             )
-                                        }
-                                    } else {
-                                        Text(
-                                            text = chatMsg.message,
-                                            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-                                            color = TextWhite,
-                                            modifier = Modifier.testTag("chat_response_content")
-                                        )
-                                        
-                                        if (!isUser) {
-                                            Spacer(modifier = Modifier.height(10.dp))
-                                            // Small, tidy premium migrate notes option inside each response card
+                                        } else {
+                                            // Stripe Global credit card setup Mock
+                                            Text(
+                                                text = "Stripe Secured Credit Card Input:",
+                                                fontSize = 11.sp,
+                                                color = TextWhite,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            OutlinedTextField(
+                                                value = creditCardNumber,
+                                                onValueChange = { creditCardNumber = it },
+                                                modifier = Modifier.fillMaxWidth().testTag("stripe_card"),
+                                                placeholder = { Text("Enter 16-Digit Credit Card Code...", fontSize = 11.sp, color = TextMutedGrey) },
+                                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                colors = OutlinedTextFieldDefaults.colors(
+                                                    focusedBorderColor = NeonPurple,
+                                                    unfocusedBorderColor = BorderCyberDark,
+                                                    focusedContainerColor = CyberBlack,
+                                                    unfocusedContainerColor = CyberBlack
+                                                ),
+                                                shape = RoundedCornerShape(8.dp)
+                                            )
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.End
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
                                             ) {
-                                                OutlinedButton(
-                                                    onClick = {
-                                                        viewModel.addBrainNote(
-                                                            title = "Gemini: Smart Ingest",
-                                                            content = chatMsg.message.take(500) + "\n\n[Full Conversation Logged Offline]",
-                                                            subject = "General AI",
-                                                            type = "notes"
-                                                        )
-                                                    },
-                                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                                                    modifier = Modifier.height(30.dp),
-                                                    shape = RoundedCornerShape(4.dp),
-                                                    border = androidx.compose.foundation.BorderStroke(1.dp, NeonPurple.copy(alpha = 0.5f))
-                                                ) {
-                                                    Icon(
-                                                        imageVector = Icons.Default.Add,
-                                                        contentDescription = "Save Note",
-                                                        tint = NeonPurple,
-                                                        modifier = Modifier.size(12.dp)
-                                                    )
-                                                    Spacer(modifier = Modifier.width(4.dp))
-                                                    Text("MIGRATE TO BRAIN VAULT", color = NeonPurple, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                                                }
+                                                OutlinedTextField(
+                                                    value = cardExpiry,
+                                                    onValueChange = { cardExpiry = it },
+                                                    modifier = Modifier.weight(1f).testTag("stripe_expiry"),
+                                                    placeholder = { Text("MM/YY Expiry", fontSize = 11.sp, color = TextMutedGrey) },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    colors = OutlinedTextFieldDefaults.colors(
+                                                        focusedBorderColor = NeonPurple,
+                                                        unfocusedBorderColor = BorderCyberDark,
+                                                        focusedContainerColor = CyberBlack,
+                                                        unfocusedContainerColor = CyberBlack
+                                                    ),
+                                                    shape = RoundedCornerShape(8.dp)
+                                                )
+                                                OutlinedTextField(
+                                                    value = cardCvv,
+                                                    onValueChange = { cardCvv = it },
+                                                    modifier = Modifier.weight(0.8f).testTag("stripe_cvv"),
+                                                    placeholder = { Text("CVV", fontSize = 11.sp, color = TextMutedGrey) },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    colors = OutlinedTextFieldDefaults.colors(
+                                                        focusedBorderColor = NeonPurple,
+                                                        unfocusedBorderColor = BorderCyberDark,
+                                                        focusedContainerColor = CyberBlack,
+                                                        unfocusedContainerColor = CyberBlack
+                                                    ),
+                                                    shape = RoundedCornerShape(8.dp)
+                                                )
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                    }
+                },
+                confirmButton = {
+                    if (paymentCompletedSuccessfully) {
+                        Button(
+                            onClick = { showCheckoutDialog = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = NeonGreen)
+                        ) {
+                            Text("FINISH ACCESS SUCCESS", color = Color.Black, fontWeight = FontWeight.Bold)
+                        }
+                    } else if (!isProcessingState) {
+                        val isEnabled = if (selectedPaymentMethod == "CRYPTO") {
+                            txHashInput.trim().length >= 8
+                        } else {
+                            if (currentCountryCode == "BGD") bkashMobileNumber.trim().length >= 11 else creditCardNumber.trim().length >= 12
+                        }
+
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    isProcessingState = true
+                                    processingMessage = "Connecting SSL-Handshake Secured Link..."
+                                    delay(1000)
+                                    processingMessage = "Verifying Payment payload on API routing registry..."
+                                    delay(1200)
+                                    processingMessage = "Consolidating Ledger Nodes..."
+                                    delay(800)
+                                    viewModel.purchaseSubscription(selectedCheckoutTier)
+                                    isProcessingState = false
+                                    paymentCompletedSuccessfully = true
+                                }
+                            },
+                            enabled = isEnabled,
+                            colors = ButtonDefaults.buttonColors(containerColor = NeonCyan)
+                        ) {
+                            Text("SUBMIT PAY REQUEST", color = Color.Black, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                },
+                dismissButton = {
+                    if (!isProcessingState && !paymentCompletedSuccessfully) {
+                        TextButton(onClick = { showCheckoutDialog = false }) {
+                            Text("BACK", color = WarningCrimson)
+                        }
+                    }
+                },
+                containerColor = DeepSpaceSlate
+            )
+        }
+    }
+}
+
+@Composable
+fun PromoBanner(
+    isPremium: Boolean,
+    subscriptionType: String,
+    expiresTimestamp: Long,
+    onUpgradeClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = if (isPremium) NeonGreen else NeonPurple,
+                shape = RoundedCornerShape(12.dp)
+            ),
+        colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
+    ) {
+        Row(
+            modifier = Modifier.padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(0.7f)) {
+                if (isPremium) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(text = "🌟", fontSize = 16.sp)
+                        Text(
+                            text = "PREMIUM ACCESS ALIGNED",
+                            color = NeonGreen,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Black
+                        )
+                    }
+                    val dateFormatted = remember(expiresTimestamp) {
+                        if (expiresTimestamp > 0) {
+                            try {
+                                val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                                sdf.format(Date(expiresTimestamp))
+                            } catch (e: Exception) {
+                                "30 Days Active"
+                            }
+                        } else {
+                            "Continuous"
+                        }
+                    }
+                    Text(
+                        text = "Plan: ${subscriptionType.replace("_", " ")} | Valid thru: $dateFormatted",
+                        fontSize = 12.sp,
+                        color = TextWhite,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Text(
+                        text = "Low-latency LPU streams and web crawlers are fully active on your account.",
+                        fontSize = 10.sp,
+                        color = TextMutedGrey,
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(text = "⚡", fontSize = 16.sp)
+                        Text(
+                            text = "UPGRADE KX7 PROFILE",
+                            color = NeonPurple,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Black
+                        )
+                    }
+                    Text(
+                        text = "Tier: Academic Free Account",
+                        fontSize = 12.sp,
+                        color = TextWhite,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Text(
+                        text = "Unlock high-context solutions, 480 tokens/sec solving, and web crawl indexes.",
+                        fontSize = 10.sp,
+                        color = TextMutedGrey,
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                }
+            }
+
+            if (!isPremium) {
+                Button(
+                    onClick = onUpgradeClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = NeonPurple),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+                    modifier = Modifier.weight(0.3f).height(38.dp)
+                ) {
+                    Text("Unlock", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PaywallTierCard(
+    title: String,
+    cryptoPrice: String,
+    fiatPrice: String,
+    durationLabel: String,
+    badgeText: String?,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(CyberBlack)
+            .border(
+                width = 1.dp,
+                color = if (badgeText != null) NeonCyan else BorderCyberDark,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .clickable(onClick = onClick)
+            .padding(14.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = TextWhite
+                )
+
+                if (badgeText != null) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(NeonPurple)
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = badgeText,
+                            fontSize = 8.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.Black
+                        )
                     }
                 }
             }
 
-            // Input panel at the bottom of the Universal solver page
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, BorderCyberDark, RoundedCornerShape(12.dp)),
-                    colors = CardDefaults.cardColors(containerColor = DeepSpaceSlate)
-                ) {
-                    Column(modifier = Modifier.padding(14.dp)) {
-                        Text(
-                            text = "query feed entry point".uppercase(Locale.getDefault()),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = NeonPurple
-                        )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = cryptoPrice,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Black,
+                    color = NeonGreen
+                )
+                Text(
+                    text = "or",
+                    fontSize = 11.sp,
+                    color = TextMutedGrey
+                )
+                Text(
+                    text = fiatPrice,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite
+                )
+            }
 
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = chatInputFieldText,
-                            onValueChange = { chatInputFieldText = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(100.dp)
-                                .testTag("universal_chat_input"),
-                            placeholder = {
-                                Text(
-                                    "Ask any general-purpose / logic question here (e.g. 'Write a sorting scheme in Rust...')",
-                                    fontSize = 12.sp,
-                                    color = TextMutedGrey
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = NeonPurple,
-                                unfocusedBorderColor = BorderCyberDark,
-                                focusedContainerColor = CyberBlack,
-                                unfocusedContainerColor = CyberBlack
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            // Reset Chat History trigger button
-                            if (chatMessages.isNotEmpty()) {
-                                OutlinedButton(
-                                    onClick = { chatMessages.clear() },
-                                    modifier = Modifier.weight(0.4f),
-                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = WarningCrimson),
-                                    shape = RoundedCornerShape(8.dp),
-                                    border = androidx.compose.foundation.BorderStroke(1.dp, WarningCrimson.copy(alpha = 0.6f))
-                                ) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Clear Chat", tint = WarningCrimson, modifier = Modifier.size(14.dp))
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text("RESET CHAT", fontSize = 10.sp, color = WarningCrimson, fontWeight = FontWeight.Bold)
-                                }
-                            }
-
-                            // Submit to Gemini
-                            Button(
-                                onClick = {
-                                    val userTextVal = chatInputFieldText.trim()
-                                    if (userTextVal.isNotEmpty()) {
-                                        chatInputFieldText = ""
-                                        chatMessages.add(ChatMessage(sender = "user", message = userTextVal))
-                                        chatMessages.add(ChatMessage(sender = "gemini", message = "", isPending = true))
-                                        coroutineScope.launch {
-                                            val ans = withContext(Dispatchers.IO) {
-                                                com.example.data.GeminiClient.solveAcademicProblem(
-                                                    prompt = userTextVal,
-                                                    subject = "Universal AI",
-                                                    curriculumTrack = "General AI",
-                                                    language = "en",
-                                                    persona = "Universal"
-                                                )
-                                            }
-                                            if (chatMessages.isNotEmpty() && chatMessages.last().isPending) {
-                                                chatMessages.removeAt(chatMessages.size - 1)
-                                            }
-                                            chatMessages.add(ChatMessage(sender = "gemini", message = ans))
-                                        }
-                                    }
-                                },
-                                modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = NeonPurple),
-                                shape = RoundedCornerShape(8.dp),
-                                enabled = chatInputFieldText.isNotEmpty()
-                            ) {
-                                Icon(Icons.Default.Send, contentDescription = "Send", tint = Color.White, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text("DISPATCH TO GEMINI", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                            }
-                        }
-                    }
-                }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = durationLabel,
+                    fontSize = 11.sp,
+                    color = TextMutedGrey
+                )
+                Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Purchase", tint = NeonCyan, modifier = Modifier.size(18.dp))
             }
         }
     }
@@ -927,3 +1331,4 @@ fun buildAnnotatedMasterpieceString(text: String): androidx.compose.ui.text.Anno
         }
     }
 }
+

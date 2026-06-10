@@ -580,6 +580,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // --- DYNAMIC LOCALIZATION AND SUBSCRIPTION CONTROLLERS ---
+
+    fun updateLocalization(countryCode: String, boardId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val current = dao.getUserProfileSynchronous() ?: UserProfile()
+            val updated = current.copy(
+                selectedCountryCode = countryCode,
+                selectedBoardId = boardId,
+                curriculumTrack = "${boardId}_${countryCode}"
+            )
+            dao.insertUserProfile(updated)
+        }
+    }
+
+    fun purchaseSubscription(subscriptionTier: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val current = dao.getUserProfileSynchronous() ?: UserProfile()
+            val expiresMillis = when (subscriptionTier) {
+                "1_MONTH" -> System.currentTimeMillis() + 30L * 24 * 3600 * 1000
+                "3_MONTHS" -> System.currentTimeMillis() + 90L * 24 * 3600 * 1000
+                "1_YEAR" -> System.currentTimeMillis() + 365L * 24 * 3600 * 1000
+                else -> 0L
+            }
+            val updated = current.copy(
+                isPremium = (subscriptionTier != "FREE"),
+                subscriptionType = subscriptionTier,
+                subscriptionExpiresTimestamp = expiresMillis
+            )
+            dao.insertUserProfile(updated)
+            if (subscriptionTier != "FREE") {
+                earnAuraPoints(1000)
+            }
+        }
+    }
+
     // --- NEURAL SOLVER COMPILATION (GEMINI INTEGRATION) ---
 
     fun callNeuralSolver(prompt: String, subject: String) {
@@ -593,7 +628,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 com.example.data.MasterpieceSolverClient.solveMasterpieceStream(
                     question = prompt,
                     subject = subject,
-                    curriculumTrack = profile.curriculumTrack,
+                    countryCode = profile.selectedCountryCode,
+                    boardId = profile.selectedBoardId,
                     langPreference = profile.languagePreference,
                     persona = profile.activeMentorPersona
                 ).collect { chunk ->
